@@ -1,0 +1,168 @@
+% ============================================================
+%  Semana 1 · Clase 1 — Encuentro Inicial (Refrigerio)
+%  Curso: Análisis y Visualización de Datos para la Toma de Decisiones
+%
+%  Compilar (dos veces) desde la raíz del curso (20262/):
+%    TEXINPUTS=".:plantilla:$TEXINPUTS" xelatex clases/semana01-clase01.tex
+%    TEXINPUTS=".:plantilla:$TEXINPUTS" xelatex clases/semana01-clase01.tex
+% ============================================================
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usepackage{beamerthemeesumer}
+\usetheme{esumer}
+
+\usepackage[spanish]{babel}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+% ---------------- DATOS DE LA CLASE ----------------
+\title{Encuentro Inicial}
+\subtitle{Bienvenida al curso}
+\author{Docente: [Nombre Apellido]}
+\date{Sep 1 al 7}
+
+\setmodulo{Módulo 1: Explorar (Fundamentos y Consulta de Datos)}
+\setsemana{1}
+\setclase{1}
+\setfechaclase{Sep 1 al 7}
+\setmodalidad{Híbrido}
+% -----------------------------------------------------
+
+\begin{document}
+
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+}
+
+\begin{frame}{Agenda}
+  \begin{enumerate}
+    \item Bienvenida
+    \item Presentación (docente y estudiantes)
+    \item Panorama del curso: los 5 módulos
+    \item Cronograma y modalidades
+    \item Metodología y evaluación
+    \item Logística: herramientas y canales
+    \item Cierre + refrigerio
+  \end{enumerate}
+\end{frame}
+
+\section{Bienvenida}
+\begin{frame}{¡Bienvenidos!}
+  \begin{block}{Análisis y Visualización de Datos para la Toma de Decisiones}
+    \begin{itemize}
+      \item Un curso práctico: de los datos crudos a una decisión de negocio sustentada.
+      \item 15 semanas · 89 horas · modalidad híbrida (virtual + presencial).
+      \item Cierra con un \textbf{proyecto integrador}: un tablero (dashboard) empresarial propio.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\section{Presentación}
+\begin{frame}{Presentación del docente}
+  \begin{itemize}
+    \item Nombre, trayectoria y experiencia relacionada con datos/analítica.
+    \item Expectativas y estilo de trabajo en el curso.
+    \item Canal de contacto para dudas.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Presentación de los estudiantes}
+  \begin{alertblock}{Dinámica rápida}
+    En parejas o grupos pequeños: nombre, a qué se dedican y una decisión de su
+    trabajo/estudio que \emph{les gustaría} poder tomar con mejores datos.
+  \end{alertblock}
+\end{frame}
+
+\section{Panorama del curso}
+\begin{frame}{Los 5 módulos del curso}
+  \begin{enumerate}
+    \item \textbf{Explorar} — Fundamentos y consulta de datos (Semanas 1–4).
+    \item \textbf{Construir} — Limpieza y gestión de datos con Pandas (Semanas 5–8).
+    \item \textbf{Experimentar} — Business Intelligence con Power BI (Semanas 9–10).
+    \item \textbf{Innovar} — Analítica predictiva y storytelling (Semanas 11–14).
+    \item \textbf{Transformar} — Dashboard empresarial aplicado (Semana 15).
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{El hilo conductor: un proyecto integrador}
+  \begin{itemize}
+    \item Desde la Clase 2 se define un problema de negocio y una pregunta analítica.
+    \item Cada módulo agrega una capa: estadística $\to$ limpieza $\to$ visualización $\to$ predicción $\to$ storytelling.
+    \item El cierre (Semana 15) es la sustentación del tablero final ante un comité.
+  \end{itemize}
+\end{frame}
+
+\section{Cronograma}
+\begin{frame}{Cronograma y modalidades}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lll@{}}
+      \toprule
+      \textbf{Semanas} & \textbf{Módulo} & \textbf{Hitos presenciales} \\
+      \midrule
+      1 -- 4  & Explorar   & MasterClass semana 2 y 4 \\
+      5 -- 8  & Construir  & MasterClass semana 7 · Bootcamp semana 8 \\
+      9 -- 10 & Experimentar & MasterClass semana 10 \\
+      11 -- 14 & Innovar   & MasterClass semana 13 · Bootcamp semana 14 \\
+      15      & Transformar & Semana de la Innovación (cierre) \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \vspace{0.3cm}
+  \small El detalle semana a semana está en el cronograma del curso (\texttt{cronograma.md}).
+\end{frame}
+
+\section{Metodología y evaluación}
+\begin{frame}{Cómo se evalúa}
+  \begin{itemize}
+    \item Evidencia/producto en la mayoría de las sesiones (talleres, laboratorios, retos).
+    \item Un producto integrador por módulo que se acumula hacia el tablero final.
+    \item Sustentación final en la Semana 15 (Semana de la Innovación Multidisciplinar).
+  \end{itemize}
+  \begin{alertblock}{Pendiente por confirmar}
+    Ponderación exacta / rúbrica de evaluación — completar según los criterios institucionales.
+  \end{alertblock}
+\end{frame}
+
+\section{Logística}
+\begin{frame}{Herramientas del curso}
+  \begin{itemize}
+    \item \textbf{Python:} Google Colab.
+    \item \textbf{Bases de datos:} DBeaver + SQLite.
+    \item \textbf{Visualización / BI:} Power BI Desktop.
+    \item \textbf{Storytelling:} Canva / Google Slides.
+    \item \textbf{Opcional:} GitHub para control de versiones del proyecto.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Antes de la próxima clase}
+  \begin{itemize}
+    \item Crear/activar una cuenta de Google (para Colab).
+    \item Instalar DBeaver (se usará desde la Semana 4).
+    \item Traer un caso o problema real de su entorno laboral/académico para el proyecto integrador.
+  \end{itemize}
+\end{frame}
+
+\section{Cierre}
+\begin{frame}{Cierre}
+  \begin{itemize}
+    \item Próxima sesión: \textbf{MasterClass (Nivelación)} — panorama del ecosistema de datos (Semana 2).
+    \item Dudas y comentarios.
+    \item ¡Vamos por el refrigerio!
+  \end{itemize}
+\end{frame}
+
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[esumerNavy] (current page.south west) rectangle (current page.north east);
+    \node at (current page.center) {\color{white}\Huge\bfseries ¡Gracias!};
+  \end{tikzpicture}
+\end{frame}
+}
+
+\end{document}
