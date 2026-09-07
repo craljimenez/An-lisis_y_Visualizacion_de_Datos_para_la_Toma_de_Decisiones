@@ -196,9 +196,9 @@
 
 ## Plantilla LaTeX
 
-La plantilla de diapositivas para cada clase está en [`plantilla/`](./plantilla/):
+La plantilla de diapositivas para cada clase está **fuera de este repositorio**, un nivel arriba, en [`../plantilla/`](../plantilla/) (es el tema reutilizable, no contenido propio de la cohorte):
 - `beamerthemeesumer.sty` — tema Beamer con la identidad de Esumer/Estud-IA (colores, tipografía, portada, pie de página).
 - `clase-template.tex` — plantilla de clase lista para copiar por sesión.
 - `assets/` — logos institucionales.
 
-Ver [`plantilla/README.md`](./plantilla/README.md) para el flujo de trabajo completo.
+Ver [`../plantilla/README.md`](../plantilla/README.md) para el flujo de trabajo completo.

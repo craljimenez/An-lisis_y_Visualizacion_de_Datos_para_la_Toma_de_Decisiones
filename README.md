@@ -5,11 +5,14 @@ Repositorio del material de clase (Esumer / Estud-IA, cohorte 20262).
 ## Estructura
 
 - [`cronograma.md`](./cronograma.md) — plan semana a semana / clase por clase.
-- [`plantilla/`](./plantilla/) — tema de Beamer institucional y la plantilla
-  base para cada clase (ver su `README.md` para el flujo de compilación).
 - `clases/` — una carpeta por sesión, con la fuente `.tex`, el PDF compilado
   y, cuando aplica, los cuadernos de Jupyter (`notebooks/*.ipynb`) usados en
   esa clase.
+
+> La plantilla LaTeX (`plantilla/`) vive **fuera** de este repositorio, un
+> nivel arriba (`../plantilla/`), porque es el tema reutilizable y no es
+> contenido propio de una cohorte. Ver [`../plantilla/README.md`](../plantilla/README.md)
+> para el flujo de compilación.
 
 ```
 clases/
