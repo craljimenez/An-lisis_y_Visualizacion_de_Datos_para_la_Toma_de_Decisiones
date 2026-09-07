@@ -7,13 +7,14 @@
 %    Hora 2 — Contenido: de los datos a la decisión
 %    Hora 3 — Laboratorio: notebooks/lab-primeros-pasos.ipynb
 %
-%  Compilar (dos veces) desde 20262/ (raíz, un nivel arriba de Contenido_Curso):
-%    TEXINPUTS=".:plantilla:$TEXINPUTS" xelatex -output-directory=Contenido_Curso/clases/semana01-clase01-encuentro-inicial Contenido_Curso/clases/semana01-clase01-encuentro-inicial/semana01-clase01.tex
-%    (repetir la misma línea una segunda vez)
+%  Compilar (dos veces), directamente desde esta carpeta (funciona igual
+%  con el botón de compilar de cualquier IDE, sin variables de entorno):
+%    xelatex semana01-clase01.tex
+%    xelatex semana01-clase01.tex
 % ============================================================
 \documentclass[aspectratio=169,11pt]{beamer}
 
-\usepackage{beamerthemeesumer}
+\usepackage{../../../plantilla/beamerthemeesumer}
 \usetheme{esumer}
 
 \usepackage[spanish]{babel}
@@ -33,9 +34,7 @@
 \setmodalidad{Híbrido}
 % -----------------------------------------------------
 
-% Ruta de figuras relativa a la raíz de compilación (20262/), no al .tex:
-% ver plantilla/README.md para el comando de compilación completo.
-\graphicspath{{Contenido_Curso/clases/semana01-clase01-encuentro-inicial/figuras/}}
+\graphicspath{{figuras/}}
 
 \begin{document}
 
