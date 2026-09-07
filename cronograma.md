@@ -75,7 +75,7 @@
 ### Semana 1 — Sep 1 al 13
 - **Clase 1 — Encuentro Inicial** · Híbrido · 3 h · Sep 1 al 7 · ✅ listo
   - Incluye el contenido que el Excel asigna a la MasterClass (Nivelación) de su "Semana 2": panorama del ecosistema de datos, datos estructurados y no estructurados, ciclo de vida del dato, calidad de datos, datos personales/habeas data, formulación de un problema de negocio. No se prepara como sesión aparte.
-- **Clase 2 — Fundamentos de estadística descriptiva** · Virtual · 3 h · Sep 8 al 13
+- **Clase 2 — Fundamentos de estadística descriptiva** · Virtual · 3 h · Sep 8 al 13 · ✅ listo
   - *Contenido:* Tipos de variables; población y muestra; frecuencias; media, mediana y moda; rango, varianza y desviación estándar; percentiles y lectura de distribuciones; interpretación de indicadores sin sobreinterpretarlos.
   - *Actividad/Producto:* Taller con un conjunto de datos real: cálculo e interpretación de estadísticos y detección inicial de valores atípicos.
 

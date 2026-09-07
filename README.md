@@ -37,7 +37,7 @@ cada commit para confirmar que no se cuele ninguno.
 | Semana | Clase | Tema | Estado |
 |---|---|---|---|
 | 1 | 1 | Encuentro Inicial (incluye panorama del ecosistema de datos) | ✅ listo |
-| 1 | 2 | Fundamentos de estadística descriptiva | ⏳ pendiente |
+| 1 | 2 | Fundamentos de estadística descriptiva | ✅ listo |
 
 (Se va actualizando a medida que se preparan las demás clases —
 ver el detalle completo en `cronograma.md`.)
