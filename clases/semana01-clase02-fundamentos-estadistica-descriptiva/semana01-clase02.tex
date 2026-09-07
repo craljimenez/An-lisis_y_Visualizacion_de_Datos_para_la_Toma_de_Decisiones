@@ -71,41 +71,25 @@
 \section{Hora 1 — Variables, población y frecuencias}
 % ============================================================
 \begin{frame}{Tipos de variables}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.55\textwidth}
-    \vspace{0.2cm}
-    \small
-    \begin{itemize}
-      \small
-      \item \textbf{Cualitativas:} describen una cualidad o categoría.
-      \item \textbf{Cuantitativas:} se pueden medir o contar.
-      \item Saber el tipo de variable define \textbf{qué estadísticos y
-        qué gráficos} tienen sentido usar con ella (lo veremos en la
-        Semana 6, Principios de visualización).
-    \end{itemize}
-    \column{0.42\textwidth}
-    \includegraphics[width=0.95\textwidth]{figura_tipos_variables.pdf}
-  \end{columns}
+  \small
+  \textbf{Cualitativas} (describen una cualidad) vs. \textbf{cuantitativas}
+  (se pueden medir o contar) — saber el tipo de variable define qué
+  estadísticos y qué gráficos tienen sentido usar con ella (Semana 6,
+  Principios de visualización).
+  \begin{center}
+    \includegraphics[width=0.75\textwidth]{figura_tipos_variables.pdf}
+  \end{center}
 \end{frame}
 
 \begin{frame}{Población y muestra}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.44\textwidth}
-    \vspace{0.2cm}
-    \small
-    \begin{itemize}
-      \small
-      \item \textbf{Población:} todos los casos posibles (todos los
-        clientes, todas las transacciones).
-      \item \textbf{Muestra:} el subconjunto que realmente observamos y
-        analizamos.
-      \item Casi nunca trabajamos con toda la población — por eso importa
-        que la muestra sea representativa.
-    \end{itemize}
-    \column{0.5\textwidth}
-    \centering
-    \includegraphics[width=0.95\textwidth]{figura_poblacion_muestra.pdf}
-  \end{columns}
+  \small
+  \textbf{Población:} todos los casos posibles (todos los clientes, todas
+  las transacciones). \textbf{Muestra:} el subconjunto que realmente
+  observamos — casi nunca trabajamos con toda la población, por eso
+  importa que la muestra sea representativa.
+  \begin{center}
+    \includegraphics[width=0.58\textwidth]{figura_poblacion_muestra.pdf}
+  \end{center}
 \end{frame}
 
 \begin{frame}{Frecuencias: la primera foto de los datos}
@@ -189,6 +173,74 @@
   intercuartílico (IQR)}: la ``caja'' donde vive el 50\% central de los
   datos. Los puntos naranjas son \textbf{valores atípicos} — muy por
   encima del resto.
+\end{frame}
+
+\begin{frame}{Medidas de forma: asimetría de Fisher}
+  \small
+  Mide qué tan ``torcida'' está una distribución respecto a la simétrica
+  (asimetría $\approx 0$). Se calcula con el promedio de los desvíos a la
+  media \textbf{elevados al cubo} (para que el signo indique el lado de
+  la cola), dividido por la desviación estándar al cubo:
+  \[
+    g_1 = \frac{\dfrac{1}{n}\sum_{i=1}^n (x_i - \bar{x})^3}{s^3}
+  \]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{figura_asimetria.pdf}
+  \end{center}
+  \small Asimetría \textbf{positiva}: la cola larga apunta a la derecha
+  (la media queda por encima de la mediana). \textbf{Negativa}: la cola
+  larga apunta a la izquierda.
+\end{frame}
+
+\begin{frame}{Medidas de forma: curtosis}
+  \small
+  Mide qué tan ``apuntada'' es una distribución y qué tan pesadas son sus
+  colas, comparada con la normal (curtosis en exceso $\approx 0$). Es el
+  mismo tipo de cálculo que la asimetría, pero elevando los desvíos a la
+  \textbf{cuarta potencia} y restando 3 (el valor de referencia de la
+  normal):
+  \[
+    g_2 = \frac{\dfrac{1}{n}\sum_{i=1}^n (x_i - \bar{x})^4}{s^4} - 3
+  \]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{figura_curtosis.pdf}
+  \end{center}
+  \small Curtosis alta (leptocúrtica) $\to$ más valores extremos de lo
+  esperado: revisa con cuidado los atípicos en esos casos.
+\end{frame}
+
+\begin{frame}{Correlación: ¿cómo se relacionan dos variables?}
+  \small
+  El coeficiente de correlación de Pearson ($r$) va de $-1$ a $+1$ y mide
+  qué tan \textbf{lineal} es la relación entre dos variables $x$ y $y$:
+  \[
+    r = \frac{\sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{y})}
+             {\sqrt{\sum_{i=1}^n (x_i-\bar{x})^2}\;\sqrt{\sum_{i=1}^n (y_i-\bar{y})^2}}
+  \]
+  \begin{center}
+    \includegraphics[width=\textwidth]{figura_correlacion.pdf}
+  \end{center}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \small \textbf{$r$ positivo:} relación \textbf{directa} — cuando una
+    variable sube, la otra tiende a subir también.
+    \column{0.48\textwidth}
+    \small \textbf{$r$ negativo:} relación \textbf{inversa} — cuando una
+    sube, la otra tiende a bajar. El \textbf{signo} indica la dirección;
+    el \textbf{valor absoluto}, qué tan fuerte es.
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Cuidado: $r$ solo detecta relación \emph{lineal}}
+  \begin{center}
+    \includegraphics[width=0.85\textwidth]{figura_no_lineal.pdf}
+  \end{center}
+  \vspace{0.2cm}
+  \small A la izquierda hay una relación \textbf{perfectamente
+  determinada} (una parábola) y aun así $r \approx 0$: Pearson no la
+  detecta porque no es una línea recta. Antes de concluir ``no hay
+  relación'', \textbf{mira siempre el gráfico de dispersión}, no solo el
+  número.
 \end{frame}
 
 \begin{frame}{Interpretar sin sobreinterpretar}
