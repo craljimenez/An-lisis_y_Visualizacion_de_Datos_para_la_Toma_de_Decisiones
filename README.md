@@ -1,4 +1,4 @@
-# Contenido del curso — Análisis y Visualización de Datos para la Toma de Decisiones
+# Contenido del curso — Análisis de Datos y Visualización de Datos para la Toma de Decisiones
 
 Repositorio del material de clase (Esumer / Estud-IA, cohorte 20262).
 
@@ -22,6 +22,15 @@ clases/
     └── notebooks/
         └── *.ipynb
 ```
+
+## Qué se sube al repositorio
+
+Por clase, **solo**: la fuente `.tex`, el `.pdf` compilado y (si aplica) los
+`.ipynb` en `notebooks/`. Nada de auxiliares de compilación (`.aux`, `.log`,
+`.nav`, `.out`, `.snm`, `.toc`, `.fls`, `.fdb_latexmk`, `.synctex.gz`,
+`missfont.log`) ni `.ipynb_checkpoints/` — ya están excluidos en
+[`.gitignore`](./.gitignore), pero conviene revisar `git status` antes de
+cada commit para confirmar que no se cuele ninguno.
 
 ## Progreso
 
