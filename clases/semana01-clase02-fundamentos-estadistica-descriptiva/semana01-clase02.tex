@@ -81,15 +81,73 @@
   \end{center}
 \end{frame}
 
+\begin{frame}{Ejemplos reales: variables cualitativas}
+  \small
+  \textcolor{esumerSky}{\textbf{Nominal}} — categorías \textbf{sin orden}
+  lógico entre ellas:
+  \begin{itemize}
+    \small
+    \item \textbf{Color de ojos:} café, azul, verde — ninguno es ``más''
+      que otro.
+    \item \textbf{Marca de celular:} Samsung, iPhone, Xiaomi.
+    \item \textbf{Ciudad de residencia:} Medellín, Bogotá, Cali.
+  \end{itemize}
+  \vspace{0.3cm}
+  \textcolor{esumerTeal}{\textbf{Ordinal}} — categorías \textbf{con
+  orden}, pero sin una distancia numérica clara entre ellas:
+  \begin{itemize}
+    \small
+    \item \textbf{Estrato socioeconómico:} 1, 2, 3 \dots 6 — hay orden,
+      pero el salto de 1 a 2 no es ``igual'' al de 5 a 6.
+    \item \textbf{Nivel de satisfacción:} malo $<$ regular $<$ bueno $<$
+      excelente.
+    \item \textbf{Nivel educativo:} primaria $<$ bachillerato $<$
+      pregrado $<$ posgrado.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Ejemplos reales: variables cuantitativas}
+  \small
+  \textcolor{esumerSky}{\textbf{Discreta}} — se \textbf{cuenta}, solo
+  toma valores enteros (no existe ``2.5 hermanos''):
+  \begin{itemize}
+    \small
+    \item \textbf{Número de hermanos:} 0, 1, 2, 3\dots
+    \item \textbf{Número de correos recibidos hoy.}
+    \item \textbf{Número de productos en una factura.}
+  \end{itemize}
+  \vspace{0.3cm}
+  \textcolor{esumerTeal}{\textbf{Continua}} — se \textbf{mide}, puede
+  tomar cualquier valor dentro de un rango (con decimales):
+  \begin{itemize}
+    \small
+    \item \textbf{Estatura:} 1.68 m, 1.685 m\dots{} (siempre cabe un
+      decimal más).
+    \item \textbf{Peso corporal.}
+    \item \textbf{Tiempo de entrega de un pedido} (en minutos).
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Población y muestra}
   \small
   \textbf{Población:} todos los casos posibles (todos los clientes, todas
   las transacciones). \textbf{Muestra:} el subconjunto que realmente
-  observamos — casi nunca trabajamos con toda la población, por eso
+  observamos. Casi nunca trabajamos con toda la población, por eso
   importa que la muestra sea representativa.
-  \begin{center}
-    \includegraphics[width=0.58\textwidth]{figura_poblacion_muestra.pdf}
-  \end{center}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.38\textwidth}
+    \centering
+    \includegraphics[width=0.95\textwidth]{figura_poblacion_muestra.pdf}
+    \column{0.58\textwidth}
+    \begin{exampleblock}{\small Ejemplo}
+      \small Una tienda tiene 5{,}000 clientes registrados
+      (\textbf{población}). Para saber qué tan satisfechos están, no se
+      llama a los 5{,}000: se elige al azar una \textbf{muestra} de 200 y
+      se les pregunta a ellos. Si esos 200 se eligieron bien (al azar,
+      sin sesgo), su respuesta permite estimar razonablemente lo que
+      opinan los 5{,}000.
+    \end{exampleblock}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Frecuencias: la primera foto de los datos}
@@ -126,17 +184,74 @@
 % ============================================================
 \begin{frame}{Medidas de tendencia central}
   \small
+  Un solo número que resume ``dónde está el centro'' de los datos. Hay
+  tres, y cada una responde una pregunta distinta:
   \begin{itemize}
     \small
-    \item \textbf{Media:} el promedio — suma de todos los valores dividida entre el número de datos.
-    \item \textbf{Mediana:} el valor que queda justo en la mitad al ordenar los datos.
-    \item \textbf{Moda:} el valor que más se repite (la única que aplica también a variables cualitativas).
+    \item \textbf{Media:} el promedio.
+    \item \textbf{Mediana:} el valor central al ordenar los datos.
+    \item \textbf{Moda:} el valor que más se repite.
   \end{itemize}
-  \begin{alertblock}{¿Media o mediana?}
-    \small Si hay valores extremos (atípicos), la media se \textbf{deja
-    arrastrar} por ellos y deja de representar bien al conjunto — ahí la
-    mediana es más confiable.
+  \small Vamos una por una, calculándolas a mano sobre datos reales de
+  \texttt{tips} (cuentas de restaurante).
+\end{frame}
+
+\begin{frame}{Media: el promedio}
+  \small
+  Se suman todos los valores y se dividen entre cuántos son:
+  \[
+    \bar{x} = \frac{1}{n}\sum_{i=1}^n x_i
+  \]
+  \begin{exampleblock}{\small Paso a paso, con 5 cuentas reales de \texttt{tips} (USD)}
+    \small
+    Datos: $10.07,\ 15.98,\ 16.66,\ 17.29,\ 19.44$
+    \[
+      \bar{x} = \frac{10.07+15.98+16.66+17.29+19.44}{5} = \frac{79.44}{5} = 15.89
+    \]
+  \end{exampleblock}
+  \small \textbf{A escala completa:} con las 244 cuentas de \texttt{tips},
+  la media de \texttt{total\_bill} es \textbf{19.79 USD}.
+\end{frame}
+
+\begin{frame}{Mediana: el valor central}
+  \small
+  Se ordenan los datos de menor a mayor. Si $n$ es \textbf{impar}, la
+  mediana es el valor de la mitad; si $n$ es \textbf{par}, es el promedio
+  de los dos valores centrales.
+  \begin{exampleblock}{\small Mismos 5 datos, ya ordenados}
+    \small
+    $10.07,\ 15.98,\ \mathbf{16.66},\ 17.29,\ 19.44$ \quad ($n=5$, impar)
+    \[
+      \text{mediana} = 16.66
+    \]
+  \end{exampleblock}
+  \small \textbf{A escala completa:} con $n=244$ (par), la mediana es el
+  promedio de las cuentas en las posiciones 122 y 123 (17.78 y 17.81):
+  \textbf{17.79 USD}.
+  \begin{alertblock}{¿Por qué a veces preferimos la mediana?}
+    \small Si la cuenta más alta del ejemplo (19.44) fuera en realidad
+    190.00, la media se dispararía a 50.00, pero la mediana \textbf{seguiría
+    siendo 16.66}: es mucho más resistente a valores atípicos.
   \end{alertblock}
+\end{frame}
+
+\begin{frame}{Moda: el valor más frecuente}
+  \small
+  Es el valor (o categoría) que más veces aparece. Es la \textbf{única}
+  medida de tendencia central que también sirve para variables
+  cualitativas.
+  \begin{columns}[T,onlytextwidth]
+    \column{0.5\textwidth}
+    \centering
+    \includegraphics[width=0.95\textwidth]{figura_moda_tamano_grupo.pdf}
+    \column{0.46\textwidth}
+    \small \textbf{Cuantitativa:} el tamaño de grupo más común en
+    \texttt{tips} es \textbf{2 personas} (156 de 244 cuentas, 64\%).
+
+    \vspace{0.3cm}
+    \small \textbf{Cualitativa:} el día con más cuentas registradas es
+    \textbf{sábado} (87 de 244, 36\%), viendo la sección 2 de frecuencias.
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Media vs. mediana, en datos reales}
@@ -151,16 +266,81 @@
 
 \begin{frame}{Medidas de dispersión}
   \small
+  La tendencia central dice dónde está el centro, pero no qué tan
+  ``dispersos'' o ``apretados'' están los datos alrededor de él. Para eso
+  usamos:
   \begin{itemize}
     \small
-    \item \textbf{Rango:} diferencia entre el valor máximo y el mínimo — muy sensible a atípicos.
-    \item \textbf{Varianza:} qué tan lejos están, en promedio, los datos de la media (en unidades al cuadrado).
-    \item \textbf{Desviación estándar:} la raíz de la varianza — vuelve a las unidades originales, más fácil de interpretar.
+    \item \textbf{Rango:} diferencia entre el valor máximo y el mínimo.
+    \item \textbf{Varianza:} qué tan lejos están, en promedio, los datos de la media.
+    \item \textbf{Desviación estándar:} la raíz de la varianza, en las unidades originales.
   \end{itemize}
+  \small Otra vez, una por una, con los mismos 5 datos de \texttt{tips}
+  usados para media y mediana.
+\end{frame}
+
+\begin{frame}{Rango: la distancia total}
+  \small
+  Es la diferencia entre el valor más grande y el más pequeño:
+  \[
+    R = x_{\text{máx}} - x_{\text{mín}}
+  \]
+  \begin{exampleblock}{\small Paso a paso, con los mismos 5 datos}
+    \small Datos: $10.07,\ 15.98,\ 16.66,\ 17.29,\ 19.44$
+    \[
+      R = 19.44 - 10.07 = 9.37 \text{ USD}
+    \]
+  \end{exampleblock}
+  \small \textbf{A escala completa:} en las 244 cuentas de \texttt{tips},
+  el rango es $50.81 - 3.07 = \mathbf{47.74}$ \textbf{USD}.
+  \begin{alertblock}{Cuidado}
+    \small El rango solo mira los dos extremos: un único valor atípico
+    (muy alto o muy bajo) lo dispara, aunque el resto de los datos esté
+    muy junto.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Varianza: la dispersión promedio (al cuadrado)}
+  \small
+  Se promedian los cuadrados de las distancias de cada dato a la media.
+  Se eleva al cuadrado para que las distancias negativas y positivas no se
+  cancelen. Cuando los datos son una \textbf{muestra}, se divide entre
+  $n-1$ (no entre $n$):
+  \[
+    s^2 = \frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2
+  \]
+  \begin{exampleblock}{\small Paso a paso, con los mismos 5 datos ($\bar{x}=15.89$)}
+    \small
+    Desvíos: $-5.82,\ 0.09,\ 0.77,\ 1.40,\ 3.55$ \quad
+    Al cuadrado: $33.85,\ 0.01,\ 0.60,\ 1.97,\ 12.62$
+    \[
+      s^2 = \frac{33.85+0.01+0.60+1.97+12.62}{5-1} = \frac{49.04}{4} = 12.26 \text{ USD}^2
+    \]
+  \end{exampleblock}
+  \small \textbf{A escala completa:} con las 244 cuentas, $s^2 = 79.25$
+  USD$^2$ (difícil de interpretar en USD al cuadrado, por eso casi nunca se
+  usa sola).
+\end{frame}
+
+\begin{frame}{Desviación estándar}
+  \small
+  Es simplemente la raíz cuadrada de la varianza, para volver a las
+  unidades del dato original (USD, no USD$^2$):
+  \[
+    s = \sqrt{s^2}
+  \]
+  \begin{exampleblock}{\small Mismos 5 datos}
+    \small
+    \[
+      s = \sqrt{12.26} = 3.50 \text{ USD}
+    \]
+  \end{exampleblock}
+  \small \textbf{A escala completa:} con las 244 cuentas de \texttt{tips},
+  $s = \sqrt{79.25} = \mathbf{8.90}$ \textbf{USD}.
   \begin{exampleblock}{Ejemplo real}
-    \small En \texttt{tips}, la cuenta total tiene desviación estándar
-    $\approx 8.9$ USD alrededor de una media de 19.8 USD: las cuentas
-    varían bastante de una mesa a otra.
+    \small La cuenta total tiene desviación estándar $\approx 8.9$ USD
+    alrededor de una media de 19.8 USD: las cuentas varían bastante de una
+    mesa a otra.
   \end{exampleblock}
 \end{frame}
 
@@ -282,6 +462,28 @@
   \end{columns}
   \vspace{0.3cm}
   \small Trabajo individual o en parejas. El docente circula resolviendo dudas.
+\end{frame}
+
+\begin{frame}{Para profundizar}
+  \small Si quieres repasar o ir más allá de lo visto hoy:
+  \begin{itemize}
+    \small
+    \item Anderson, D. R., Sweeney, D. J., \& Williams, T. A.
+      \textit{Estadística para administración y economía}. Cengage
+      Learning. (El libro de estadística más usado en programas de
+      administración en Latinoamérica; en español.)
+    \item Wheelan, C. (2013). \textit{Naked Statistics: Stripping the
+      Dread from the Data}. W. W. Norton \& Company. (Explica las mismas
+      ideas de hoy con ejemplos cotidianos, sin fórmulas pesadas; en
+      inglés.)
+    \item Diez, D., Barr, C., \& Çetinkaya-Rundel, M. \textit{OpenIntro
+      Statistics}. Libro de texto \textbf{gratuito}, usado en
+      universidades como Duke y Princeton.
+  \end{itemize}
+  \begin{alertblock}{Página web}
+    \small \url{https://www.openintro.org/book/os/} \quad PDF descargable
+    gratis, con datos reales y ejercicios (en inglés).
+  \end{alertblock}
 \end{frame}
 
 \section{Cierre}

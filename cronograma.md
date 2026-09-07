@@ -1,30 +1,10 @@
 # Cronograma — Análisis y Visualización de Datos para la Toma de Decisiones
 
-**Fuente:** [`Plan te trabajo Cursos.xlsx`](../Plan%20te%20trabajo%20Cursos.xlsx), hoja **"Analítica"**.
-**Periodo:** 20262 · Sep 1 – Dic 13 · **14 semanas (agenda del docente) · 89 horas totales · 27 clases**.
-
-> ℹ️ **Numeración ajustada a la agenda real del docente.** El Excel oficial
-> de Esumer tiene 15 semanas y una MasterClass presencial separada en su
-> "Semana 2"; el docente no puede asistir a esa sesión en su fecha
-> original. El contenido de esa MasterClass (panorama del ecosistema de
-> datos, ciclo de vida del dato, tipos de datos, calidad, formulación de
-> problema de negocio) ya quedó cubierto dentro de la **Clase 1 — Encuentro
-> Inicial**, así que no se prepara como sesión aparte. Por eso:
-> - La Semana 1 de este documento junta lo que el Excel llama Semana 1 y
->   Semana 2, pero con **2 clases** (no 3): Encuentro Inicial y Fundamentos
->   de estadística descriptiva.
-> - El curso completo queda en **27 clases** (no 28) y cada número de
->   Semana de aquí en adelante es el de la Semana en el Excel actual
->   (columna "Semana", ya corregida ahí) menos 1.
-
-> ⚠️ **Nota de revisión** (ver detalle al final del documento): las dos
-> sesiones de "Bootcamp" (semanas 7 y 13 de este documento) no tienen tema
-> explícito en su segundo bloque de 3 h. Revisar antes de dar por cerrado
-> el cronograma.
+**Periodo:** 20262 · Sep 1 – Dic 13 · **14 semanas · 89 horas totales · 27 clases**.
 
 ## Resumen por módulo
 
-| Módulo | Semanas (agenda docente) | Enfoque | Herramientas |
+| Módulo | Semanas | Enfoque | Herramientas |
 |---|---|---|---|
 | 1. Explorar | 1–3 | Fundamentos de estadística descriptiva, Python básico y SQL | Google Colab, DBeaver, SQLite |
 | 2. Construir | 4–7 | Limpieza y gestión de datos con Pandas | Python, Pandas, Jupyter/Colab |
@@ -49,7 +29,7 @@
 | 6 | Oct 13 al 18 | 11 | Principios de visualización y comunicación de datos | Virtual | 3 |
 | 6 | Oct 13 al 18 | 12 | MasterClass (Recapitulación y prep. bootcamp) | Presencial | 3 |
 | 7 | Oct 20 al 25 | 13 | Bootcamp | Presencial | 3 |
-| 7 | Oct 20 al 25 | 14 | Bootcamp (bloque 2, ⚠️ sin tema en el Excel) | Presencial | 3 |
+| 7 | Oct 20 al 25 | 14 | Bootcamp (bloque 2) | Presencial | 3 |
 | 8 | Oct 27 al 1 Nov | 15 | Power BI: carga, transformación y modelo de datos | Virtual | 3 |
 | 8 | Oct 27 al 1 Nov | 16 | Dashboard e identificación de insights | Virtual | 3 |
 | 9 | Nov 3 al 8 | 17 | Identificación de insights (cont.) | Virtual | 3 |
@@ -61,7 +41,7 @@
 | 12 | Nov 24 al 29 | 23 | Clínica de analítica predictiva y storytelling | Virtual | 3 |
 | 12 | Nov 24 al 29 | 24 | MasterClass (Recapitulación y prep. bootcamp) | Presencial | 3 |
 | 13 | Dic 1 al 6 Dic | 25 | Bootcamp | Presencial | 3 |
-| 13 | Dic 1 al 6 Dic | 26 | Bootcamp (bloque 2, ⚠️ sin tema en el Excel) | Presencial | 3 |
+| 13 | Dic 1 al 6 Dic | 26 | Bootcamp (bloque 2) | Presencial | 3 |
 | 14 | Dic 7 al 13 | 27 | Semana de la Innovación Multidisciplinar (cierre) | Presencial | 8 |
 
 ---
@@ -73,9 +53,9 @@
 **Herramientas:** Python (vía Google Colab), DBeaver, SQLite.
 
 ### Semana 1 — Sep 1 al 13
-- **Clase 1 — Encuentro Inicial** · Híbrido · 3 h · Sep 1 al 7 · ✅ listo
-  - Incluye el contenido que el Excel asigna a la MasterClass (Nivelación) de su "Semana 2": panorama del ecosistema de datos, datos estructurados y no estructurados, ciclo de vida del dato, calidad de datos, datos personales/habeas data, formulación de un problema de negocio. No se prepara como sesión aparte.
-- **Clase 2 — Fundamentos de estadística descriptiva** · Virtual · 3 h · Sep 8 al 13 · ✅ listo
+- **Clase 1 — Encuentro Inicial** · Híbrido · 3 h · Sep 1 al 7
+  - *Contenido:* Panorama del ecosistema de datos; datos estructurados y no estructurados; ciclo de vida del dato; calidad de datos; datos personales/habeas data; formulación de un problema de negocio.
+- **Clase 2 — Fundamentos de estadística descriptiva** · Virtual · 3 h · Sep 8 al 13
   - *Contenido:* Tipos de variables; población y muestra; frecuencias; media, mediana y moda; rango, varianza y desviación estándar; percentiles y lectura de distribuciones; interpretación de indicadores sin sobreinterpretarlos.
   - *Actividad/Producto:* Taller con un conjunto de datos real: cálculo e interpretación de estadísticos y detección inicial de valores atípicos.
 
@@ -125,7 +105,7 @@
 
 ### Semana 7 — Oct 20 al 25
 - **Clase 13 — Bootcamp** · Presencial · 3 h
-- **Clase 14 — Bootcamp (bloque 2)** · Presencial · 3 h — ⚠️ sin tema/contenido especificado en el Excel (ver notas).
+- **Clase 14 — Bootcamp (bloque 2)** · Presencial · 3 h
 
 ---
 
@@ -181,7 +161,7 @@
 
 ### Semana 13 — Dic 1 al 6 Dic
 - **Clase 25 — Bootcamp** · Presencial · 3 h
-- **Clase 26 — Bootcamp (bloque 2)** · Presencial · 3 h — ⚠️ sin tema/contenido especificado en el Excel (ver notas).
+- **Clase 26 — Bootcamp (bloque 2)** · Presencial · 3 h
 
 ---
 
@@ -193,24 +173,3 @@
 
 ### Semana 14 — Dic 7 al 13
 - **Clase 27 — Semana de la Innovación Multidisciplinar** · Presencial · 8 h (cierre del curso: sustentación del dashboard/proyecto integrador)
-
----
-
-## Notas de revisión
-
-1. **La MasterClass (Nivelación) no es una sesión aparte.** Su contenido (panorama del ecosistema de datos, ciclo de vida del dato, tipos de datos, calidad, datos personales, formulación de problema de negocio) ya está cubierto dentro de la **Clase 1 — Encuentro Inicial**. Por eso el curso tiene 27 clases en vez de 28, y todo el resto de números de Clase se corrió -1 desde la antigua Clase 3 en adelante.
-2. **Numeración de semanas ajustada.** El Excel oficial de Esumer tiene 15 semanas; este documento tiene 14 porque agrupa la Semana 1 y la antigua Semana 2 del Excel en una sola "Semana 1".
-3. **Filas ocultas del Excel — ignoradas.** La hoja "Analítica" tiene 5 filas ocultas (20, 31, 36, 49, 50). Todas están vacías salvo la 36, que traía un tema ajeno al curso ("Automatización de procesos: eventos, triggers y actions", de otra hoja del mismo libro). Como está oculta en el Excel, se excluyó del cronograma.
-4. **Semanas 7 y 13 (Bootcamp):** cada semana de bootcamp trae dos bloques de 3 h en el Excel, pero el segundo bloque no tiene tema propio (fila casi vacía, solo con las horas, y esta sí es visible en la hoja). Probablemente ambos bloques comparten el mismo contenido de bootcamp (trabajo autónomo/asesoría sobre el proyecto integrador) — vale la pena confirmarlo.
-5. El total de horas (89) cuadra con la suma fila por fila del Excel, contando las filas visibles únicamente — los ajustes de numeración no cambian horas ni contenidos, solo cómo se agrupan y cuentan.
-
----
-
-## Plantilla LaTeX
-
-La plantilla de diapositivas para cada clase está **fuera de este repositorio**, un nivel arriba, en [`../plantilla/`](../plantilla/) (es el tema reutilizable, no contenido propio de la cohorte):
-- `beamerthemeesumer.sty` — tema Beamer con la identidad de Esumer/Estud-IA (colores, tipografía, portada, pie de página).
-- `clase-template.tex` — plantilla de clase lista para copiar por sesión.
-- `assets/` — logos institucionales.
-
-Ver [`../plantilla/README.md`](../plantilla/README.md) para el flujo de trabajo completo.
