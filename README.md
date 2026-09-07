@@ -37,6 +37,7 @@ cada commit para confirmar que no se cuele ninguno.
 | Semana | Clase | Tema | Estado |
 |---|---|---|---|
 | 1 | 1 | Encuentro Inicial | ✅ listo |
+| 2 | 2 | MasterClass (Nivelación) — panorama del ecosistema de datos | ✅ listo |
 
 (Se va actualizando a medida que se preparan las demás clases —
 ver el detalle completo en `cronograma.md`.)
