@@ -1,0 +1,358 @@
+% ============================================================
+%  Taller — Tipos de variable y estadística descriptiva
+%  Semana 1 · Clase 2 — Análisis y Visualización de Datos (Esumer / 20262)
+%  Compilar con: xelatex taller-tipos-de-variable.tex (dos veces)
+% ============================================================
+\documentclass[11pt]{article}
+
+\usepackage[margin=2cm]{geometry}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage[spanish]{babel}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{pdflscape}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\tcbuselibrary{skins,breakable}
+
+% ---------------- Tipografía (misma lógica que la plantilla de slides) ----------------
+\IfFontExistsTF{Aptos}{%
+  \setmainfont{Aptos}
+}{%
+  \setmainfont{Lato}
+}
+
+% ---------------- Paleta Esumer ----------------
+\definecolor{esumerNavy}{HTML}{262E66}
+\definecolor{esumerNavyDark}{HTML}{1E4093}
+\definecolor{esumerTeal}{HTML}{0CB3B6}
+\definecolor{esumerOrange}{HTML}{EF7C2C}
+\definecolor{esumerGray}{HTML}{E8E8E8}
+\definecolor{esumerBg}{HTML}{F7F8FA}
+
+\graphicspath{{../../../plantilla/assets/}}
+
+% ---------------- Encabezado / pie de página ----------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\small\color{esumerNavyDark} Análisis y Visualización de Datos para la Toma de Decisiones}
+\fancyfoot[R]{\small\color{esumerNavyDark} Cristian A. Jiménez C. \quad\textperiodcentered\quad \thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+% ---------------- Cajas reutilizables ----------------
+\newtcolorbox{recuerda}{
+  colback=esumerBg, colframe=esumerTeal, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries, coltitle=esumerNavy, title=Recuerda,
+  left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+\newtcolorbox{regla}{
+  colback=esumerBg, colframe=esumerGray, boxrule=0.6pt, arc=1mm,
+  left=6pt, right=6pt, top=4pt, bottom=4pt
+}
+\newtcolorbox[auto counter]{pregunta}[1][]{
+  colback=white, colframe=esumerOrange, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerOrange,
+  title=Pregunta~\thetcbcounter, left=6pt, right=6pt, top=3pt, bottom=3pt,
+  #1
+}
+\newtcolorbox{espacio}[1][3.2cm]{
+  colback=esumerBg, colframe=esumerGray, boxrule=0.4pt, arc=1mm,
+  fonttitle=\bfseries\footnotesize, coltitle=esumerNavyDark,
+  title=Procedimiento y resultado, height=#1, valign=top,
+  left=6pt, right=6pt, top=3pt
+}
+
+% ============================================================
+\begin{document}
+
+% ---------------- Encabezado ----------------
+\begin{minipage}[c]{0.18\textwidth}
+  \includegraphics[height=1.15cm]{esumer-logo.png}
+\end{minipage}%
+\begin{minipage}[c]{0.80\textwidth}
+  \raggedleft
+  {\Large\bfseries\color{esumerNavy} Taller: tipos de variable y estadística descriptiva}\\[3pt]
+  {\small\color{esumerNavyDark} Semana 1 \textperiodcentered\ Clase 2 \textperiodcentered\ Análisis y Visualización de Datos para la Toma de Decisiones}
+\end{minipage}
+
+\vspace{4pt}
+{\color{esumerOrange}\rule{\textwidth}{2pt}}
+\vspace{10pt}
+
+\textbf{Instrucciones generales:} trabaja individualmente o en parejas.
+Puedes usar calculadora, Excel o el método que prefieras para los
+cálculos; lo importante es que \textbf{muestres el procedimiento}, no solo
+el resultado. El docente circula resolviendo dudas durante la hora.
+
+\textbf{Objetivo de esta hora:}
+\begin{enumerate}[itemsep=1pt, topsep=2pt]
+  \item Identificar el \textbf{tipo de cada variable} de un conjunto de datos.
+  \item Decidir, para cada variable, \textbf{qué estadísticos tienen
+    sentido} calcular (y cuáles no, aunque la variable sea numérica).
+  \item Calcular e interpretar esos estadísticos, y detectar valores atípicos.
+\end{enumerate}
+
+\textbf{El dataset:} \texttt{viviendas.csv}, 18 viviendas (apartamentos y
+casas) del área metropolitana de Medellín. \textbf{Son datos inventados
+con fines didácticos}, no corresponden a inmuebles reales. La tabla
+completa está en la página siguiente (orientación horizontal) para que la
+tengas de referencia durante todo el taller.
+
+\vspace{4pt}
+\begin{regla}
+\small
+\begin{tabular}{@{}ll@{}}
+  \texttt{id\_vivienda} & identificador único de la vivienda \\
+  \texttt{tipo} & Apartamento o Casa \\
+  \texttt{barrio} & barrio donde está ubicada \\
+  \texttt{estrato} & estrato socioeconómico (1 a 6) \\
+  \texttt{area\_m2} & área construida, en m\textsuperscript{2} \\
+  \texttt{habitaciones} / \texttt{banos} / \texttt{parqueaderos} & cantidades \\
+  \texttt{antiguedad\_anios} & antigüedad de la construcción, en años \\
+  \texttt{estado} & Malo, Regular, Bueno o Excelente \\
+  \texttt{tiene\_ascensor} & si el edificio tiene ascensor (Sí/No) \\
+  \texttt{precio\_millones} & precio de venta, en millones de COP \\
+\end{tabular}
+\end{regla}
+
+% ---------------- Tabla de datos (horizontal) ----------------
+\begin{landscape}
+\thispagestyle{fancy}
+\begin{center}
+{\bfseries\color{esumerNavy} Dataset: viviendas.csv}
+\end{center}
+\vspace{4pt}
+\footnotesize
+\renewcommand{\arraystretch}{1.15}
+\begin{center}
+\begin{tabular}{@{}lllrrrrrrlll@{}}
+\toprule
+\textbf{id} & \textbf{tipo} & \textbf{barrio} & \textbf{estr.} & \textbf{área m\textsuperscript{2}} & \textbf{hab.} & \textbf{baños} & \textbf{parq.} & \textbf{años} & \textbf{estado} & \textbf{ascensor} & \textbf{precio (M COP)} \\
+\midrule
+V01 & Apartamento & El Poblado & 6 & 120 & 3 & 3 & 2 & 5  & Excelente & Sí & 850 \\
+V02 & Casa        & Belén      & 3 & 90  & 3 & 2 & 1 & 15 & Bueno     & No & 320 \\
+V03 & Apartamento & Laureles   & 4 & 70  & 2 & 2 & 1 & 10 & Bueno     & Sí & 410 \\
+V04 & Casa        & Envigado   & 5 & 150 & 4 & 3 & 2 & 8  & Excelente & No & 690 \\
+V05 & Apartamento & Robledo    & 2 & 55  & 2 & 1 & 0 & 20 & Regular   & No & 150 \\
+V06 & Casa        & Sabaneta   & 4 & 110 & 3 & 2 & 2 & 12 & Bueno     & No & 380 \\
+V07 & Apartamento & El Poblado & 6 & 95  & 2 & 2 & 2 & 3  & Excelente & Sí & 720 \\
+V08 & Casa        & Belén      & 3 & 80  & 3 & 2 & 1 & 25 & Regular   & No & 260 \\
+V09 & Apartamento & Laureles   & 4 & 65  & 2 & 1 & 1 & 18 & Regular   & Sí & 300 \\
+V10 & Casa        & Itagüí     & 2 & 70  & 3 & 1 & 0 & 30 & Malo      & No & 120 \\
+V11 & Apartamento & Envigado   & 5 & 100 & 3 & 2 & 1 & 6  & Bueno     & Sí & 520 \\
+V12 & Casa        & Robledo    & 2 & 60  & 2 & 1 & 0 & 22 & Malo      & No & 95  \\
+V13 & Apartamento & Sabaneta   & 4 & 75  & 2 & 2 & 1 & 9  & Bueno     & Sí & 340 \\
+V14 & Casa        & El Poblado & 6 & 200 & 4 & 4 & 3 & 4  & Excelente & No & 1400 \\
+V15 & Apartamento & Belén      & 3 & 58  & 2 & 1 & 1 & 14 & Regular   & Sí & 210 \\
+V16 & Casa        & Laureles   & 4 & 130 & 3 & 3 & 2 & 11 & Bueno     & No & 480 \\
+V17 & Apartamento & Itagüí     & 2 & 50  & 1 & 1 & 0 & 28 & Malo      & No & 85  \\
+V18 & Casa        & Envigado   & 5 & 140 & 4 & 3 & 2 & 7  & Excelente & No & 650 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{landscape}
+
+% ---------------- Sección 1 ----------------
+\section*{1. Identifica el tipo de cada variable}
+
+\begin{recuerda}
+\small
+\textbf{Cualitativa nominal:} categorías sin orden (colores, ciudades).
+\textbf{Cualitativa ordinal:} categorías \textbf{con} un orden natural
+(tallas, niveles de satisfacción).
+\textbf{Cuantitativa discreta:} se cuenta, valores enteros (número de
+hijos).
+\textbf{Cuantitativa continua:} se mide, puede tomar cualquier valor en
+un rango (estatura, peso).
+\end{recuerda}
+
+\vspace{4pt}
+\small
+\renewcommand{\arraystretch}{1.6}
+\begin{center}
+\begin{tabular}{@{}p{4cm}p{9.5cm}@{}}
+\toprule
+\textbf{Variable} & \textbf{Tipo de variable (tu respuesta)} \\
+\midrule
+\texttt{id\_vivienda} & \hrulefill \\
+\texttt{tipo} & \hrulefill \\
+\texttt{barrio} & \hrulefill \\
+\texttt{estrato} & \hrulefill \\
+\texttt{area\_m2} & \hrulefill \\
+\texttt{habitaciones} & \hrulefill \\
+\texttt{banos} & \hrulefill \\
+\texttt{parqueaderos} & \hrulefill \\
+\texttt{antiguedad\_anios} & \hrulefill \\
+\texttt{estado} & \hrulefill \\
+\texttt{tiene\_ascensor} & \hrulefill \\
+\texttt{precio\_millones} & \hrulefill \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\newpage
+% ---------------- Sección 2 ----------------
+\section*{2. ¿Qué estadísticos tienen sentido para cada variable?}
+
+No todos los estadísticos aplican a todas las variables, \textbf{aunque
+la columna tenga números}. Regla general:
+
+\begin{itemize}[itemsep=2pt]
+  \item Si es \textbf{cualitativa nominal}: solo tiene sentido la
+    \textbf{moda} (y contar frecuencias). Media y mediana no significan
+    nada (¿cuál sería el ``barrio promedio''?).
+  \item Si es \textbf{cualitativa ordinal}: tiene sentido la \textbf{moda}
+    y, con cuidado, la \textbf{mediana} (hay un orden). La \textbf{media
+    es discutible}: aunque \texttt{estrato} se vea como un número, la
+    distancia entre estrato 1 y 2 no es necesariamente ``igual'' a la
+    distancia entre estrato 5 y 6; calcular su promedio es una práctica
+    común pero estadísticamente cuestionable.
+  \item Si es \textbf{cuantitativa} (discreta o continua): media,
+    mediana, moda, rango, varianza y desviación estándar tienen sentido.
+\end{itemize}
+
+\begin{pregunta}
+Para cada una de estas 5 variables, responde: ¿tiene sentido calcular su
+\textbf{media}? ¿Por qué sí o por qué no?
+\end{pregunta}
+\begin{espacio}[5.5cm]
+\small \texttt{barrio}: \\[8pt]
+\texttt{estrato}: \\[8pt]
+\texttt{estado}: \\[8pt]
+\texttt{area\_m2}: \\[8pt]
+\texttt{tiene\_ascensor}:
+\end{espacio}
+
+% ---------------- Sección 3 ----------------
+\section*{3. Frecuencias de las variables cualitativas}
+
+Para las variables donde la media no aplica, la \textbf{moda} y las
+\textbf{frecuencias} sí nos dicen algo útil. Usando la tabla de datos,
+cuenta cuántas viviendas hay de cada categoría.
+
+\begin{espacio}[4.5cm]
+\small Tipo de vivienda (Apartamento / Casa): \\[10pt]
+Barrio con más viviendas: \\[10pt]
+Estado más frecuente:
+\end{espacio}
+
+\newpage
+% ---------------- Sección 4 ----------------
+\section*{4. Medidas de tendencia central}
+
+Calcula, sobre la columna \texttt{precio\_millones} (las 18 viviendas):
+media, mediana y moda.
+\[
+  \bar{x} = \frac{1}{n}\sum_{i=1}^n x_i
+\]
+
+\begin{espacio}[5.5cm]
+\end{espacio}
+
+\begin{pregunta}
+La media, ¿queda por encima o por debajo de la mediana? Según lo visto en
+la Clase 2, ¿qué te dice eso sobre la forma de la distribución de
+\texttt{precio\_millones}? (pista: revisa si hay una o dos viviendas
+mucho más caras que el resto).
+\end{pregunta}
+\begin{espacio}[3cm]
+\end{espacio}
+
+% ---------------- Sección 5 ----------------
+\section*{5. Medidas de dispersión}
+
+Calcula rango, varianza y desviación estándar de \texttt{precio\_millones}.
+\[
+  R = x_{\text{máx}} - x_{\text{mín}} \qquad
+  s^2 = \frac{1}{n-1}\sum_{i=1}^n (x_i - \bar{x})^2 \qquad
+  s = \sqrt{s^2}
+\]
+
+\begin{espacio}[6.5cm]
+\end{espacio}
+
+\begin{pregunta}
+La desviación estándar, ¿te parece ``grande'' comparada con la media?
+¿Qué te dice eso sobre qué tan parecidas son las 18 viviendas entre sí en
+precio?
+\end{pregunta}
+\begin{espacio}[3cm]
+\end{espacio}
+
+\newpage
+% ---------------- Sección 6 ----------------
+\section*{6. Percentiles y detección de valores atípicos}
+
+Ordena las 18 viviendas por \texttt{precio\_millones} y ubica P25 (el
+valor en la posición 25\% de los datos ordenados) y P75. Con eso calcula
+el rango intercuartílico (IQR) y el límite superior para atípicos:
+\[
+  \text{IQR} = P_{75} - P_{25} \qquad
+  \text{límite superior} = P_{75} + 1.5 \times \text{IQR}
+\]
+
+\begin{espacio}[5.5cm]
+\end{espacio}
+
+\begin{pregunta}
+¿Qué vivienda(s) superan el límite superior? ¿Tienen algo en común
+(estrato, área, barrio) que explique el precio tan alto? Justifica tu
+respuesta con al menos un dato de la tabla.
+\end{pregunta}
+\begin{espacio}[3.5cm]
+\end{espacio}
+
+% ---------------- Sección 7 ----------------
+\section*{7. Curiosidad: ¿el precio cambia según el estrato?}
+
+El profesor ya calculó el precio promedio por estrato con todo el
+dataset:
+
+\begin{center}
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{Estrato} & 2 & 3 & 4 & 5 & 6 \\
+\midrule
+\textbf{Precio promedio (M COP)} & 112.5 & 263.3 & 382.0 & 620.0 & 990.0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{pregunta}
+¿El precio promedio sube de forma consistente con el estrato? ¿Te parece
+razonable esa relación? ¿Por qué crees que pasa esto en la vida real?
+\end{pregunta}
+\begin{espacio}[3.5cm]
+\end{espacio}
+
+\vspace{10pt}
+% ---------------- Reto final ----------------
+\section*{8. Reto final}
+
+Repite el análisis de las secciones 4 a 6 (tendencia central, dispersión
+y atípicos), pero ahora sobre la columna \texttt{area\_m2} en lugar de
+\texttt{precio\_millones}.
+
+\begin{espacio}[9cm]
+\end{espacio}
+
+\vspace{6pt}
+{\color{esumerOrange}\rule{\textwidth}{1pt}}
+\vspace{6pt}
+
+\textbf{Cierre.} La idea que más importa hoy: \textbf{antes de calcular,
+pregunta si el cálculo tiene sentido para ese tipo de variable}. Un
+promedio mal aplicado (como el ``barrio promedio'') es un error común en
+el análisis de datos real. Próxima sesión: \textbf{Python para análisis
+de datos: fundamentos}, empezamos a programar en serio.
+
+\end{document}

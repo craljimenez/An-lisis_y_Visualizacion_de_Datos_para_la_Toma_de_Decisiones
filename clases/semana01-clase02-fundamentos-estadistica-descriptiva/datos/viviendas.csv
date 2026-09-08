@@ -1,0 +1,19 @@
+id_vivienda,tipo,barrio,estrato,area_m2,habitaciones,banos,parqueaderos,antiguedad_anios,estado,tiene_ascensor,precio_millones
+V01,Apartamento,El Poblado,6,120,3,3,2,5,Excelente,Si,850
+V02,Casa,Belen,3,90,3,2,1,15,Bueno,No,320
+V03,Apartamento,Laureles,4,70,2,2,1,10,Bueno,Si,410
+V04,Casa,Envigado,5,150,4,3,2,8,Excelente,No,690
+V05,Apartamento,Robledo,2,55,2,1,0,20,Regular,No,150
+V06,Casa,Sabaneta,4,110,3,2,2,12,Bueno,No,380
+V07,Apartamento,El Poblado,6,95,2,2,2,3,Excelente,Si,720
+V08,Casa,Belen,3,80,3,2,1,25,Regular,No,260
+V09,Apartamento,Laureles,4,65,2,1,1,18,Regular,Si,300
+V10,Casa,Itagui,2,70,3,1,0,30,Malo,No,120
+V11,Apartamento,Envigado,5,100,3,2,1,6,Bueno,Si,520
+V12,Casa,Robledo,2,60,2,1,0,22,Malo,No,95
+V13,Apartamento,Sabaneta,4,75,2,2,1,9,Bueno,Si,340
+V14,Casa,El Poblado,6,200,4,4,3,4,Excelente,No,1400
+V15,Apartamento,Belen,3,58,2,1,1,14,Regular,Si,210
+V16,Casa,Laureles,4,130,3,3,2,11,Bueno,No,480
+V17,Apartamento,Itagui,2,50,1,1,0,28,Malo,No,85
+V18,Casa,Envigado,5,140,4,3,2,7,Excelente,No,650
