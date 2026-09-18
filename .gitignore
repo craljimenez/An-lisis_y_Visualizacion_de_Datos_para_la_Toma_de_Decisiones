@@ -234,3 +234,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+DAT-03_matriculados.xlsx
+DAT-08_matriculados.xlsx
