@@ -31,8 +31,10 @@ clases/
 ## Qué se sube al repositorio
 
 Por clase, **solo**: la fuente `.tex` (de las diapositivas y del taller, si
-lo hay), los `.pdf` compilados, los `.ipynb` en `notebooks/` (si aplica) y
-los `.csv` en `datos/` (si aplica). Nada de auxiliares de compilación
+lo hay), los `.pdf` compilados, los `.ipynb` en `notebooks/` (si aplica), las
+`figuras/*.pdf` referenciadas desde las diapositivas y los archivos de datos
+en `datos/` (`.csv`, `.xlsx` o `.db`, según la clase). Nada de auxiliares de
+compilación
 (`.aux`, `.log`, `.nav`, `.out`, `.snm`, `.toc`, `.fls`, `.fdb_latexmk`,
 `.synctex.gz`, `missfont.log`) ni `.ipynb_checkpoints/` — ya están excluidos
 en [`.gitignore`](./.gitignore), pero conviene revisar `git status` antes de
@@ -46,6 +48,7 @@ cada commit para confirmar que no se cuele ninguno.
 | 1 | 2 | Fundamentos de estadística descriptiva | ✅ listo |
 | 2 | 3 | Python para análisis de datos: fundamentos | ✅ listo (solo notebook, sin diapositivas) |
 | 2 | 4 | Python aplicado a datos y preparación para SQL | ✅ listo (solo notebook, sin diapositivas) |
+| 3 | 5 | Bases de datos relacionales y SQL básico | ✅ listo |
 
 (Se va actualizando a medida que se preparan las demás clases —
 ver el detalle completo en `cronograma.md`.)
