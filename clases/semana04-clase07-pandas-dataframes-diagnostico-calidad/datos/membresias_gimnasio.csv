@@ -1,0 +1,55 @@
+id_socio,nombre,ciudad,correo,telefono,edad,plan,fecha_inscripcion,activo
+38,Carolina Castaño Cardona,Bogotá,carolina.castano.cardona@gmail.com,3031045619,27,Trimestral,2026-06-11,0
+12,Juan Henao Salazar,Envigado,juan.henao.salazar@gmail.com,3288381788,68,Mensual,2026-03-03,Si 
+28,Santiago Ospina Jaramillo,bogota,santiago.ospina.jaramillo@gmail.com,3157777031,66,Mensual,2026-07-25,SI
+25,Felipe Mejía Ramírez,Bogotá,felipe.mejia.ramirez@gmail.com,3037688992,21,Mensual,2026-07-19,Si 
+41,Alejandra Martínez Muñoz,Medellín,,3026470278,62,Trimestral,2026-05-05,si
+46,Laura Mejía Ramírez,Bogotá,laura.mejia.ramirez@gmail.com,3153518370,54,Anual,2026-01-19,Si 
+49,Mariana Mejía Torres,Medellín,,3153519783,63,Trimestral,2025-11-03,Sí
+4,Andrés Ramírez Cardona,Medellín,andres.ramirez.cardona@gmail.com,3057460959,63,Trimestral,2025-09-04,Si 
+37,Luisa López López,Bogotá,luisa.lopez.lopez@gmail.com,3046519190,47,Trimestral,2025-10-11,si
+3,Daniela Mejía Ospina,Medellin,daniela.mejia.ospina@gmail.com,3131906067,30,Trimestral,2026-09-04,1
+36,Simón Martínez Vélez,Medellín,simon.martinez.velez@gmail.com,3193044908,54,Anual,2026-04-16,SI
+39,Camila Restrepo Vélez,Medellín,camila.restrepo.velez@gmail.com,3011609134,19,Mensual,2026-01-25,si
+13,Santiago Salazar Gómez,Medellín,santiago.salazar.gomez@gmail.com,3139163121,64,Mensual,2026-03-29,1
+10,Miguel Vélez Vélez,Envigado,miguel.velez.velez@gmail.com,3106021478,57,Trimestral,2026-06-12,Sí
+11,Felipe Mejía Martínez,envigado,,3021746076,63,Mensual,2025-09-15,SI
+30,Nicolás Cardona Rodríguez,Medellín,nicolas.cardona.rodriguez@gmail.com,3232732002,n/a,Mensual,2026-05-01,Sí
+27,Alejandra Mejía Ospina,Envigado,alejandra.mejia.ospina@gmail.com,3185080286,,Trimestral,2026-03-19,si
+50,Daniela Álvarez Álvarez,Medellín,daniela.alvarez.alvarez@gmail.com,3293747487,,Mensual,2025-09-09,si
+16,Carolina Giraldo Ramírez,MEDELLIN,carolina.giraldo.ramirez@gmail.com,3089290932,68,Trimestral,2026-06-13,No
+26,Laura Giraldo Martínez,bogota,laura.giraldo.martinez@gmail.com,3103692658,65,Mensual,2026-03-19,Si 
+40,Mateo Zapata Álvarez,Bogotá,mateo.zapata.alvarez@gmail.com,3192814675,69,Mensual,2026-09-16,Si 
+43,Mariana Ospina Gómez, Medellín,,,59,Mensual,2026-06-20,Sí
+17,Paula Torres Restrepo,Itagüí,paula.torres.restrepo@gmail.com,3046286067,n/a,Mensual,2025-10-05,1
+21,Valentina Restrepo Gómez,Medellín,valentina.restrepo.gomez@gmail.com,,26,Mensual,2025-11-30,Si 
+31,Miguel Cardona Restrepo,Medellín,miguel.cardona.restrepo@gmail.com,,51,Anual,2026-05-31,SI
+4,Andrés Ramírez Cardona,Medellín,andres.ramirez.cardona@gmail.com,3057460959,63,Trimestral,2025-09-04,Si 
+6,Esteban Giraldo López,Bogotá,esteban.giraldo.lopez@gmail.com,3158055191,48,Trimestral,2026-07-20,0
+47,Paula Salazar Gómez,Bogotá,paula.salazar.gomez@gmail.com,3215996405,61,Mensual,2025-11-23,0
+7,Alejandra Vélez Martínez,Envigado,alejandra.velez.martinez@gmail.com,3157628735,25,Mensual,2026-02-21,No
+44,Tomás Gómez Torres,medellín,tomas.gomez.torres@gmail.com,3075330370,66,Trimestral,2026-08-26,1
+23,Mateo Martínez Giraldo,Medellin,mateo.martinez.giraldo@gmail.com,3079751286,17,Trimestral,2026-01-09,Si 
+48,Juan Martínez Salazar,bogota,juan.martinez.salazar@gmail.com,3124404507,42,Mensual,2026-02-20,si
+22,Valeria Mejía Henao,Envigado,valeria.mejia.henao@gmail.com,3117485435,59,Trimestral,2026-02-20,Si 
+41,Alejandra Martínez Muñoz,Medellín,,3026470278,62,Trimestral,2026-05-05,si
+35,Samuel Ramírez Álvarez,Envigado,samuel.ramirez.alvarez@gmail.com,3294753545,40,Mensual,2026-02-26,Si 
+32,Miguel Jaramillo Arango,Bogota ,miguel.jaramillo.arango@gmail.com,3171967967,63,Anual,2026-06-05,1
+1,Julián Ramírez Restrepo,Envigado,julian.ramirez.restrepo@gmail.com,3217387748,39,Mensual,2026-05-11,SI
+2,Sebastián Álvarez Zapata,Envigado,sebastian.alvarez.zapata@gmail.com,3065285985,46,Anual,2026-03-11,si
+42,Daniela López Castaño,Medellin,daniela.lopez.castano@gmail.com,3005199260,64,Mensual,2026-08-31,1
+34,Miguel Ramírez Gómez,Medellín,miguel.ramirez.gomez@gmail.com,3037054577,42,Mensual,2026-01-10,si
+5,Carolina Vélez Henao,Medellín,carolina.velez.henao@gmail.com,3161855655,,Anual,2026-08-23,SI
+8,Nicolás Jaramillo Martínez,Medellín,nicolas.jaramillo.martinez@gmail.com,,24,Mensual,2026-07-23,SI
+33,Santiago Ramírez Muñoz,Itagui,,3147050577,treinta,Anual,2026-03-12,SI
+20,Felipe Salazar Salazar,Envigado,felipe.salazar.salazar@gmail.com,3004150118,39,Mensual,2026-05-23,1
+24,David Castaño Torres,Medellín,,3118468085,52,Mensual,2026-03-03,0
+45,Tomás Álvarez López,Bogota ,tomas.alvarez.lopez@gmail.com,3071539336,treinta,Mensual,2026-06-17,Si 
+29,Tomás Torres Restrepo,Medellin,tomas.torres.restrepo@gmail.com,3175325592,56,Mensual,2025-11-17,Si 
+9,Mariana Muñoz Salazar,Envigado,mariana.munoz.salazar@gmail.com,3074288504,36,Mensual,2025-12-09,si
+14,Julián López Restrepo,Envigado,julian.lopez.restrepo@gmail.com,3261896430,treinta,Anual,2026-04-18,1
+18,Sebastián Salazar Jaramillo,Medellín,sebastian.salazar.jaramillo@gmail.com,3119411159,49,Mensual,2026-01-10,no
+22,Valeria Mejía Henao,Envigado,valeria.mejia.henao@gmail.com,3117485435,59,Trimestral,2026-02-20,Si 
+19,Simón López Muñoz,Envigado,,3053502603,69,Mensual,2026-09-18,NO
+35,Samuel Ramírez Álvarez,Envigado,samuel.ramirez.alvarez@gmail.com,3294753545,40,Mensual,2026-02-26,Si 
+15,Alejandra Restrepo Castaño,Bogota ,alejandra.restrepo.castano@gmail.com,3167843545,24,Anual,2026-01-21,Si 

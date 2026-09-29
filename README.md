@@ -49,6 +49,7 @@ cada commit para confirmar que no se cuele ninguno.
 | 2 | 3 | Python para análisis de datos: fundamentos | ✅ listo (solo notebook, sin diapositivas) |
 | 2 | 4 | Python aplicado a datos y preparación para SQL | ✅ listo (solo notebook, sin diapositivas) |
 | 3 | 5 | Bases de datos relacionales y SQL básico | ✅ listo |
+| 4 | 7 | Pandas: DataFrames y diagnóstico de calidad | ✅ listo (solo notebook, sin diapositivas) |
 
 (Se va actualizando a medida que se preparan las demás clases —
 ver el detalle completo en `cronograma.md`.)
