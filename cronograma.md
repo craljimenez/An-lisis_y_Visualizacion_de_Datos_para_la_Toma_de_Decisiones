@@ -1,4 +1,4 @@
-# Cronograma — Análisis y Visualización de Datos para la Toma de Decisiones
+# Cronograma: Análisis y Visualización de Datos para la Toma de Decisiones
 
 **Periodo:** 20262 · Sep 1 – Dic 13 · **14 semanas · 89 horas totales · 27 clases**.
 
@@ -52,26 +52,26 @@
 **Conceptos clave:** Media, mediana, desviación estándar, variables, tipos de datos, SELECT, WHERE, JOINs.
 **Herramientas:** Python (vía Google Colab), DBeaver, SQLite.
 
-### Semana 1 — Sep 1 al 13
-- **Clase 1 — Encuentro Inicial** · Híbrido · 3 h · Sep 1 al 7
+### Semana 1: Sep 1 al 13
+- **Clase 1: Encuentro Inicial** · Híbrido · 3 h · Sep 1 al 7
   - *Contenido:* Panorama del ecosistema de datos; datos estructurados y no estructurados; ciclo de vida del dato; calidad de datos; datos personales/habeas data; formulación de un problema de negocio.
-- **Clase 2 — Fundamentos de estadística descriptiva** · Virtual · 3 h · Sep 8 al 13
+- **Clase 2: Fundamentos de estadística descriptiva** · Virtual · 3 h · Sep 8 al 13
   - *Contenido:* Tipos de variables; población y muestra; frecuencias; media, mediana y moda; rango, varianza y desviación estándar; percentiles y lectura de distribuciones; interpretación de indicadores sin sobreinterpretarlos.
   - *Actividad/Producto:* Taller con un conjunto de datos real: cálculo e interpretación de estadísticos y detección inicial de valores atípicos.
 
-### Semana 2 — Sep 15 al 20
-- **Clase 3 — Python para análisis de datos: fundamentos** · Virtual · 3 h
+### Semana 2: Sep 15 al 20
+- **Clase 3: Python para análisis de datos: fundamentos** · Virtual · 3 h
   - *Contenido:* Google Colab; notebooks; variables y tipos de datos; operadores; listas; funciones; condicionales y ciclos; lectura básica de errores y buenas prácticas de organización del notebook.
   - *Actividad/Producto:* Laboratorio guiado: cargar, inspeccionar y transformar datos simples en Python.
-- **Clase 4 — Python aplicado a datos y preparación para SQL** · Virtual · 3 h
+- **Clase 4: Python aplicado a datos y preparación para SQL** · Virtual · 3 h
   - *Contenido:* Importación de archivos CSV; exploración de columnas y tipos; operaciones básicas; filtros; conteos y resúmenes; introducción al pensamiento tabular y a la lógica consulta–resultado.
   - *Actividad/Producto:* Reto: responder preguntas de negocio mediante operaciones básicas de Python sobre un dataset.
 
-### Semana 3 — Sep 22 al 27
-- **Clase 5 — Bases de datos relacionales y SQL básico** · Virtual · 3 h
+### Semana 3: Sep 22 al 27
+- **Clase 5: Bases de datos relacionales y SQL básico** · Virtual · 3 h
   - *Contenido:* Conceptos de tabla, registro, campo, clave primaria y relación; esquema relacional; SELECT, FROM, WHERE, ORDER BY, LIMIT; operadores lógicos y de comparación.
   - *Actividad/Producto:* Práctica en SQLite/DBeaver: consultas de extracción y filtrado sobre una base de datos empresarial.
-- **Clase 6 — MasterClass (Recapitulación)** · Presencial · 3 h
+- **Clase 6: MasterClass (Recapitulación)** · Presencial · 3 h
 
 ---
 
@@ -81,31 +81,31 @@
 **Conceptos clave:** DataFrames, imputación de nulos, agrupaciones (groupby), merge, concatenación, tipos de variables.
 **Herramientas:** Python, Pandas, Jupyter Notebooks (vía Google Colab).
 
-### Semana 4 — Sep 29 al 4 Oct
-- **Clase 7 — Pandas: DataFrames y diagnóstico de calidad** · Virtual · 3 h
+### Semana 4: Sep 29 al 4 Oct
+- **Clase 7: Pandas: DataFrames y diagnóstico de calidad** · Virtual · 3 h
   - *Contenido:* Series y DataFrames; lectura de CSV/Excel; shape, columns, dtypes, info y describe; selección por columnas y filas; identificación de nulos, duplicados, tipos incorrectos y problemas de consistencia.
   - *Actividad/Producto:* Laboratorio: auditoría rápida de calidad de un dataset y formulación de reglas de limpieza.
-- **Clase 8 — Transformación y enriquecimiento de datos** · Virtual · 3 h
+- **Clase 8: Transformación y enriquecimiento de datos** · Virtual · 3 h
   - *Contenido:* Columnas calculadas; funciones sobre columnas; renombrar variables; categorización; fechas y periodos; operaciones vectorizadas; principios de un pipeline reproducible de preparación.
   - *Actividad/Producto:* Ejercicio: crear variables analíticas que permitan segmentar clientes, productos o servicios.
 
-### Semana 5 — Oct 6 al 11
-- **Clase 9 — Agrupaciones y análisis con groupby** · Virtual · 3 h
+### Semana 5: Oct 6 al 11
+- **Clase 9: Agrupaciones y análisis con groupby** · Virtual · 3 h
   - *Contenido:* groupby; agregaciones múltiples; tablas resumen; ordenamiento; porcentajes y participaciones; comparación por categorías y periodos; lectura de resultados agregados.
   - *Actividad/Producto:* Reto: construir un cuadro de indicadores segmentado y explicar los hallazgos principales.
-- **Clase 10 — Merge, concatenación e integración de fuentes** · Virtual · 3 h
+- **Clase 10: Merge, concatenación e integración de fuentes** · Virtual · 3 h
   - *Contenido:* merge y sus tipos de unión; concatenación vertical y horizontal; llaves de integración; detección de registros no emparejados; control de cardinalidad; consistencia antes y después de unir fuentes.
   - *Actividad/Producto:* Laboratorio: integrar al menos dos fuentes de datos y validar la calidad del resultado.
 
-### Semana 6 — Oct 13 al 18
-- **Clase 11 — Principios de visualización y comunicación de datos** · Virtual · 3 h
+### Semana 6: Oct 13 al 18
+- **Clase 11: Principios de visualización y comunicación de datos** · Virtual · 3 h
   - *Contenido:* Qué hace efectiva una visualización; selección del gráfico según la pregunta; comparación, composición, distribución y relación; escalas; etiquetas; color; reducción de ruido visual; errores comunes y gráficos engañosos.
   - *Actividad/Producto:* Taller: rediseñar visualizaciones deficientes y justificar la elección del gráfico.
-- **Clase 12 — MasterClass (Recapitulación y preparación de bootcamp)** · Presencial · 3 h
+- **Clase 12: MasterClass (Recapitulación y preparación de bootcamp)** · Presencial · 3 h
 
-### Semana 7 — Oct 20 al 25
-- **Clase 13 — Bootcamp** · Presencial · 3 h
-- **Clase 14 — Bootcamp (bloque 2)** · Presencial · 3 h
+### Semana 7: Oct 20 al 25
+- **Clase 13: Bootcamp** · Presencial · 3 h
+- **Clase 14: Bootcamp (bloque 2)** · Presencial · 3 h
 
 ---
 
@@ -115,19 +115,19 @@
 **Conceptos clave:** Modelo estrella, relaciones, filtros, KPIs, gráficos de barras, líneas, dispersión y mapas.
 **Herramientas:** Power BI Desktop.
 
-### Semana 8 — Oct 27 al 1 Nov
-- **Clase 15 — Power BI: carga, transformación y modelo de datos** · Virtual · 3 h
+### Semana 8: Oct 27 al 1 Nov
+- **Clase 15: Power BI: carga, transformación y modelo de datos** · Virtual · 3 h
   - *Contenido:* Power BI Desktop; importar datos; Power Query básico; tablas y campos; relaciones; cardinalidad; conceptos de tabla de hechos y dimensiones; modelo estrella.
   - *Actividad/Producto:* Laboratorio: cargar el dataset del proyecto y construir un modelo sencillo con relaciones correctas.
-- **Clase 16 — Dashboard e identificación de insights** · Virtual · 3 h
+- **Clase 16: Dashboard e identificación de insights** · Virtual · 3 h
   - *Contenido:* Gráficos de barras, líneas, dispersión y mapas; comparación temporal; anomalías; tendencias; selección de insights accionables; validación de cifras y coherencia entre visuales.
   - *Actividad/Producto:* Taller integrador: tablero exploratorio y ficha de 3–5 insights con evidencia visual y recomendación.
 
-### Semana 9 — Nov 3 al 8
-- **Clase 17 — Identificación de insights (cont.)** · Virtual · 3 h
+### Semana 9: Nov 3 al 8
+- **Clase 17: Identificación de insights (cont.)** · Virtual · 3 h
   - *Contenido:* Medidas y cálculos básicos; KPIs; segmentadores; filtros de página y de visual; jerarquías; interacción entre visuales; diseño de una página orientada a preguntas de negocio.
   - *Actividad/Producto:* Construcción de la primera página del tablero con indicadores y filtros funcionales.
-- **Clase 18 — MasterClass (Recapitulación y preparación de bootcamp)** · Presencial · 3 h
+- **Clase 18: MasterClass (Recapitulación y preparación de bootcamp)** · Presencial · 3 h
 
 ---
 
@@ -137,31 +137,31 @@
 **Conceptos clave:** Regresión lineal, tendencias, audiencias, estructura narrativa, carga cognitiva visual.
 **Herramientas:** Scikit-Learn (vía Google Colab), Canva / Google Slides (para storytelling).
 
-### Semana 10 — Nov 10 al 15
-- **Clase 19 — De la analítica descriptiva a la predictiva** · Virtual · 3 h
+### Semana 10: Nov 10 al 15
+- **Clase 19: De la analítica descriptiva a la predictiva** · Virtual · 3 h
   - *Contenido:* Diferencia entre descripción, diagnóstico y predicción; variable objetivo y variables explicativas; correlación vs. causalidad; entrenamiento y prueba; idea general de Machine Learning supervisado.
   - *Actividad/Producto:* Actividad: formular una pregunta predictiva y seleccionar variables relevantes para el caso.
-- **Clase 20 — Regresión lineal con Python** · Virtual · 3 h
+- **Clase 20: Regresión lineal con Python** · Virtual · 3 h
   - *Contenido:* Concepto de regresión lineal; ajuste de un modelo; predicción; error y residuales; R² como medida orientativa; interpretación de coeficientes; límites del modelo y riesgos de extrapolación.
   - *Actividad/Producto:* Laboratorio en Google Colab: entrenar un modelo sencillo y explicar sus resultados en lenguaje de negocio.
 
-### Semana 11 — Nov 17 al 22
-- **Clase 21 — Storytelling con datos: del hallazgo a la decisión** · Virtual · 3 h
+### Semana 11: Nov 17 al 22
+- **Clase 21: Storytelling con datos: del hallazgo a la decisión** · Virtual · 3 h
   - *Contenido:* Audiencia; mensaje principal; estructura de una narrativa; contexto–tensión–evidencia–recomendación; jerarquía visual; reducción de carga cognitiva; uso responsable de datos en presentaciones ejecutivas.
   - *Actividad/Producto:* Transformar hallazgos del dashboard en una narrativa de 5–7 diapositivas para una audiencia directiva.
-- **Clase 22 — Diseño del argumento ejecutivo y métricas de impacto** · Virtual · 3 h
+- **Clase 22: Diseño del argumento ejecutivo y métricas de impacto** · Virtual · 3 h
   - *Contenido:* KPI vs. métrica; indicadores de resultado y de proceso; métricas de impacto; hipótesis de negocio; priorización de hallazgos; estimación básica de impacto/ROI cuando aplique.
   - *Actividad/Producto:* Taller: construir la matriz indicador–hallazgo–decisión–impacto del proyecto.
 
-### Semana 12 — Nov 24 al 29
-- **Clase 23 — Clínica de analítica predictiva y storytelling** · Virtual · 3 h
+### Semana 12: Nov 24 al 29
+- **Clase 23: Clínica de analítica predictiva y storytelling** · Virtual · 3 h
   - *Contenido:* Estructura del pitch; apertura con problema y contexto; evidencia; recomendaciones; impacto esperado; gestión de preguntas; comunicación clara de incertidumbre y limitaciones.
   - *Actividad/Producto:* Socialización: presentación corta del caso, modelo y recomendación, con retroalimentación estructurada.
-- **Clase 24 — MasterClass (Recapitulación y preparación de bootcamp)** · Presencial · 3 h
+- **Clase 24: MasterClass (Recapitulación y preparación de bootcamp)** · Presencial · 3 h
 
-### Semana 13 — Dic 1 al 6 Dic
-- **Clase 25 — Bootcamp** · Presencial · 3 h
-- **Clase 26 — Bootcamp (bloque 2)** · Presencial · 3 h
+### Semana 13: Dic 1 al 6 Dic
+- **Clase 25: Bootcamp** · Presencial · 3 h
+- **Clase 26: Bootcamp (bloque 2)** · Presencial · 3 h
 
 ---
 
@@ -171,5 +171,5 @@
 **Conceptos clave:** Reporte ejecutivo, indicadores de impacto (ROI), despliegue de tableros, oratoria corporativa.
 **Herramientas:** Power BI Desktop, Python (GitHub para control de versiones opcional).
 
-### Semana 14 — Dic 7 al 13
-- **Clase 27 — Semana de la Innovación Multidisciplinar** · Presencial · 8 h (cierre del curso: sustentación del dashboard/proyecto integrador)
+### Semana 14: Dic 7 al 13
+- **Clase 27: Semana de la Innovación Multidisciplinar** · Presencial · 8 h (cierre del curso: sustentación del dashboard/proyecto integrador)

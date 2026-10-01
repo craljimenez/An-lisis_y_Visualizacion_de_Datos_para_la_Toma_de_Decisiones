@@ -1,11 +1,11 @@
 % ============================================================
-%  Semana 1 · Clase 2 — Fundamentos de estadística descriptiva
+%  Semana 1 · Clase 2: Fundamentos de estadística descriptiva
 %  Curso: Análisis y Visualización de Datos para la Toma de Decisiones
 %
 %  Formato de la sesión (3 h):
-%    Hora 1 — Variables, población/muestra y frecuencias
-%    Hora 2 — Tendencia central, dispersión, percentiles e interpretación
-%    Hora 3 — Laboratorio: notebooks/lab-estadistica-descriptiva.ipynb
+%    Hora 1: Variables, población/muestra y frecuencias
+%    Hora 2: Tendencia central, dispersión, percentiles e interpretación
+%    Hora 3: Laboratorio: notebooks/lab-estadistica-descriptiva.ipynb
 %             (dataset real "tips", cálculo e interpretación de
 %             estadísticos + detección inicial de valores atípicos)
 %
@@ -68,12 +68,12 @@
 \end{frame}
 
 % ============================================================
-\section{Hora 1 — Variables, población y frecuencias}
+\section{Hora 1: Variables, población y frecuencias}
 % ============================================================
 \begin{frame}{Tipos de variables}
   \small
   \textbf{Cualitativas} (describen una cualidad) vs. \textbf{cuantitativas}
-  (se pueden medir o contar) — saber el tipo de variable define qué
+  (se pueden medir o contar); saber el tipo de variable define qué
   estadísticos y qué gráficos tienen sentido usar con ella (Semana 6,
   Principios de visualización).
   \begin{center}
@@ -83,21 +83,21 @@
 
 \begin{frame}{Ejemplos reales: variables cualitativas}
   \small
-  \textcolor{esumerSky}{\textbf{Nominal}} — categorías \textbf{sin orden}
+  \textcolor{esumerSky}{\textbf{Nominal}}: categorías \textbf{sin orden}
   lógico entre ellas:
   \begin{itemize}
     \small
-    \item \textbf{Color de ojos:} café, azul, verde — ninguno es ``más''
+    \item \textbf{Color de ojos:} café, azul, verde: ninguno es ``más''
       que otro.
     \item \textbf{Marca de celular:} Samsung, iPhone, Xiaomi.
     \item \textbf{Ciudad de residencia:} Medellín, Bogotá, Cali.
   \end{itemize}
   \vspace{0.3cm}
-  \textcolor{esumerTeal}{\textbf{Ordinal}} — categorías \textbf{con
+  \textcolor{esumerTeal}{\textbf{Ordinal}}: categorías \textbf{con
   orden}, pero sin una distancia numérica clara entre ellas:
   \begin{itemize}
     \small
-    \item \textbf{Estrato socioeconómico:} 1, 2, 3 \dots 6 — hay orden,
+    \item \textbf{Estrato socioeconómico:} 1, 2, 3 \dots 6: hay orden,
       pero el salto de 1 a 2 no es ``igual'' al de 5 a 6.
     \item \textbf{Nivel de satisfacción:} malo $<$ regular $<$ bueno $<$
       excelente.
@@ -108,7 +108,7 @@
 
 \begin{frame}{Ejemplos reales: variables cuantitativas}
   \small
-  \textcolor{esumerSky}{\textbf{Discreta}} — se \textbf{cuenta}, solo
+  \textcolor{esumerSky}{\textbf{Discreta}}: se \textbf{cuenta}, solo
   toma valores enteros (no existe ``2.5 hermanos''):
   \begin{itemize}
     \small
@@ -117,7 +117,7 @@
     \item \textbf{Número de productos en una factura.}
   \end{itemize}
   \vspace{0.3cm}
-  \textcolor{esumerTeal}{\textbf{Continua}} — se \textbf{mide}, puede
+  \textcolor{esumerTeal}{\textbf{Continua}}: se \textbf{mide}, puede
   tomar cualquier valor dentro de un rango (con decimales):
   \begin{itemize}
     \small
@@ -180,7 +180,7 @@
 \end{frame}
 
 % ============================================================
-\section{Hora 2 — Tendencia central, dispersión e interpretación}
+\section{Hora 2: Tendencia central, dispersión e interpretación}
 % ============================================================
 \begin{frame}{Medidas de tendencia central}
   \small
@@ -351,7 +351,7 @@
   \vspace{0.2cm}
   \small El percentil 25 (P25) y el 75 (P75) forman el \textbf{rango
   intercuartílico (IQR)}: la ``caja'' donde vive el 50\% central de los
-  datos. Los puntos naranjas son \textbf{valores atípicos} — muy por
+  datos. Los puntos naranjas son \textbf{valores atípicos}: muy por
   encima del resto.
 \end{frame}
 
@@ -402,10 +402,10 @@
   \end{center}
   \begin{columns}[T,onlytextwidth]
     \column{0.48\textwidth}
-    \small \textbf{$r$ positivo:} relación \textbf{directa} — cuando una
+    \small \textbf{$r$ positivo:} relación \textbf{directa}: cuando una
     variable sube, la otra tiende a subir también.
     \column{0.48\textwidth}
-    \small \textbf{$r$ negativo:} relación \textbf{inversa} — cuando una
+    \small \textbf{$r$ negativo:} relación \textbf{inversa}: cuando una
     sube, la otra tiende a bajar. El \textbf{signo} indica la dirección;
     el \textbf{valor absoluto}, qué tan fuerte es.
   \end{columns}
@@ -428,11 +428,11 @@
   \begin{itemize}
     \small
     \item Un solo número (la media, por ejemplo) \textbf{nunca cuenta toda
-      la historia} — siempre revisa también la dispersión y la forma de la
+      la historia}: siempre revisa también la dispersión y la forma de la
       distribución.
     \item Un valor atípico no siempre es un error: puede ser información
       valiosa (una venta excepcional, un cliente distinto).
-    \item Con muestras pequeñas, un estadístico puede variar mucho — no
+    \item Con muestras pequeñas, un estadístico puede variar mucho; no
       generalices de más.
   \end{itemize}
   \begin{alertblock}{Regla de oro (otra vez)}
@@ -442,7 +442,7 @@
 \end{frame}
 
 % ============================================================
-\section{Hora 3 — Laboratorio}
+\section{Hora 3: Laboratorio}
 % ============================================================
 \begin{frame}{Taller: tipos de variable y estadística descriptiva}
   \begin{columns}[T,onlytextwidth]
@@ -492,7 +492,7 @@
 \begin{frame}{Cierre}
   \begin{itemize}
     \item Próxima sesión: \textbf{Python para análisis de datos:
-      fundamentos} (Semana 2, virtual) — empezamos a programar.
+      fundamentos} (Semana 2, virtual): empezamos a programar.
     \item Guarda tus interpretaciones de hoy: son la primera evidencia
       cuantitativa de tu proyecto integrador.
     \item Dudas y comentarios.

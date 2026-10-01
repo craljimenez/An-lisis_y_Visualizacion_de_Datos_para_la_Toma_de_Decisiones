@@ -1,13 +1,13 @@
 % ============================================================
-%  Semana 3 · Clase 5 — Bases de datos relacionales y SQL básico
+%  Semana 3 · Clase 5: Bases de datos relacionales y SQL básico
 %  Curso: Análisis y Visualización de Datos para la Toma de Decisiones
 %
 %  Formato de la sesión (3 h):
-%    Hora 1 — Bases de datos relacionales: tabla, registro, campo,
+%    Hora 1. Bases de datos relacionales: tabla, registro, campo,
 %             clave primaria, esquema relacional (tienda.db)
-%    Hora 2 — SQL básico: SELECT, FROM, WHERE, ORDER BY, LIMIT,
+%    Hora 2. SQL básico: SELECT, FROM, WHERE, ORDER BY, LIMIT,
 %             operadores de comparación y lógicos
-%    Hora 3 — Laboratorio: notebooks/lab-sql-basico.ipynb
+%    Hora 3. Laboratorio: notebooks/lab-sql-basico.ipynb
 %             (SQLite sobre "tienda.db", en Google Colab, con guía
 %             alterna para DBeaver)
 %
@@ -98,7 +98,7 @@
 \end{frame}
 
 % ============================================================
-\section{Hora 1 — Bases de datos relacionales}
+\section{Hora 1: Bases de datos relacionales}
 % ============================================================
 \begin{frame}{¿Qué es una base de datos?}
   \small
@@ -137,7 +137,7 @@
 
 \begin{frame}{Clave primaria y clave foránea}
   \small
-  \textcolor{esumerOrange}{\textbf{Clave primaria (PK)}} — el campo que
+  \textcolor{esumerOrange}{\textbf{Clave primaria (PK)}}: el campo que
   identifica \textbf{sin ambigüedad} cada registro de una tabla; no se
   repite y no puede quedar vacío. Ejemplo: \texttt{id\_cliente} en la
   tabla \texttt{clientes}.
@@ -149,7 +149,7 @@
     ninguno de esos problemas.
   \end{block}
   \vspace{0.2cm}
-  \textcolor{esumerSky}{\textbf{Clave foránea (FK)}} — un campo que
+  \textcolor{esumerSky}{\textbf{Clave foránea (FK)}}: un campo que
   \textbf{apunta a la clave primaria de otra tabla}, y así conecta las dos
   tablas. Ejemplo: en \texttt{pedidos}, el campo \texttt{id\_cliente}
   reconoce \textit{a qué cliente} pertenece cada pedido.
@@ -187,7 +187,7 @@
 \end{frame}
 
 % ============================================================
-\section{Hora 2 — SQL básico}
+\section{Hora 2: SQL básico}
 % ============================================================
 \begin{frame}[fragile]{Anatomía de una consulta SELECT}
   \small
@@ -200,8 +200,8 @@ FROM clientes;
   \vspace{-0.1cm}
   \begin{itemize}
     \small
-    \item \texttt{SELECT} — \textbf{qué columnas} quiero ver.
-    \item \texttt{FROM} — \textbf{de qué tabla} las quiero.
+    \item \texttt{SELECT}: \textbf{qué columnas} quiero ver.
+    \item \texttt{FROM}: \textbf{de qué tabla} las quiero.
     \item Toda instrucción SQL termina en \textbf{punto y coma} (\texttt{;}).
   \end{itemize}
   \begin{alertblock}{El resultado de una consulta es siempre otra tabla}
@@ -302,9 +302,9 @@ WHERE categoria = 'Tecnología' AND precio > 200000;
   \small
   \begin{itemize}
     \small
-    \item \texttt{AND} — deben cumplirse \textbf{todas} las condiciones.
-    \item \texttt{OR} — basta con que se cumpla \textbf{alguna}.
-    \item \texttt{NOT} — invierte una condición.
+    \item \texttt{AND}: deben cumplirse \textbf{todas} las condiciones.
+    \item \texttt{OR}: basta con que se cumpla \textbf{alguna}.
+    \item \texttt{NOT}: invierte una condición.
   \end{itemize}
   \begin{alertblock}{Cuidado con mezclar AND y OR}
     \small SQL evalúa \texttt{AND} \textbf{antes} que \texttt{OR} (igual
@@ -329,7 +329,7 @@ WHERE (categoria = 'Hogar'
   \end{columns}
   \small La primera versión trae \textbf{todo} Hogar (sin importar el
   precio) más Oficina caro; la segunda solo trae Hogar u Oficina, ambos
-  por encima de \$500.000 — dos resultados distintos con las mismas
+  por encima de \$500.000. Son dos resultados distintos con las mismas
   palabras.
 \end{frame}
 
@@ -338,24 +338,24 @@ WHERE (categoria = 'Hogar'
   Cuatro atajos muy usados para condiciones comunes:
   \begin{columns}[T,onlytextwidth]
     \column{0.5\textwidth}
-    \textbf{IN} — pertenece a una lista:
+    \textbf{IN}: pertenece a una lista
     \begin{lstlisting}
 WHERE ciudad IN
   ('Cali','Bogotá');
     \end{lstlisting}
-    \textbf{BETWEEN} — dentro de un rango:
+    \textbf{BETWEEN}: dentro de un rango
     \begin{lstlisting}
 WHERE fecha BETWEEN
   '2026-03-01' AND '2026-03-31';
     \end{lstlisting}
     \column{0.5\textwidth}
-    \textbf{LIKE} — coincide con un patrón
+    \textbf{LIKE}: coincide con un patrón
     (\texttt{\%} = cualquier texto):
     \begin{lstlisting}
 WHERE nombre LIKE
   '%portátil%';
     \end{lstlisting}
-    \textbf{IS NULL} — el campo está vacío:
+    \textbf{IS NULL}: el campo está vacío
     \begin{lstlisting}
 WHERE correo IS NULL;
     \end{lstlisting}
@@ -363,7 +363,7 @@ WHERE correo IS NULL;
   \vspace{0.2cm}
   \begin{block}{¿Por qué no \texttt{correo = NULL}?}
     \small Porque \texttt{NULL} significa ``valor desconocido'', y nada es
-    \textit{igual} a algo desconocido — ni siquiera otro \texttt{NULL}. Por
+    \textit{igual} a algo desconocido, ni siquiera otro \texttt{NULL}. Por
     eso existe el operador especial \texttt{IS NULL} (y \texttt{IS NOT
     NULL}).
   \end{block}
@@ -396,7 +396,7 @@ ORDER BY precio DESC;
 
 \begin{frame}[fragile]{Limitar resultados: LIMIT}
   \small
-  \texttt{LIMIT} corta el resultado a las primeras \textit{n} filas — muy
+  \texttt{LIMIT} corta el resultado a las primeras \textit{n} filas, muy
   útil para explorar una tabla grande sin traerla completa, o para
   preguntas tipo ``los 3 productos más caros''.
   \begin{lstlisting}
@@ -451,7 +451,7 @@ LIMIT 3;
 \end{frame}
 
 % ============================================================
-\section{Hora 3 — Laboratorio}
+\section{Hora 3: Laboratorio}
 % ============================================================
 \begin{frame}{Actividad práctica}
   \begin{alertblock}{Reto de la sesión}
@@ -465,7 +465,7 @@ LIMIT 3;
     \small
     \item \textbf{Google Colab} (como en la Clase 4): subes
       \texttt{tienda.db} con \texttt{files.upload()} y consultas con
-      Python + \texttt{sqlite3} — cuaderno guiado paso a paso.
+      Python + \texttt{sqlite3}: cuaderno guiado paso a paso.
     \item \textbf{DBeaver} (opcional, si quieres una herramienta visual de
       base de datos): te conectas directamente al mismo archivo
       \texttt{tienda.db}, sin instalar ningún servidor.
@@ -498,11 +498,11 @@ LIMIT 3;
     \item \texttt{SELECT}, \texttt{FROM}, \texttt{WHERE}, \texttt{ORDER
       BY} y \texttt{LIMIT} responden, con otro lenguaje, las mismas
       preguntas de negocio que ya resolvías con pandas en la Clase 4.
-    \item Próxima sesión, \textbf{Clase 6 — MasterClass}: recapitulación
+    \item Próxima sesión, \textbf{Clase 6, MasterClass}: recapitulación
       presencial de todo el Módulo 1 (estadística descriptiva, Python y
       SQL) antes de entrar al Módulo 2 (Pandas a fondo).
     \item En la \textbf{Clase 7} retomamos pandas, ahora para diagnóstico
-      de calidad de datos: nulos, duplicados y tipos — muchas de las
+      de calidad de datos: nulos, duplicados y tipos; muchas de las
       condiciones que hoy escribiste en \texttt{WHERE} (como \texttt{IS
       NULL}) reaparecen ahí.
   \end{itemize}

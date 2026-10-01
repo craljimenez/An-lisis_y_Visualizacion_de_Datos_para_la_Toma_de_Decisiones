@@ -1,11 +1,11 @@
-# Contenido del curso — Análisis de Datos y Visualización de Datos para la Toma de Decisiones
+# Contenido del curso: Análisis de Datos y Visualización de Datos para la Toma de Decisiones
 
 Repositorio del material de clase (Esumer / Estud-IA, cohorte 20262).
 
 ## Estructura
 
-- [`cronograma.md`](./cronograma.md) — plan semana a semana / clase por clase.
-- `clases/` — una carpeta por sesión, con la fuente `.tex` de las
+- [`cronograma.md`](./cronograma.md): plan semana a semana / clase por clase.
+- `clases/`: una carpeta por sesión, con la fuente `.tex` de las
   diapositivas, el PDF compilado y, según la clase, el material de la hora
   de práctica: cuadernos de Jupyter (`notebooks/*.ipynb`) o un taller en PDF
   (`taller-*.tex`/`.pdf`, con sus datos en `datos/*.csv`).
@@ -36,7 +36,7 @@ lo hay), los `.pdf` compilados, los `.ipynb` en `notebooks/` (si aplica), las
 en `datos/` (`.csv`, `.xlsx` o `.db`, según la clase). Nada de auxiliares de
 compilación
 (`.aux`, `.log`, `.nav`, `.out`, `.snm`, `.toc`, `.fls`, `.fdb_latexmk`,
-`.synctex.gz`, `missfont.log`) ni `.ipynb_checkpoints/` — ya están excluidos
+`.synctex.gz`, `missfont.log`) ni `.ipynb_checkpoints/`: ya están excluidos
 en [`.gitignore`](./.gitignore), pero conviene revisar `git status` antes de
 cada commit para confirmar que no se cuele ninguno.
 
@@ -50,6 +50,7 @@ cada commit para confirmar que no se cuele ninguno.
 | 2 | 4 | Python aplicado a datos y preparación para SQL | ✅ listo (solo notebook, sin diapositivas) |
 | 3 | 5 | Bases de datos relacionales y SQL básico | ✅ listo |
 | 4 | 7 | Pandas: DataFrames y diagnóstico de calidad | ✅ listo (solo notebook, sin diapositivas) |
+| 4 | 8 | Transformación y enriquecimiento de datos | ✅ listo (solo notebook, sin diapositivas) |
 
-(Se va actualizando a medida que se preparan las demás clases —
+(Se va actualizando a medida que se preparan las demás clases;
 ver el detalle completo en `cronograma.md`.)
