@@ -5,6 +5,7 @@ Repositorio del material de clase (Esumer / Estud-IA, cohorte 20262).
 ## Estructura
 
 - [`cronograma.md`](./cronograma.md): plan semana a semana / clase por clase.
+- `recursos/`: material de apoyo transversal, como la referencia de funciones y métodos del curso (`referencia-funciones-metodos.pdf`).
 - `clases/`: una carpeta por sesión, con la fuente `.tex` de las
   diapositivas, el PDF compilado y, según la clase, el material de la hora
   de práctica: cuadernos de Jupyter (`notebooks/*.ipynb`) o un taller en PDF
