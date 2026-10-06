@@ -1,0 +1,5 @@
+plan,meses,precio_catalogo_cop,beneficio
+Mensual,1,90000,Acceso libre al gimnasio
+Trimestral,3,240000,Acceso libre y una clase grupal semanal
+Semestral,6,450000,Acceso libre y valoración física mensual
+Anual,12,800000,"Acceso libre, valoración física y nutricional"

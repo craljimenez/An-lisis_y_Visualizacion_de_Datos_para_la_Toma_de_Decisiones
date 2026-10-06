@@ -51,6 +51,8 @@ cada commit para confirmar que no se cuele ninguno.
 | 3 | 5 | Bases de datos relacionales y SQL básico | ✅ listo |
 | 4 | 7 | Pandas: DataFrames y diagnóstico de calidad | ✅ listo (solo notebook, sin diapositivas) |
 | 4 | 8 | Transformación y enriquecimiento de datos | ✅ listo (solo notebook, sin diapositivas) |
+| 5 | 9 | Agrupaciones y análisis con groupby | ✅ listo (solo notebook, sin diapositivas) |
+| 5 | 10 | Merge, concatenación e integración de fuentes | ✅ listo (solo notebook, sin diapositivas) |
 
 (Se va actualizando a medida que se preparan las demás clases;
 ver el detalle completo en `cronograma.md`.)

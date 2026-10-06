@@ -1,0 +1,6 @@
+id_socio,nombre,correo,plan,fecha_inscripcion,ciudad,activo,telefono,edad,antiguedad_dias,trimestre_inscripcion,requiere_seguimiento,precio_plan_cop,grupo_edad
+51,Mariana Orozco Peña,mariana.orozco@gmail.com,Mensual,2026-09-28,Medellín,True,3104451122,31,7,3,False,90000,Adulto (26-45)
+52,Sebastián Tobón Gil,sebastian.tobon@gmail.com,Anual,2026-09-30,Bogotá,True,3012267788,44,5,3,False,800000,Adulto (26-45)
+53,Daniela Ruiz Osorio,,Trimestral,2026-10-02,Envigado,True,3159983340,27,3,4,False,240000,Adulto (26-45)
+7,Carlos Andrés Peña,carlos.pena@gmail.com,Mensual,2026-10-03,Medellín,True,3006612904,38,2,4,False,90000,Adulto (26-45)
+54,Lorena Marín Vélez,lorena.marin@gmail.com,Semestral,2026-10-04,Itagüí,False,,58,1,4,False,450000,Mayor (46+)
