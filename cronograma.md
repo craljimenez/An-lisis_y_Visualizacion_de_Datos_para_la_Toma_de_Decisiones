@@ -28,12 +28,12 @@
 | 5 | Oct 6 al 11 | 10 | Merge, concatenación e integración de fuentes | Virtual | 3 |
 | 6 | Oct 13 al 18 | 11 | Principios de visualización y comunicación de datos | Virtual | 3 |
 | 6 | Oct 13 al 18 | 12 | MasterClass (Recapitulación y prep. bootcamp) | Presencial | 3 |
-| 7 | Oct 20 al 25 | 13 | Bootcamp | Presencial | 3 |
-| 7 | Oct 20 al 25 | 14 | Bootcamp (bloque 2) | Presencial | 3 |
-| 8 | Oct 27 al 1 Nov | 15 | Power BI: carga, transformación y modelo de datos | Virtual | 3 |
-| 8 | Oct 27 al 1 Nov | 16 | Dashboard e identificación de insights | Virtual | 3 |
-| 9 | Nov 3 al 8 | 17 | Identificación de insights (cont.) | Virtual | 3 |
-| 9 | Nov 3 al 8 | 18 | MasterClass (Recapitulación y prep. bootcamp) | Presencial | 3 |
+| 7 | Oct 20 al 25 | 13 | Power BI: carga, transformación y modelo de datos | Virtual | 3 |
+| 7 | Oct 20 al 25 | 14 | Dashboard e identificación de insights | Virtual | 3 |
+| 8 | Oct 27 al 1 Nov | 15 | Identificación de insights (cont.) | Virtual | 3 |
+| 8 | Oct 27 al 1 Nov | 16 | MasterClass (Recapitulación y prep. bootcamp) | Presencial | 3 |
+| 9 | Nov 3 al 8 | 17 | Bootcamp | Presencial | 3 |
+| 9 | Nov 3 al 8 | 18 | Bootcamp (bloque 2) | Presencial | 3 |
 | 10 | Nov 10 al 15 | 19 | De la analítica descriptiva a la predictiva | Virtual | 3 |
 | 10 | Nov 10 al 15 | 20 | Regresión lineal con Python | Virtual | 3 |
 | 11 | Nov 17 al 22 | 21 | Storytelling con datos: del hallazgo a la decisión | Virtual | 3 |
@@ -44,7 +44,9 @@
 | 13 | Dic 1 al 6 Dic | 26 | Bootcamp (bloque 2) | Presencial | 3 |
 | 14 | Dic 7 al 13 | 27 | Semana de la Innovación Multidisciplinar (cierre) | Presencial | 8 |
 
+
 ---
+
 
 ## Módulo 1: Explorar (Fundamentos y Consulta de Datos)
 
@@ -101,11 +103,9 @@
 - **Clase 11: Principios de visualización y comunicación de datos** · Virtual · 3 h
   - *Contenido:* Qué hace efectiva una visualización; selección del gráfico según la pregunta; comparación, composición, distribución y relación; escalas; etiquetas; color; reducción de ruido visual; errores comunes y gráficos engañosos.
   - *Actividad/Producto:* Taller: rediseñar visualizaciones deficientes y justificar la elección del gráfico.
-- **Clase 12: MasterClass (Recapitulación y preparación de bootcamp)** · Presencial · 3 h
+- **Clase 12: MasterClass (Recapitulación)** · Presencial · 3 h
 
-### Semana 7: Oct 20 al 25
-- **Clase 13: Bootcamp** · Presencial · 3 h
-- **Clase 14: Bootcamp (bloque 2)** · Presencial · 3 h
+
 
 ---
 
@@ -115,19 +115,26 @@
 **Conceptos clave:** Modelo estrella, relaciones, filtros, KPIs, gráficos de barras, líneas, dispersión y mapas.
 **Herramientas:** Power BI Desktop.
 
-### Semana 8: Oct 27 al 1 Nov
-- **Clase 15: Power BI: carga, transformación y modelo de datos** · Virtual · 3 h
+### Semana 7: Oct 20 al 25
+- **Clase 13: Power BI: carga, transformación y modelo de datos** · Virtual · 3 h
   - *Contenido:* Power BI Desktop; importar datos; Power Query básico; tablas y campos; relaciones; cardinalidad; conceptos de tabla de hechos y dimensiones; modelo estrella.
   - *Actividad/Producto:* Laboratorio: cargar el dataset del proyecto y construir un modelo sencillo con relaciones correctas.
-- **Clase 16: Dashboard e identificación de insights** · Virtual · 3 h
+- **Clase 14: Dashboard e identificación de insights** · Virtual · 3 h
   - *Contenido:* Gráficos de barras, líneas, dispersión y mapas; comparación temporal; anomalías; tendencias; selección de insights accionables; validación de cifras y coherencia entre visuales.
   - *Actividad/Producto:* Taller integrador: tablero exploratorio y ficha de 3–5 insights con evidencia visual y recomendación.
 
-### Semana 9: Nov 3 al 8
-- **Clase 17: Identificación de insights (cont.)** · Virtual · 3 h
+
+
+### Semana 8: Oct 27 al 1 Nov
+- **Clase 15: Identificación de insights (cont.)** · Virtual · 3 h
   - *Contenido:* Medidas y cálculos básicos; KPIs; segmentadores; filtros de página y de visual; jerarquías; interacción entre visuales; diseño de una página orientada a preguntas de negocio.
   - *Actividad/Producto:* Construcción de la primera página del tablero con indicadores y filtros funcionales.
-- **Clase 18: MasterClass (Recapitulación y preparación de bootcamp)** · Presencial · 3 h
+- **Clase 16: MasterClass (Recapitulación y preparación de bootcamp)** · Presencial · 3 h
+
+
+### Semana 9: Nov 3 al 8
+- **Clase 17: Bootcamp** · Presencial · 3 h
+- **Clase 18: Bootcamp (bloque 2)** · Presencial · 3 h
 
 ---
 
