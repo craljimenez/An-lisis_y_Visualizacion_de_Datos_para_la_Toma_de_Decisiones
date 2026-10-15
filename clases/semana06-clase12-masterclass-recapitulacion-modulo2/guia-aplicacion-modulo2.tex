@@ -1,0 +1,1004 @@
+% ============================================================
+%  Guía de aplicación: del dato crudo al hallazgo
+%  Semana 6 · Clase 12: MasterClass (Recapitulación del Módulo 2)
+%  Curso: Análisis y Visualización de Datos para la Toma de Decisiones
+%  Compilar con: xelatex guia-aplicacion-modulo2.tex (dos veces)
+% ============================================================
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{fontspec}
+\usepackage{amssymb}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\usepackage{needspace}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\tcbuselibrary{skins,breakable}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,babel}
+
+% ---------------- Tipografía (misma lógica que la plantilla de slides) ----------------
+\IfFontExistsTF{Aptos}{\setmainfont{Aptos}}{\setmainfont{Lato}}
+\setmonofont{DejaVu Sans Mono}[Scale=0.82]
+
+% ---------------- Paleta Esumer ----------------
+\definecolor{esumerNavy}{HTML}{262E66}
+\definecolor{esumerNavyDark}{HTML}{1E4093}
+\definecolor{esumerTeal}{HTML}{0CB3B6}
+\definecolor{esumerSky}{HTML}{26A1DB}
+\definecolor{esumerOrange}{HTML}{EF7C2C}
+\definecolor{esumerGreen}{HTML}{94C122}
+\definecolor{esumerMagenta}{HTML}{AF348B}
+\definecolor{esumerGray}{HTML}{E8E8E8}
+\definecolor{esumerBg}{HTML}{F7F8FA}
+
+\hypersetup{colorlinks=true, linkcolor=esumerNavyDark, urlcolor=esumerNavyDark}
+\graphicspath{{../../../plantilla/assets/}}
+
+% ---------------- Encabezado / pie de página ----------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\small\color{esumerNavyDark} Guía de aplicación del Módulo 2 \textperiodcentered\ Clase 12}
+\fancyfoot[R]{\small\color{esumerNavyDark} Cristian A. Jiménez C. \quad\textperiodcentered\quad \thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+% ---------------- Código ----------------
+\fvset{fontsize=\small}
+\newtcolorbox{codigo}[1][]{
+  colback=esumerBg, colframe=esumerNavy!35, boxrule=0.5pt, arc=1mm,
+  left=6pt, right=6pt, top=2pt, bottom=2pt, fonttitle=\bfseries\small,
+  coltitle=esumerNavy, colbacktitle=esumerGray, #1
+}
+
+% ---------------- Cajas reutilizables ----------------
+\newtcolorbox{recuerda}[1][Lo que pasó en el curso]{
+  colback=esumerBg, colframe=esumerTeal, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerTeal,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+\newtcolorbox{cuidado}[1][Cuidado]{
+  colback=white, colframe=esumerOrange, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerOrange,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+
+% ---------------- Encabezado de cada paso ----------------
+\newcommand{\paso}[3]{%
+  \clearpage\noindent
+  \begin{tikzpicture}[baseline=(n.base)]
+    \node[circle, fill=esumerOrange, text=white, font=\bfseries\large,
+          minimum size=0.85cm, inner sep=0pt] (n) {#1};
+  \end{tikzpicture}\hspace{8pt}%
+  {\Large\bfseries\color{esumerNavy} #2}\par
+  \vspace{-2pt}{\color{esumerOrange}\rule{\textwidth}{1pt}}\par
+  \vspace{2pt}
+  {\color{esumerNavyDark}\textbf{Pregunta guía:}} \textit{#3}\par
+  \vspace{2pt}
+}
+
+% ---------------- Tabla de funciones de cada paso ----------------
+\newenvironment{funciones}{%
+  \par\small\noindent
+  \tabularx{\textwidth}{@{}>{\raggedright\arraybackslash}p{5.0cm}
+    >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{1.2cm}@{}}
+  \toprule
+  \textbf{Para\ldots} & \textbf{Función o método} & \textbf{Clase}\\
+  \midrule}{%
+  \bottomrule\endtabularx\par}
+
+% ---------------- Lista de chequeo ----------------
+\newlist{checklist}{itemize}{1}
+\setlist[checklist]{label=$\square$, itemsep=1pt, topsep=2pt, leftmargin=1.4em}
+
+% ---------------- Estilos TikZ comunes ----------------
+\tikzset{
+  every node/.append style={execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000\relax}},
+  flecha/.style={-{Stealth[length=2.4mm]}, line width=0.9pt, color=esumerNavy},
+  caja/.style={draw=esumerNavy, line width=0.7pt, rounded corners=3pt,
+               fill=white, align=center, inner sep=4pt},
+  fn/.style={font=\scriptsize\ttfamily, text=esumerNavyDark, align=center},
+  num/.style={circle, fill=esumerOrange, text=white, font=\bfseries\small,
+              minimum size=0.6cm, inner sep=0pt},
+}
+
+% ============================================================
+\begin{document}
+
+% ---------------- Encabezado ----------------
+\begin{minipage}[c]{0.18\textwidth}
+  \includegraphics[height=1.15cm,width=\linewidth,keepaspectratio]{esumer-logo.png}
+\end{minipage}%
+\begin{minipage}[c]{0.80\textwidth}
+  \raggedleft
+  {\Large\bfseries\color{esumerNavy} Guía de aplicación: del dato crudo al hallazgo}\\[3pt]
+  {\small\color{esumerNavyDark} Semana 6 \textperiodcentered\ Clase 12 (MasterClass del Módulo 2) \textperiodcentered\ Análisis y Visualización de Datos para la Toma de Decisiones}
+\end{minipage}
+
+\vspace{4pt}
+{\color{esumerOrange}\rule{\textwidth}{2pt}}
+\vspace{6pt}
+
+\textbf{Para qué es esta guía.} En el Módulo 2 aprendiste cada herramienta
+por separado, siempre sobre los datos del gimnasio. Hoy las juntas, en orden,
+sobre \textbf{tus propios datos}. La guía te lleva paso a paso: qué
+pregunta responde cada etapa, un diagrama de lo que pasa con la tabla, las
+funciones que necesitas y una lista de chequeo para saber cuándo puedes
+pasar a la siguiente.
+
+\textbf{Al terminar la sesión deberías tener:}
+\begin{enumerate}[itemsep=1pt, topsep=2pt]
+  \item Un notebook de Colab que va de tu archivo crudo a una tabla limpia y
+    enriquecida, sin editar nunca el archivo original.
+  \item Una tabla resumen (\texttt{groupby}) que responde al menos una de
+    tus preguntas de negocio.
+  \item Dos o tres gráficos, cada uno con su hallazgo escrito.
+  \item Una \textbf{bitácora de decisiones} (plantilla en la última página):
+    qué problemas encontraste y qué decidiste hacer con cada uno.
+\end{enumerate}
+
+\textbf{Cómo leer los ejemplos de código.} Usamos nombres genéricos que
+debes reemplazar por los tuyos:
+
+\begin{tcolorbox}[colback=esumerBg, colframe=esumerGray, boxrule=0.5pt, arc=1mm, left=6pt, right=6pt, top=3pt, bottom=3pt]
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.3cm}p{12.6cm}@{}}
+  \texttt{df} & tu tabla tal como la cargaste (cruda). \\
+  \texttt{limpio} & una copia de \texttt{df} sobre la que haces todos los cambios. \\
+  \texttt{"ciudad"}, \texttt{"fecha"}, \texttt{"monto"}\ldots & nombres de columna de ejemplo: cámbialos por los nombres reales de tu dataset. \\
+  \texttt{"id\_cliente"} & la columna que identifica cada fila (cliente, venta, producto\ldots), si tu dataset tiene una. \\
+\end{tabular}
+\end{tcolorbox}
+
+\textbf{Agenda sugerida para las 3 horas}
+
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.4cm}>{\raggedright\arraybackslash}p{7.3cm}>{\raggedright\arraybackslash}p{7.2cm}@{}}
+\toprule
+\textbf{Hora} & \textbf{Pasos} & \textbf{Producto al final de la hora}\\
+\midrule
+Hora 1 & 0. Preguntas \textperiodcentered\ 1. Cargar \textperiodcentered\ 2. Diagnosticar \textperiodcentered\ 3. Limpiar & Tabla \texttt{limpio} sin duplicados, con tipos correctos y nulos tratados.\\
+Hora 2 & 4. Transformar \textperiodcentered\ 5. Integrar \textperiodcentered\ 6. Agrupar & Columnas nuevas y una tabla resumen por grupo.\\
+Hora 3 & 7. Visualizar y comunicar & Dos o tres gráficos con hallazgo, y la bitácora completa.\\
+\bottomrule
+\end{tabular}
+
+\vspace{6pt}
+La referencia completa de funciones del curso está en
+\texttt{recursos/referencia-funciones-metodos.pdf}: tenla abierta mientras
+trabajas.
+
+% ============================================================
+\clearpage
+\section*{\color{esumerNavy}El mapa completo}
+
+Estos son los ocho pasos de la guía. La columna \textbf{Clase} de cada tabla
+de funciones te dice dónde lo viste por primera vez, por si necesitas volver
+al notebook de esa clase.
+
+\vspace{4pt}
+\begin{center}
+\begin{tikzpicture}[
+  etapa/.style={draw=esumerNavy, line width=0.8pt, rounded corners=3pt,
+                fill=white, minimum width=3.74cm, minimum height=2.55cm,
+                text width=3.5cm, align=center, inner sep=3pt},
+]
+  % Fila 1
+  \node[etapa] (p0) at (2.2,0)
+    {{\bfseries\small Definir\\preguntas}\\[3pt]
+     {\scriptsize ¿Qué decisión quiero apoyar con estos datos?}};
+  \node[etapa] (p1) at (6.5,0)
+    {{\bfseries\small Cargar\\y conocer}\\[3pt]
+     {\scriptsize\ttfamily read\_csv\\shape \textperiodcentered\ head\\info \textperiodcentered\ describe}};
+  \node[etapa] (p2) at (10.8,0)
+    {{\bfseries\small Diagnosticar\\la calidad}\\[3pt]
+     {\scriptsize\ttfamily isna \textperiodcentered\ duplicated\\dtypes\\value\_counts}};
+  \node[etapa] (p3) at (15.1,0)
+    {{\bfseries\small Limpiar}\\[3pt]
+     {\scriptsize\ttfamily drop\_duplicates\\str.strip \textperiodcentered\ replace\\to\_numeric \textperiodcentered\ fillna}};
+  % Fila 2
+  \node[etapa] (p4) at (2.2,-3.7)
+    {{\bfseries\small Transformar\\y enriquecer}\\[3pt]
+     {\scriptsize\ttfamily pd.cut \textperiodcentered\ map\\dt.to\_period\\columnas calculadas}};
+  \node[etapa] (p5) at (6.5,-3.7)
+    {{\bfseries\small Integrar\\fuentes}\\[1pt]{\scriptsize (si tienes más de una)}\\[2pt]
+     {\scriptsize\ttfamily merge \textperiodcentered\ concat\\validate}};
+  \node[etapa] (p6) at (10.8,-3.7)
+    {{\bfseries\small Agrupar\\y resumir}\\[3pt]
+     {\scriptsize\ttfamily groupby \textperiodcentered\ agg\\transform\\crosstab}};
+  \node[etapa] (p7) at (15.1,-3.7)
+    {{\bfseries\small Visualizar\\y comunicar}\\[3pt]
+     {\scriptsize\ttfamily .plot \textperiodcentered\ .plot.bar\\.plot.hist}\\[1pt]
+     {\scriptsize título = conclusión}};
+  % Números
+  \foreach \i in {0,...,7} {\node[num] at (p\i.north west) {\i};}
+  % Flechas
+  \draw[flecha] (p0) -- (p1);
+  \draw[flecha] (p1) -- (p2);
+  \draw[flecha] (p2) -- (p3);
+  \draw[flecha] (p3.south) -- ++(0,-0.5) -| (p4.north);
+  \draw[flecha] (p4) -- (p5);
+  \draw[flecha] (p5) -- (p6);
+  \draw[flecha] (p6) -- (p7);
+  % Banda de validación continua
+  \node[draw=esumerTeal, dashed, line width=0.8pt, rounded corners=3pt,
+        fill=esumerBg, text width=16.1cm, align=left, inner sep=5pt]
+    at (8.65,-6.0)
+    {\small\textbf{\color{esumerNavy}Validación continua.} Después de
+     \emph{cada} paso cuenta filas (\texttt{len}), revisa nulos
+     (\texttt{isna().sum()}) y mira los valores (\texttt{value\_counts()}).
+     Si un número no cuadra, no sigas: vuelve al paso anterior y entiende
+     por qué.};
+\end{tikzpicture}
+\end{center}
+
+\vspace{6pt}
+Tres reglas que atraviesan todos los pasos (las viste en la Clase 8):
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item \textbf{Nunca edites el archivo crudo.} Todo parte de
+    \texttt{pd.read\_csv(...)}; si te equivocas, vuelves a leerlo y no
+    perdiste nada.
+  \item \textbf{Trabaja sobre una copia} (\texttt{limpio = df.copy()}) y,
+    cuando corrijas una columna, compárala con la original antes de
+    reemplazarla.
+  \item \textbf{Nada que cambie cada vez que lo ejecutas.} Si calculas
+    antigüedades, fija una fecha de referencia
+    (\texttt{pd.Timestamp("2026-09-30")}), no uses la fecha de hoy.
+\end{enumerate}
+
+% ============================================================
+\paso{0}{Definir tus preguntas}{¿Qué decisión quiero apoyar, y qué tengo que saber para tomarla?}
+
+Antes de abrir el notebook, escribe dos o tres preguntas de negocio. Cada
+una te dice qué columnas necesitas y, desde ya, qué tipo de gráfico vas a
+usar al final (Clase 11). Una pregunta concreta también te dice qué
+limpiar primero: no hace falta dejar perfecta una columna que no vas a usar.
+
+\begin{center}
+\begin{tikzpicture}[
+  eslabon/.style={caja, minimum width=3.8cm, text width=3.5cm, minimum height=2.3cm},
+  tit/.style={font=\bfseries\small, text=white, fill=esumerNavy, rounded corners=2pt,
+              minimum width=3.8cm, inner sep=3pt},
+]
+  \foreach \x/\tit in {2.2/Decisión, 6.5/Pregunta, 10.8/Columnas, 15.1/Tipo de pregunta}
+    {\node[tit] at (\x,1.4) {\tit};}
+  \node[eslabon] (a) at (2.2,0) {\small ¿En qué ciudad reforzamos la campaña de renovación?};
+  \node[eslabon] (b) at (6.5,0) {\small ¿Qué ciudad concentra más socios activos?};
+  \node[eslabon] (c) at (10.8,0) {\small\texttt{ciudad}\\\texttt{activo}};
+  \node[eslabon] (d) at (15.1,0) {\small\textbf{Comparación}\\pocas categorías\\$\Rightarrow$ barras};
+  \draw[flecha] (a) -- (b);
+  \draw[flecha] (b) -- (c);
+  \draw[flecha] (c) -- (d);
+\end{tikzpicture}
+
+{\footnotesize\itshape Ejemplo con los datos del gimnasio. Los cuatro tipos
+de pregunta son los de la Clase 11: comparación, composición, distribución y relación.}
+\end{center}
+
+\textbf{Escribe aquí tus preguntas:}
+
+\renewcommand{\arraystretch}{2.1}
+\begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}p{0.5cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{3.0cm}@{}}
+\toprule
+& \textbf{Pregunta de negocio} & \textbf{Columnas que necesito} & \textbf{Tipo de pregunta}\\
+\midrule
+1 & & & \\ \hline
+2 & & & \\ \hline
+3 & & & \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.15}
+
+\begin{checklist}
+  \item Cada pregunta se puede responder con columnas que existen en mis datos.
+  \item Cada pregunta tiene asignado uno de los cuatro tipos.
+\end{checklist}
+
+% ============================================================
+\paso{1}{Cargar y conocer tus datos}{¿Qué tengo en las manos: cuántas filas, qué columnas y de qué tipo?}
+
+La función de lectura depende del formato del archivo. Todas devuelven lo
+mismo: un \texttt{DataFrame}. A partir de ahí, cuatro órdenes te dan la
+primera foto de la tabla.
+
+\begin{center}
+\begin{tikzpicture}[
+  ext/.style={caja, minimum width=1.9cm, font=\small\bfseries},
+  lect/.style={caja, minimum width=4.9cm, text width=4.7cm, font=\scriptsize\ttfamily},
+]
+  \node[caja, minimum width=2.3cm, minimum height=1.6cm, fill=esumerBg] (arch) at (1.2,0)
+    {\small Tu\\archivo};
+  \node[ext] (e1) at (3.9,1.1) {.csv};
+  \node[ext] (e2) at (3.9,0) {.xlsx};
+  \node[ext] (e3) at (3.9,-1.1) {.db};
+  \node[lect] (l1) at (8.0,1.1) {pd.read\_csv("archivo.csv")};
+  \node[lect] (l2) at (8.0,0) {pd.read\_excel("archivo.xlsx")};
+  \node[lect] (l3) at (8.0,-1.1) {pd.read\_sql\_query(consulta, con)};
+  \node[circle, draw=esumerNavy, fill=esumerTeal, text=white, line width=0.8pt,
+        minimum size=1.1cm, font=\bfseries\ttfamily] (df) at (11.55,0) {df};
+  \node[caja, text width=4.0cm, fill=esumerBg] (vis) at (14.85,0)
+    {\small\bfseries Primera foto\\[2pt]
+     \scriptsize\ttfamily df.shape\\df.head() \textperiodcentered\ df.sample(5)\\df.info()\\df.describe(include="all")};
+  \foreach \i in {1,2,3} {
+    \draw[flecha] (arch.east) -- (e\i.west);
+    \draw[flecha] (e\i) -- (l\i);
+    \draw[flecha] (l\i.east) -- (df);
+  }
+  \draw[flecha] (df) -- (vis);
+\end{tikzpicture}
+\end{center}
+
+\begin{funciones}
+Leer un CSV o un Excel & \texttt{pd.read\_csv("archivo.csv")}, \texttt{pd.read\_excel("archivo.xlsx")} & 4, 7\\
+Leer una tabla de una base SQLite & \texttt{pd.read\_sql\_query("SELECT * FROM tabla", con)} & 5\\
+Saber el tamaño (filas, columnas) & \texttt{df.shape} & 7\\
+Ver filas de muestra & \texttt{df.head()}, \texttt{df.sample(5)} & 7\\
+Tipos y valores no nulos por columna & \texttt{df.info()} & 7\\
+Resumen estadístico (también del texto) & \texttt{df.describe(include="all")} & 7\\
+\end{funciones}
+
+\begin{codigo}[title=En tu notebook]
+\begin{Verbatim}
+import pandas as pd
+
+df = pd.read_csv("mis_datos.csv")
+df.shape
+df.head()
+df.info()
+\end{Verbatim}
+\end{codigo}
+
+\begin{cuidado}[Si el archivo no se lee bien]
+\small Archivos exportados desde Excel en español suelen usar punto y coma
+como separador y coma decimal; si todas las columnas aparecen pegadas en
+una sola, prueba \texttt{pd.read\_csv("archivo.csv", sep=";", decimal=",")}.
+Si las tildes salen como símbolos raros, agrega \texttt{encoding="latin-1"}.
+\end{cuidado}
+
+\begin{checklist}
+  \item Sé cuántas filas y columnas tiene mi tabla, y qué representa cada fila.
+  \item Revisé \texttt{df.info()}: anoté las columnas cuyo tipo no es el que esperaba.
+\end{checklist}
+
+% ============================================================
+\paso{2}{Diagnosticar la calidad}{¿Qué problemas tiene la tabla antes de confiar en ella?}
+
+Busca, columna por columna, los cuatro problemas de la Clase 7. El diagrama
+muestra cómo se ven en una tabla y qué función los delata.
+
+\begin{center}
+\begin{tikzpicture}[
+  celda/.style={draw=esumerGray!70!black, line width=0.4pt, minimum height=0.55cm,
+                inner sep=1pt, font=\scriptsize},
+  cab/.style={celda, fill=esumerNavy, text=white, font=\scriptsize\bfseries},
+]
+  % columnas: centro / ancho
+  \def\cA{0.6}  \def\wA{1.2}
+  \def\cB{2.35} \def\wB{2.3}
+  \def\cC{4.4}  \def\wC{1.8}
+  \def\cD{6.6}  \def\wD{2.6}
+  % encabezado
+  \node[cab, minimum width=\wA cm] at (\cA,0) {id};
+  \node[cab, minimum width=\wB cm] at (\cB,0) {ciudad};
+  \node[cab, minimum width=\wC cm] at (\cC,0) {edad};
+  \node[cab, minimum width=\wD cm] at (\cD,0) {telefono};
+  % fila 1
+  \node[celda, minimum width=\wA cm] at (\cA,-0.55) {1};
+  \node[celda, minimum width=\wB cm] at (\cB,-0.55) {Medellín};
+  \node[celda, minimum width=\wC cm] at (\cC,-0.55) {34};
+  \node[celda, minimum width=\wD cm] at (\cD,-0.55) {3104451122};
+  % fila 2
+  \node[celda, minimum width=\wA cm] at (\cA,-1.1) {2};
+  \node[celda, minimum width=\wB cm, fill=esumerGreen!35] at (\cB,-1.1) {MEDELLIN};
+  \node[celda, minimum width=\wC cm, fill=esumerSky!30] at (\cC,-1.1) {treinta};
+  \node[celda, minimum width=\wD cm, fill=esumerSky!30] at (\cD,-1.1) {3.031046e+09};
+  % fila 3
+  \node[celda, minimum width=\wA cm] at (\cA,-1.65) {3};
+  \node[celda, minimum width=\wB cm] at (\cB,-1.65) {Bogotá};
+  \node[celda, minimum width=\wC cm, fill=esumerOrange!35] at (\cC,-1.65) {NaN};
+  \node[celda, minimum width=\wD cm] at (\cD,-1.65) {3012267788};
+  % fila 4
+  \node[celda, minimum width=\wA cm] at (\cA,-2.2) {4};
+  \node[celda, minimum width=\wB cm, fill=esumerGreen!35] at (\cB,-2.2) {\texttt{" Medellín"}};
+  \node[celda, minimum width=\wC cm] at (\cC,-2.2) {41};
+  \node[celda, minimum width=\wD cm, fill=esumerOrange!35] at (\cD,-2.2) {NaN};
+  % fila 5 (duplicado exacto de la 4)
+  \node[celda, minimum width=\wA cm, fill=esumerMagenta!25] at (\cA,-2.75) {4};
+  \node[celda, minimum width=\wB cm, fill=esumerMagenta!25] at (\cB,-2.75) {\texttt{" Medellín"}};
+  \node[celda, minimum width=\wC cm, fill=esumerMagenta!25] at (\cC,-2.75) {41};
+  \node[celda, minimum width=\wD cm, fill=esumerMagenta!25] at (\cD,-2.75) {NaN};
+  \draw[esumerMagenta, line width=1.2pt, rounded corners=1pt] (0,-3.025) rectangle (7.9,-2.475);
+  % leyenda
+  \foreach \y/\col/\tit/\txt/\fun in {
+      0.05/{esumerOrange!35}/{Nulo}/{una celda vacía (NaN)}/{df.isna().sum()},
+      -0.95/{esumerMagenta!25}/{Duplicado}/{una fila idéntica a otra}/{df.duplicated().sum()},
+      -1.95/{esumerSky!30}/{Tipo incorrecto}/{texto donde van números}/{df.dtypes \textperiodcentered\ pd.to\_numeric(..., errors="coerce")},
+      -2.95/{esumerGreen!35}/{Inconsistencia}/{un valor, varias escrituras}/{df["ciudad"].value\_counts()}} {
+    \node[draw=esumerGray!70!black, fill=\col, minimum size=0.42cm, inner sep=0pt] at (8.75,\y) {};
+    \node[anchor=north west, text width=7.6cm, inner sep=0pt, align=left] at (9.15,\y+0.2)
+      {\small\textbf{\tit}: \txt.\\[-1pt]{\scriptsize\ttfamily\color{esumerNavyDark}\fun}};
+  }
+\end{tikzpicture}
+
+{\footnotesize\itshape Tabla ilustrativa, con los mismos tipos de problema que encontramos en
+\texttt{membresias\_gimnasio.csv} en la Clase 7.}
+\end{center}
+
+\begin{funciones}
+Contar nulos por columna & \texttt{df.isna().sum()} & 7\\
+Ver el porcentaje de nulos por columna & \texttt{(df.isna().mean() * 100).round(1)} & 7\\
+Contar filas exactamente repetidas & \texttt{df.duplicated().sum()} & 7\\
+Ver si la llave se repite & \texttt{df["id\_cliente"].duplicated().sum()} o \texttt{.is\_unique} & 7, 10\\
+Ver el tipo de cada columna & \texttt{df.dtypes} & 7\\
+Encontrar texto disfrazado de número & \texttt{pd.to\_numeric(df["edad"], errors="coerce")} & 7\\
+Ver las variantes de una columna de texto & \texttt{df["ciudad"].value\_counts()}, \texttt{.unique()} & 7\\
+\end{funciones}
+
+\begin{codigo}[title=En tu notebook: el diagnóstico completo]
+\begin{Verbatim}
+df.isna().sum()                      # nulos por columna
+df.duplicated().sum()                # filas repetidas
+df.dtypes                            # ¿cada columna tiene el tipo que esperas?
+
+# texto disfrazado de número: se vuelve NaN al convertir, pero no estaba vacío
+numero = pd.to_numeric(df["edad"], errors="coerce")
+df.loc[numero.isna() & df["edad"].notna(), "edad"]
+
+for columna in ["ciudad", "categoria"]:   # repite con tus columnas de texto
+    print(df[columna].value_counts(), "\n")
+\end{Verbatim}
+\end{codigo}
+
+\begin{recuerda}
+\small El archivo crudo del gimnasio tenía 54 filas, de las cuales 4 eran
+duplicados exactos; \texttt{ciudad} tenía 12 formas de escribir 4 ciudades
+(\texttt{Medellín}, \texttt{Medellin}, \texttt{MEDELLIN},
+\texttt{" Medellín"}, \texttt{medellín}\ldots); y \texttt{edad} tenía el
+texto \texttt{"treinta"}, que \texttt{isna()} nunca habría mostrado
+porque técnicamente no es un nulo.
+\end{recuerda}
+
+\begin{checklist}
+  \item Para cada columna que uso en mis preguntas, sé si tiene nulos, tipo
+    incorrecto o inconsistencias.
+  \item Sé si hay filas duplicadas y si mi llave (si la hay) es única.
+  \item Anoté cada problema en la bitácora, antes de corregir nada.
+\end{checklist}
+
+% ============================================================
+\paso{3}{Limpiar}{¿Qué corrijo, en qué orden, y qué hago con lo que no se puede corregir?}
+
+El orden importa. Los duplicados van primero, porque si no, cada conteo y
+cada promedio posterior queda inflado por las copias. Los nulos van al
+final, porque una conversión de tipo puede crear nulos nuevos
+(\texttt{errors="coerce"}).
+
+\begin{center}
+\begin{tikzpicture}[
+  chip/.style={caja, minimum width=2.45cm, text width=2.15cm, minimum height=1.05cm,
+               fill=esumerBg, font=\small\bfseries},
+]
+  \foreach \i/\x/\tit/\fun in {
+      1/1.5/Copia/limpio = df.copy(),
+      2/4.3/Duplicados/drop\_duplicates(),
+      3/7.1/Texto/str.strip()\\str.lower(),
+      4/9.9/Tipos/pd.to\_numeric()\\astype(),
+      5/12.7/Nulos/fillna()\\dropna(),
+      6/15.5/Verifica/len() \textperiodcentered\ isna()\\value\_counts()} {
+    \node[chip] (c\i) at (\x,0) {\tit};
+    \node[num, minimum size=0.5cm, font=\bfseries\scriptsize] at (c\i.north west) {\i};
+    \node[fn, text width=2.5cm] at (\x,-1.05) {\fun};
+  }
+  \foreach \i [evaluate=\i as \j using int(\i+1)] in {1,...,5}
+    {\draw[flecha] (c\i) -- (c\j);}
+\end{tikzpicture}
+\end{center}
+
+\textbf{¿Qué hago con los nulos?} No hay una única respuesta correcta: hay una
+decisión que tomar, y que debe quedar escrita. Este árbol resume las
+decisiones que discutimos en la Clase 8.
+
+\begin{center}
+\begin{tikzpicture}[
+  preg/.style={caja, fill=esumerNavy, text=white, draw=esumerNavy, font=\small\bfseries},
+  hoja/.style={caja, fill=esumerBg, font=\small},
+  etq/.style={font=\scriptsize\itshape, text=esumerNavyDark, above=1pt, inner sep=1pt},
+]
+  % Nivel 0
+  \node[preg, text width=6.2cm, anchor=north] (q1) at (8.5,0) {¿La columna es una llave o un identificador?};
+  % Nivel 1
+  \node[hoja, text width=5.4cm, anchor=north] (h1) at (3.0,-2.2)
+    {No inventes valores: revisa el origen. Si no se puede recuperar, elimina la fila.\\
+     {\scriptsize\ttfamily dropna(subset=["id\_cliente"])}};
+  \node[preg, text width=5.0cm, anchor=north] (q2) at (12.3,-2.2) {¿Qué proporción de la columna está vacía?};
+  % Nivel 2
+  \node[hoja, text width=5.6cm, anchor=north] (h2) at (6.9,-4.5)
+    {Pregúntate si la columna sirve para tus preguntas. Si no la necesitas, no la uses; si la necesitas, documenta la limitación.};
+  \node[preg, text width=4.0cm, anchor=north] (q3) at (13.4,-4.5) {¿Qué tipo de dato es?};
+  % Nivel 3
+  \node[hoja, text width=3.5cm, anchor=north] (h3) at (11.3,-6.4)
+    {Imputa con la mediana.\\
+     {\scriptsize\ttfamily fillna(s.median())}};
+  \node[hoja, text width=3.5cm, anchor=north] (h4) at (15.15,-6.4)
+    {Usa una categoría explícita.\\
+     {\scriptsize\ttfamily fillna("Sin dato")}};
+  % Conexiones: la etiqueta va sobre el tramo horizontal de cada rama
+  \draw[flecha] (q1.south) -- (8.5,-1.6) -| (h1.north) node[etq, pos=0.25] {sí};
+  \draw[flecha] (q1.south) -- (8.5,-1.6) -| (q2.north) node[etq, pos=0.25] {no};
+  \draw[flecha] (q2.south) -- (12.3,-3.9) -| (h2.north) node[etq, pos=0.25] {mucha (cerca de la mitad o más)};
+  \draw[flecha] (q2.south) -- (12.3,-3.9) -| (q3.north) node[etq, pos=0.35] {poca};
+  \draw[flecha] (q3.south) -- (13.4,-5.8) -| (h3.north) node[etq, pos=0.25] {numérica};
+  \draw[flecha] (q3.south) -- (13.4,-5.8) -| (h4.north) node[etq, pos=0.25] {texto};
+\end{tikzpicture}
+\end{center}
+
+\begin{funciones}
+Quitar filas repetidas & \texttt{limpio.drop\_duplicates()} & 8\\
+Quitar espacios y unificar mayúsculas & \texttt{.str.strip()}, \texttt{.str.lower()}, \texttt{.str.title()} & 8\\
+Unificar variantes que quedan (tildes) & \texttt{.replace(\{"medellin": "medellín"\})} & 8, 10\\
+Convertir texto a número & \texttt{pd.to\_numeric(s, errors="coerce")} & 7, 8\\
+Convertir a texto (códigos, teléfonos) & \texttt{s.astype(str)} & 8\\
+Rellenar nulos & \texttt{s.fillna(s.median())}, \texttt{s.fillna("Sin dato")} & 8\\
+Eliminar filas con nulos en columnas clave & \texttt{limpio.dropna(subset=["id\_cliente"])} & 12\\
+\end{funciones}
+
+\begin{codigo}[title=En tu notebook]
+\begin{Verbatim}
+limpio = df.copy()
+limpio = limpio.drop_duplicates()
+
+limpio["ciudad_limpia"] = (limpio["ciudad"].str.strip()
+                                           .str.lower()
+                                           .replace({"medellin": "medellín", "bogota": "bogotá"})
+                                           .str.title())
+limpio["ciudad_limpia"].value_counts()      # compara con la original antes de reemplazar
+
+limpio["edad"] = pd.to_numeric(limpio["edad"], errors="coerce")
+print("edades a imputar:", limpio["edad"].isna().sum())   # anótalo en la bitácora
+limpio["edad"] = limpio["edad"].fillna(limpio["edad"].median())
+
+print(len(df), "->", len(limpio))
+\end{Verbatim}
+\end{codigo}
+
+\begin{checklist}
+  \item No quedan duplicados, y sé cuántas filas eliminé.
+  \item Cada columna de texto que uso tiene solo valores válidos (revisado con
+    \texttt{value\_counts()}).
+  \item Las columnas numéricas son números y las fechas son fechas
+    (\texttt{limpio.dtypes}).
+  \item Para cada columna con nulos tomé una decisión, y escribí cuántos
+    valores imputé o eliminé.
+\end{checklist}
+
+% ============================================================
+\paso{4}{Transformar y enriquecer}{¿Qué columnas nuevas necesito para responder mis preguntas?}
+
+Las columnas originales casi nunca son las que necesitas. Cuatro
+transformaciones cubren la mayoría de los casos:
+
+\begin{center}
+\begin{tikzpicture}[
+  panel/.style={draw=esumerNavy!40, line width=0.6pt, rounded corners=3pt, fill=esumerBg},
+  tpanel/.style={anchor=north west, fill=esumerNavy, text=white, font=\scriptsize\bfseries,
+                 rounded corners=2pt, inner sep=3pt},
+  dato/.style={caja, font=\scriptsize, minimum height=0.85cm},
+]
+  % ---------- Panel A: columna calculada ----------
+  \draw[panel] (0.05,0) rectangle (8.2,3.2);
+  \node[tpanel] at (0.15,3.05) {A. Columna calculada};
+  \node[dato, minimum width=1.6cm] (a1) at (1.2,1.6) {\textbf{cantidad}\\3};
+  \node at (2.35,1.6) {\large$\times$};
+  \node[dato, minimum width=1.8cm] (a2) at (3.6,1.6) {\textbf{precio}\\20.000};
+  \node at (4.85,1.6) {\large$=$};
+  \node[dato, minimum width=1.8cm, fill=esumerTeal!25] (a3) at (6.2,1.6) {\textbf{total}\\60.000};
+  \node[fn] at (4.1,0.45) {df["total"] = df["cantidad"] * df["precio"]};
+  % ---------- Panel B: pd.cut ----------
+  \draw[panel] (8.8,0) rectangle (16.95,3.2);
+  \node[tpanel] at (8.95,3.05) {B. De número a categoría};
+  \fill[esumerTeal!45] (9.4,1.45) rectangle (11.7,2.0);
+  \fill[esumerSky!45] (11.7,1.45) rectangle (14.0,2.0);
+  \fill[esumerOrange!45] (14.0,1.45) rectangle (16.3,2.0);
+  \node[font=\scriptsize\bfseries] at (10.55,1.725) {Joven};
+  \node[font=\scriptsize\bfseries] at (12.85,1.725) {Adulto};
+  \node[font=\scriptsize\bfseries] at (15.15,1.725) {Mayor};
+  \node[font=\scriptsize\ttfamily] at (10.55,2.25) {(0, 25]};
+  \node[font=\scriptsize\ttfamily] at (12.85,2.25) {(25, 45]};
+  \node[font=\scriptsize\ttfamily] at (15.15,2.25) {(45, 120]};
+  \foreach \x/\lim in {9.4/0, 11.7/25, 14.0/45, 16.3/120} {
+    \draw[esumerNavy, line width=0.7pt] (\x,1.35) -- (\x,2.1);
+    \node[font=\scriptsize] at (\x,1.1) {\lim};
+  }
+  \node[fn] at (12.9,0.45) {pd.cut(df["edad"], bins=[0, 25, 45, 120], labels=[...])};
+  % ---------- Panel C: fechas ----------
+  \draw[panel] (0.05,-3.6) rectangle (8.2,-0.4);
+  \node[tpanel] at (0.15,-0.55) {C. Partes de una fecha};
+  \node[dato, minimum width=2.0cm] (f) at (1.25,-2.1) {\textbf{fecha}\\2026-03-03};
+  \node[font=\tiny, text=esumerNavyDark, align=center] at (1.25,-3.2) {FECHA\_REF =\\2026-09-30};
+  \foreach \y/\fun/\res in {-1.3/{dt.to\_period("M")}/2026-03, -2.1/dt.quarter/1, -2.9/{(FECHA\_REF - fecha).dt.days}/211} {
+    \draw[flecha] (f.east) -- (2.6,-2.1) |- (6.6,\y);
+    \node[fn, anchor=south] at (4.6,\y) {\fun};
+    \node[dato, minimum width=1.3cm, minimum height=0.55cm, fill=esumerTeal!25] at (7.35,\y) {\res};
+  }
+  % ---------- Panel D: map ----------
+  \draw[panel] (8.8,-3.6) rectangle (16.95,-0.4);
+  \node[tpanel] at (8.95,-0.55) {D. Traer un dato que conoces};
+  \foreach \y/\pl/\val in {-1.35/Mensual/90.000, -2.0/Trimestral/240.000, -2.65/Anual/800.000} {
+    \node[dato, minimum width=1.8cm, minimum height=0.5cm] (p) at (10.2,\y) {\pl};
+    \node[dato, minimum width=1.6cm, minimum height=0.5cm, fill=esumerTeal!25] (v) at (12.9,\y) {\val};
+    \draw[flecha] (p) -- (v);
+  }
+  \node[font=\scriptsize, text width=2.6cm, align=left] at (15.4,-2.0)
+    {La lista de precios no venía en el CSV: la conoces por otra fuente y la traes con un diccionario.};
+  \node[fn] at (12.9,-3.25) {df["plan"].map(\{"Mensual": 90000, "Anual": 800000\})};
+\end{tikzpicture}
+
+{\footnotesize\itshape Ejemplos de las Clases 8 y 9: la fecha y la
+antigüedad son las de un socio real del dataset; los precios, los de la
+lista del gimnasio.}
+\end{center}
+
+\begin{funciones}
+Calcular una columna a partir de otras & \texttt{df["c"] = df["a"] * df["b"]} & 4, 8\\
+Convertir un número en categorías & \texttt{pd.cut(s, bins=[...], labels=[...])} & 8\\
+Convertir texto a fecha & \texttt{pd.to\_datetime(df["fecha"])} & 8, 9\\
+Mes, trimestre, días transcurridos & \texttt{.dt.to\_period("M")}, \texttt{.dt.quarter}, \texttt{.dt.days} & 8, 9\\
+Reemplazar cada valor según un diccionario & \texttt{s.map(\{...\})} & 8\\
+Regla que usa varias columnas a la vez & \texttt{limpio.apply(funcion, axis=1)} & 8\\
+\end{funciones}
+
+\begin{codigo}[title=En tu notebook]
+\begin{Verbatim}
+FECHA_REF = pd.Timestamp("2026-09-30")          # fija: no uses la fecha de hoy
+
+limpio["fecha"] = pd.to_datetime(limpio["fecha"])
+limpio["mes"] = limpio["fecha"].dt.to_period("M")
+limpio["antiguedad_dias"] = (FECHA_REF - limpio["fecha"]).dt.days
+
+limpio["grupo_edad"] = pd.cut(limpio["edad"], bins=[0, 25, 45, 120],
+                              labels=["Joven", "Adulto", "Mayor"])
+limpio["grupo_edad"].value_counts()              # ¿quedó alguien sin grupo (NaN)?
+\end{Verbatim}
+\end{codigo}
+
+\begin{cuidado}[Primero lo vectorizado]
+\small Si existe una operación que trabaja sobre la columna completa
+(\texttt{+}, \texttt{*}, \texttt{.str}, \texttt{.dt}, \texttt{pd.cut},
+\texttt{.map}), úsala. Reserva \texttt{.apply(\ldots, axis=1)} para
+reglas que necesitan varias columnas de la misma fila al mismo tiempo.
+\end{cuidado}
+
+\begin{checklist}
+  \item Cada columna nueva responde a algo que necesito para mis preguntas.
+  \item Revisé cada columna nueva con \texttt{value\_counts()} o
+    \texttt{describe()}, y no generó nulos inesperados.
+\end{checklist}
+
+% ============================================================
+\paso{5}{Integrar fuentes \normalsize(si tienes más de una)}{¿Cómo junto mis tablas sin perder ni duplicar filas en silencio?}
+
+Si todos tus datos están en una sola tabla, puedes saltar este paso. Si
+tienes un catálogo (productos, sedes, planes) o archivos que llegan por
+partes, la integración tiene cuatro momentos, y el tercero es el único que
+escribe la unión.
+
+\begin{center}
+\begin{tikzpicture}[
+  momento/.style={caja, minimum width=3.7cm, text width=3.4cm, minimum height=2.1cm, fill=esumerBg},
+]
+  \foreach \i/\x/\tit/\fun in {
+      1/2.2/{Revisa la llave}/{is\_unique \textperiodcentered\ dtype\\set(a) - set(b)},
+      2/6.5/{Normaliza la llave}/{str.strip()\\replace()},
+      3/10.8/{Une}/{merge(on=..., how=...,\\validate=...)},
+      4/15.1/{Verifica}/{indicator=True\\len antes y después}} {
+    \node[momento] (m\i) at (\x,0) {{\small\bfseries \tit}\\[4pt]{\scriptsize\ttfamily \fun}};
+    \node[num] at (m\i.north west) {\i};
+  }
+  \foreach \i [evaluate=\i as \j using int(\i+1)] in {1,2,3}
+    {\draw[flecha] (m\i) -- (m\j);}
+\end{tikzpicture}
+\end{center}
+
+\textbf{El parámetro \texttt{how} decide qué filas sobreviven} (verde: se
+conserva; gris: se descarta). En la mayoría de los análisis quieres
+\texttt{how="left"}: partir de tu tabla principal y agregarle información
+sin perder a nadie.
+
+\begin{center}
+\begin{tikzpicture}
+  \foreach \k/\h/\desc in {0/inner/solo lo que empareja, 1/left/toda la tabla izquierda, 2/right/toda la tabla derecha, 3/outer/{todo, de ambas}} {
+    \begin{scope}[xshift=\k*4.3cm]
+      \coordinate (A) at (1.65,0);
+      \coordinate (B) at (2.55,0);
+      \fill[esumerGray] (A) circle (0.8);
+      \fill[esumerGray] (B) circle (0.8);
+      \ifnum\k=1 \fill[esumerTeal] (A) circle (0.8); \fi
+      \ifnum\k=2 \fill[esumerTeal] (B) circle (0.8); \fi
+      \ifnum\k=3 \fill[esumerTeal] (A) circle (0.8); \fill[esumerTeal] (B) circle (0.8); \fi
+      \begin{scope}
+        \clip (A) circle (0.8);
+        \fill[esumerTeal] (B) circle (0.8);
+      \end{scope}
+      \draw[esumerNavy, line width=0.8pt] (A) circle (0.8);
+      \draw[esumerNavy, line width=0.8pt] (B) circle (0.8);
+      \node[font=\scriptsize] at (1.2,1.05) {izquierda};
+      \node[font=\scriptsize] at (3.0,1.05) {derecha};
+      \node[font=\small\ttfamily] at (2.1,-1.15) {how="\h"};
+      \node[font=\scriptsize\itshape] at (2.1,-1.6) {\desc};
+    \end{scope}
+  }
+\end{tikzpicture}
+\end{center}
+
+\begin{funciones}
+Comprobar que la llave no se repite en el catálogo & \texttt{tabla["ciudad"].is\_unique} & 10\\
+Ver valores sin pareja antes de unir & \texttt{set(limpio["ciudad"]) - set(tabla["ciudad"])} & 10\\
+Unir por una llave, validando la relación & \texttt{limpio.merge(tabla, on="ciudad", how="left", validate="many\_to\_one")} & 10\\
+Detectar lo que quedó sin pareja & \texttt{merge(..., indicator=True)} y \texttt{["\_merge"].value\_counts()} & 10\\
+Apilar tablas con las mismas columnas & \texttt{pd.concat([a, b], ignore\_index=True)} & 10\\
+\end{funciones}
+
+\begin{codigo}[title=En tu notebook]
+\begin{Verbatim}
+print(tabla["ciudad"].is_unique)
+print(set(limpio["ciudad_limpia"]) - set(tabla["ciudad"]))    # debería quedar vacío
+
+unida = limpio.merge(tabla, left_on="ciudad_limpia", right_on="ciudad",
+                     how="left", validate="many_to_one", indicator=True)
+print(unida["_merge"].value_counts())        # ¿cuántos left_only?
+print(len(limpio), "->", len(unida))        # en un left many_to_one deben ser iguales
+\end{Verbatim}
+\end{codigo}
+
+\begin{recuerda}
+\small En la Clase 10, la sede de Itagüí estaba escrita \texttt{"Itagui"}
+y sus socios quedaban sin sede sin ningún error; al apilar las nuevas
+inscripciones, el \texttt{id\_socio} 7 apareció dos veces con dos personas
+distintas; y una sede repetida en el catálogo convirtió 50 socios en 72
+filas. Las tres cosas se detectan con los chequeos de esta página.
+\end{recuerda}
+
+\begin{checklist}
+  \item La tabla unida tiene el número de filas que esperaba, y sé por qué.
+  \item Revisé los \texttt{left\_only} y \texttt{right\_only}, y anoté qué hice con ellos.
+  \item Usé \texttt{validate} en cada \texttt{merge}.
+\end{checklist}
+
+% ============================================================
+\paso{6}{Agrupar y resumir}{¿Cómo se comporta cada grupo, comparado con los demás?}
+
+\texttt{groupby} hace siempre lo mismo, en tres tiempos: divide la tabla en
+grupos, aplica un cálculo a cada uno y junta los resultados en una tabla
+nueva, con una fila por grupo.
+
+\begin{center}
+\begin{tikzpicture}[
+  c/.style={draw=esumerGray!70!black, line width=0.4pt, minimum height=0.5cm, inner sep=1pt, font=\scriptsize},
+  h/.style={c, fill=esumerNavy, text=white, font=\scriptsize\bfseries},
+  et/.style={font=\small\bfseries, text=esumerNavy},
+]
+  % colores por grupo
+  \colorlet{gM}{esumerTeal!30}
+  \colorlet{gB}{esumerSky!30}
+  \colorlet{gE}{esumerOrange!35}
+  % ---------- Tabla original ----------
+  \node[et] at (1.7,0.95) {Tabla};
+  \node[h, minimum width=2.0cm] at (1.0,0.25) {ciudad};
+  \node[h, minimum width=1.4cm] at (2.7,0.25) {edad};
+  \foreach \i/\ci/\e/\g in {1/Medellín/30/gM, 2/Bogotá/50/gB, 3/Envigado/20/gE,
+                            4/Medellín/40/gM, 5/Bogotá/30/gB, 6/Envigado/40/gE} {
+    \node[c, minimum width=2.0cm, fill=\g] at (1.0,0.25-0.5*\i) {\ci};
+    \node[c, minimum width=1.4cm, fill=\g] at (2.7,0.25-0.5*\i) {\e};
+  }
+  % ---------- Dividir ----------
+  \node[et] at (6.6,0.95) {1. Dividir};
+  \node[fn] at (6.6,0.45) {groupby("ciudad")};
+  \foreach \ci/\g/\ya/\e/\f in {Medellín/gM/-0.25/30/40, Bogotá/gB/-1.5/50/30, Envigado/gE/-2.75/20/40} {
+    \node[c, minimum width=2.0cm, fill=\g] at (6.0,\ya) {\ci};
+    \node[c, minimum width=1.2cm, fill=\g] at (7.6,\ya) {\e};
+    \node[c, minimum width=2.0cm, fill=\g] at (6.0,\ya-0.5) {\ci};
+    \node[c, minimum width=1.2cm, fill=\g] at (7.6,\ya-0.5) {\f};
+  }
+  \draw[flecha] (3.6,-1.5) -- (4.8,-1.5);
+  % ---------- Aplicar ----------
+  \node[et] at (10.5,0.95) {2. Aplicar};
+  \node[fn] at (10.5,0.45) {["edad"].mean()};
+  \foreach \ya/\val/\g in {-0.5/35/gM, -1.75/40/gB, -3.0/30/gE} {
+    \draw[flecha] (8.35,\ya) -- (9.9,\ya);
+    \node[circle, draw=esumerNavy, fill=\g, minimum size=0.75cm, font=\small\bfseries] at (10.5,\ya) {\val};
+  }
+  % ---------- Combinar ----------
+  \node[et] at (14.85,0.95) {3. Combinar};
+  \node[fn] at (14.85,0.45) {una fila por grupo};
+  \node[h, minimum width=2.0cm] at (14.0,-1.0) {ciudad};
+  \node[h, minimum width=1.7cm] at (15.85,-1.0) {edad prom.};
+  \foreach \i/\ci/\val/\g in {1/Medellín/35/gM, 2/Bogotá/40/gB, 3/Envigado/30/gE} {
+    \node[c, minimum width=2.0cm, fill=\g] at (14.0,-1.0-0.5*\i) {\ci};
+    \node[c, minimum width=1.7cm, fill=\g] at (15.85,-1.0-0.5*\i) {\val};
+  }
+  \foreach \ya/\yb in {-0.5/-1.5, -1.75/-2.0, -3.0/-2.5}
+    {\draw[flecha] (10.9,\ya) -- (12.95,\yb);}
+\end{tikzpicture}
+
+{\footnotesize\itshape Datos ilustrativos (seis filas) para mostrar la mecánica.}
+\end{center}
+
+\begin{funciones}
+Contar filas por grupo & \texttt{limpio.groupby("ciudad").size()} & 9\\
+Varios indicadores a la vez, con nombre & \texttt{.agg(clientes=("id\_cliente", "count"), monto=("monto", "sum"))} & 9\\
+Ordenar el resumen & \texttt{.sort\_values("clientes", ascending=False)} & 9\\
+Tabla cruzada de dos categorías & \texttt{pd.crosstab(limpio["ciudad"], limpio["plan"])} & 9\\
+Total del grupo en cada fila (para participaciones) & \texttt{.groupby("ciudad")["monto"].transform("sum")} & 9\\
+Resumen por mes & \texttt{limpio.groupby("mes").size()} & 9\\
+\end{funciones}
+
+\begin{codigo}[title=En tu notebook]
+\begin{Verbatim}
+resumen = (limpio.groupby("ciudad_limpia")
+                 .agg(clientes=("id_cliente", "count"),
+                      monto_total=("monto", "sum"),
+                      edad_promedio=("edad", "mean"))
+                 .sort_values("clientes", ascending=False)
+                 .round(1))
+resumen["participacion"] = (resumen["clientes"] / resumen["clientes"].sum() * 100).round(1)
+resumen
+\end{Verbatim}
+\end{codigo}
+
+\begin{cuidado}[Un promedio sin su conteo engaña]
+\small Incluye siempre una columna con el número de filas de cada grupo.
+En la Clase 9, Itagüí tenía solo 2 socios: su promedio se veía igual de
+``serio'' que el de Medellín, con 22. Si un grupo tiene muy pocas filas,
+dilo junto al resultado o júntalo con otros.
+\end{cuidado}
+
+\begin{checklist}
+  \item El resumen responde directamente a una de mis preguntas del Paso 0.
+  \item Tiene una columna de conteo, está ordenado y redondeado.
+  \item La suma de los conteos coincide con el total de filas de \texttt{limpio}.
+\end{checklist}
+
+% ============================================================
+\paso{7}{Visualizar y comunicar}{¿Qué gráfico responde mi pregunta, y qué conclusión quiero que se lleve quien lo vea?}
+
+Vuelve a tus preguntas del Paso 0: el tipo de pregunta decide el gráfico.
+Todos se hacen con el método \texttt{.plot} de pandas, directamente sobre
+la columna o la tabla resumen.
+
+\begin{center}
+\begin{tikzpicture}[
+  rama/.style={draw=none, rounded corners=3pt, text=white, font=\small\bfseries,
+               minimum width=3.8cm, text width=3.6cm, align=center, minimum height=1.25cm, inner sep=3pt},
+  opc/.style={caja, minimum width=3.8cm, text width=3.6cm, align=left, font=\scriptsize, inner sep=4pt},
+]
+  \node[caja, fill=esumerNavy, text=white, font=\small\bfseries, text width=7cm] (raiz) at (8.65,0)
+    {¿Qué pregunta responde tu gráfico?};
+  \node[rama, fill=esumerTeal] (r1) at (2.2,-1.7) {Comparación\\[-1pt]{\scriptsize\mdseries ¿cuál es mayor?}};
+  \node[rama, fill=esumerSky] (r2) at (6.5,-1.7) {Composición\\[-1pt]{\scriptsize\mdseries ¿cómo se reparte?}};
+  \node[rama, fill=esumerOrange] (r3) at (10.8,-1.7) {Distribución\\[-1pt]{\scriptsize\mdseries ¿cómo se dispersa?}};
+  \node[rama, fill=esumerMagenta] (r4) at (15.1,-1.7) {Relación\\[-1pt]{\scriptsize\mdseries ¿se mueven juntas?}};
+  \node[opc, anchor=north] at (2.2,-2.55)
+    {\textbf{Pocas categorías:} barras\\{\ttfamily s.plot.barh()}\\[3pt]
+     \textbf{En el tiempo:} línea\\{\ttfamily s.plot(marker="o")}};
+  \node[opc, anchor=north] at (6.5,-2.55)
+    {\textbf{Entre grupos:} apiladas\\{\ttfamily t.plot.bar(stacked=True)}\\[3pt]
+     \textbf{3 a 5 partes:} pastel\\{\ttfamily s.plot.pie()}};
+  \node[opc, anchor=north] at (10.8,-2.55)
+    {\textbf{Una variable:} histograma\\{\ttfamily s.plot.hist()}\\[3pt]
+     \textbf{Por grupos:} boxplot\\{\ttfamily df.boxplot(column="edad",\\\hspace*{1.5em}by="grupo")}};
+  \node[opc, anchor=north] at (15.1,-2.55)
+    {\textbf{Dos numéricas:} dispersión\\{\ttfamily df.plot.scatter(x="edad",\\\hspace*{1.5em}y="monto")}\\[3pt]
+     \textbf{Acompáñala con:}\\{\ttfamily df["a"].corr(df["b"])}};
+  \foreach \i in {1,2,3,4} {\draw[flecha] (raiz.south) -- ++(0,-0.35) -| (r\i.north);}
+\end{tikzpicture}
+
+{\footnotesize\itshape \texttt{s}: una columna o un resumen (\texttt{Series});
+\texttt{t}: una tabla cruzada; \texttt{df}: tu tabla. Ejemplos completos en el notebook de la Clase 11.}
+\end{center}
+
+\begin{codigo}[title=En tu notebook: un gráfico completo]
+\begin{Verbatim}
+import matplotlib.pyplot as plt
+
+resumen["clientes"].sort_values().plot.barh(color="#0CB3B6",
+                                            title="Escribe aquí tu conclusión, no una descripción")
+plt.xlabel("Clientes")
+plt.show()
+\end{Verbatim}
+\end{codigo}
+
+\textbf{Antes de mostrarlo} (la lista de la Clase 11):
+
+\begin{checklist}
+  \item El título dice la conclusión (``Medellín concentra el 44\% de los
+    socios''), no la descripción (``Socios por ciudad'').
+  \item En barras, el eje empieza en cero.
+  \item Los ejes tienen nombre y unidad, y las categorías están ordenadas por valor.
+  \item Cada color significa algo; no hay rejillas, leyendas ni bordes que sobren.
+  \item Sin doble eje: si son dos variables con unidades distintas, van en dos gráficos.
+\end{checklist}
+
+\textbf{Del gráfico al hallazgo.} Un gráfico no es todavía un hallazgo. El
+hallazgo es la frase que alguien que toma decisiones puede usar:
+
+\begin{center}
+\begin{tikzpicture}[
+  pieza/.style={caja, minimum width=3.8cm, text width=3.5cm, minimum height=1.9cm},
+  tit/.style={font=\bfseries\small, text=white, fill=esumerTeal, rounded corners=2pt,
+              minimum width=3.8cm, inner sep=3pt},
+]
+  \foreach \x/\tit in {2.2/Evidencia, 6.5/Gráfico, 10.8/Hallazgo, 15.1/Recomendación}
+    {\node[tit] at (\x,1.3) {\tit};}
+  \node[pieza] (a) at (2.2,0) {\small 22 de los 50 socios están en Medellín};
+  \node[pieza] (b) at (6.5,0) {\small Barras horizontales, ordenadas, eje desde cero};
+  \node[pieza] (c) at (10.8,0) {\small Medellín concentra el 44\% de los socios};
+  \node[pieza] (d) at (15.1,0) {\small Priorizar allí la campaña de renovación};
+  \draw[flecha] (a) -- (b);
+  \draw[flecha] (b) -- (c);
+  \draw[flecha] (c) -- (d);
+\end{tikzpicture}
+
+{\footnotesize\itshape Cifras reales del dataset limpio del gimnasio; la recomendación es un ejemplo.}
+\end{center}
+
+% ============================================================
+\clearpage
+\section*{\color{esumerNavy}Entregable de la sesión}
+
+Al final de la clase, comparte tu notebook y esta página completa. Es
+también el punto de partida de la Clase 13: el archivo limpio que guardes
+hoy es el que vas a cargar en Power BI.
+
+\begin{codigo}[title=Última celda de tu notebook]
+\begin{Verbatim}
+limpio.to_csv("mis_datos_limpios.csv", index=False)    # descárgalo desde el panel de archivos
+\end{Verbatim}
+\end{codigo}
+
+\textbf{Mis hallazgos}
+
+\renewcommand{\arraystretch}{3.2}
+\begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}p{0.5cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+& \textbf{Evidencia (cifra y gráfico)} & \textbf{Hallazgo} & \textbf{Recomendación}\\
+\midrule
+1 & & & \\ \hline
+2 & & & \\ \hline
+3 & & & \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.15}
+
+\vspace{8pt}
+\textbf{Bitácora de decisiones}
+
+Una fila por cada problema que encontraste. La primera es un ejemplo del
+curso; quien lea tu análisis debe poder entender, solo con esta tabla, qué
+cambiaste en los datos y por qué.
+
+\renewcommand{\arraystretch}{2.0}
+\begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}p{0.9cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.0cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Paso} & \textbf{Qué encontré} & \textbf{Qué decidí} & \textbf{Filas afectadas} & \textbf{Por qué}\\
+\midrule
+{\small\itshape 3} & {\small\itshape \texttt{edad} tenía texto (\texttt{"treinta"}) y celdas vacías} & {\small\itshape Convertir con \texttt{to\_numeric} e imputar con la mediana} & {\small\itshape las que no eran un número} & {\small\itshape La mediana no se deja arrastrar por valores extremos}\\ \hline
+& & & & \\ \hline
+& & & & \\ \hline
+& & & & \\ \hline
+& & & & \\ \hline
+& & & & \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.15}
+
+\end{document}

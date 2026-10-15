@@ -8,8 +8,9 @@ Repositorio del material de clase (Esumer / Estud-IA, cohorte 20262).
 - `recursos/`: material de apoyo transversal, como la referencia de funciones y métodos del curso (`referencia-funciones-metodos.pdf`).
 - `clases/`: una carpeta por sesión, con la fuente `.tex` de las
   diapositivas, el PDF compilado y, según la clase, el material de la hora
-  de práctica: cuadernos de Jupyter (`notebooks/*.ipynb`) o un taller en PDF
-  (`taller-*.tex`/`.pdf`, con sus datos en `datos/*.csv`).
+  de práctica: cuadernos de Jupyter (`notebooks/*.ipynb`), un taller en PDF
+  (`taller-*.tex`/`.pdf`, con sus datos en `datos/*.csv`) o una guía en PDF
+  (`guia-*.tex`/`.pdf`).
 
 > La plantilla LaTeX (`plantilla/`) vive **fuera** de este repositorio, un
 > nivel arriba (`../plantilla/`), porque es el tema reutilizable y no es
@@ -55,6 +56,7 @@ cada commit para confirmar que no se cuele ninguno.
 | 5 | 9 | Agrupaciones y análisis con groupby | ✅ listo (solo notebook, sin diapositivas) |
 | 5 | 10 | Merge, concatenación e integración de fuentes | ✅ listo (solo notebook, sin diapositivas) |
 | 6 | 11 | Principios de visualización y comunicación de datos | ✅ listo |
+| 6 | 12 | MasterClass: recapitulación del Módulo 2 | ✅ listo (guía de aplicación en PDF, sin diapositivas) |
 
 (Se va actualizando a medida que se preparan las demás clases;
 ver el detalle completo en `cronograma.md`.)
