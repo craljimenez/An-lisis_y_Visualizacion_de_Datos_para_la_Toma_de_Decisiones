@@ -59,6 +59,7 @@ cada commit para confirmar que no se cuele ninguno.
 | 6 | 12 | MasterClass: recapitulación del Módulo 2 | ✅ listo (guía de aplicación en PDF, sin diapositivas) |
 | 7 | 13 | Power BI: carga, transformación y modelo de datos | ✅ listo (diapositivas en formato guía, datos en `datos/gimnasio_vitalis.xlsx`) |
 | 7 | 14 | Dashboard e identificación de insights | ✅ listo (diapositivas en formato guía, mismos datos de la Clase 13) |
+| 8 | 15 | Identificación de insights (cont.): KPI, segmentadores y filtros | ✅ listo (diapositivas en formato guía, mismos datos de la Clase 13) |
 
 (Se va actualizando a medida que se preparan las demás clases;
 ver el detalle completo en `cronograma.md`.)
