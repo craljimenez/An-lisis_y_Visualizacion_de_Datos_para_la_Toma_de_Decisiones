@@ -1,0 +1,1042 @@
+% ============================================================
+%  Guía de aplicación: un tablero para la gerencia de Cafés Altavista
+%  Semana 8 · Clase 16: MasterClass (Recapitulación del Módulo 3)
+%  Curso: Análisis y Visualización de Datos para la Toma de Decisiones
+%  Datos: datos/cafes_altavista.xlsx (simulados; empresa ficticia)
+%  Compilar con: xelatex guia-aplicacion-modulo3.tex (dos veces)
+% ============================================================
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{fontspec}
+\usepackage{amssymb}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\tcbuselibrary{skins,breakable}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,shapes.multipart,babel}
+
+% ---------------- Tipografía (misma lógica que la plantilla de slides) ----------------
+\IfFontExistsTF{Aptos}{\setmainfont{Aptos}}{\setmainfont{Lato}}
+\setmonofont{DejaVu Sans Mono}[Scale=0.82]
+
+% ---------------- Paleta Esumer ----------------
+\definecolor{esumerNavy}{HTML}{262E66}
+\definecolor{esumerNavyDark}{HTML}{1E4093}
+\definecolor{esumerTeal}{HTML}{0CB3B6}
+\definecolor{esumerSky}{HTML}{26A1DB}
+\definecolor{esumerOrange}{HTML}{EF7C2C}
+\definecolor{esumerGreen}{HTML}{94C122}
+\definecolor{esumerMagenta}{HTML}{AF348B}
+\definecolor{esumerGray}{HTML}{E8E8E8}
+\definecolor{esumerBg}{HTML}{F7F8FA}
+
+\hypersetup{colorlinks=true, linkcolor=esumerNavyDark, urlcolor=esumerNavyDark}
+\graphicspath{{../../../plantilla/assets/}}
+
+% ---------------- Enlaces ----------------
+\newcommand{\urldatos}{https://github.com/craljimenez/An-lisis_y_Visualizacion_de_Datos_para_la_Toma_de_Decisiones/raw/main/clases/semana08-clase16-masterclass-recapitulacion-modulo3/datos/cafes_altavista.xlsx}
+\newcommand{\urlstore}{https://apps.microsoft.com/detail/9ntxr16hnw1t?hl=es-co}
+\newcommand{\urlconsultas}{https://learn.microsoft.com/es-es/power-bi/transform-model/desktop-query-overview}
+\newcommand{\urlrelaciones}{https://learn.microsoft.com/es-es/power-bi/transform-model/desktop-create-and-manage-relationships}
+\newcommand{\urlestrella}{https://learn.microsoft.com/es-es/power-bi/guidance/star-schema}
+\newcommand{\urlcolumnas}{https://learn.microsoft.com/es-es/power-bi/transform-model/desktop-calculated-columns}
+\newcommand{\urlmedidas}{https://learn.microsoft.com/es-es/power-bi/transform-model/desktop-measures}
+\newcommand{\urlkpi}{https://learn.microsoft.com/es-es/power-bi/visuals/power-bi-visualization-kpi}
+\newcommand{\urlsegmentadores}{https://learn.microsoft.com/es-es/power-bi/visuals/power-bi-visualization-slicers}
+\newcommand{\urlfiltros}{https://learn.microsoft.com/es-es/power-bi/create-reports/power-bi-report-add-filter}
+\newcommand{\urlinteracciones}{https://learn.microsoft.com/es-es/power-bi/create-reports/service-reports-visual-interactions}
+\newcommand{\urlexplorar}{https://learn.microsoft.com/es-es/power-bi/explore-reports/end-user-drill}
+\newcommand{\urlazuremaps}{https://learn.microsoft.com/es-es/azure/azure-maps/power-bi-visual-get-started}
+\newcommand{\urltrucos}{https://learn.microsoft.com/es-es/power-bi/create-reports/desktop-tips-and-tricks-for-creating-reports}
+
+% ---------------- Encabezado / pie de página ----------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\small\color{esumerNavyDark} Guía de aplicación del Módulo 3 \textperiodcentered\ Clase 16}
+\fancyfoot[R]{\small\color{esumerNavyDark} Cristian A. Jiménez C. \quad\textperiodcentered\quad \thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+% ---------------- Fórmulas DAX ----------------
+\newtcolorbox{dax}[1][]{
+  colback=esumerBg, colframe=esumerNavy!35, boxrule=0.5pt, arc=1mm,
+  left=6pt, right=6pt, top=3pt, bottom=3pt, fonttitle=\bfseries\small,
+  coltitle=esumerNavy, colbacktitle=esumerGray, fontupper=\small\ttfamily, #1
+}
+
+% ---------------- Cajas reutilizables ----------------
+\newtcolorbox{recuerda}[1][Lo viste en clase]{
+  colback=esumerBg, colframe=esumerTeal, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerTeal,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+\newtcolorbox{cuidado}[1][Cuidado]{
+  colback=white, colframe=esumerOrange, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerOrange,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+\newtcolorbox{control}[1][Cifras de control: compara antes de seguir]{
+  colback=white, colframe=esumerGreen!80!black, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerGreen!80!black,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+
+% Menú de Power BI: nombre en español (nombre en inglés)
+\newcommand{\menu}[2]{\textbf{#1} {\color{black!55}(#2)}}
+% Referencia a la clase donde se vio
+\newcommand{\vez}[1]{\leavevmode\mbox{\color{esumerTeal}\textbf{[#1]}}}
+
+% ---------------- Encabezado de cada etapa ----------------
+\newcommand{\etapa}[3]{%
+  \clearpage\noindent
+  \begin{tikzpicture}[baseline=(n.base)]
+    \node[circle, fill=esumerOrange, text=white, font=\bfseries\large,
+          minimum size=0.85cm, inner sep=0pt] (n) {#1};
+  \end{tikzpicture}\hspace{8pt}%
+  {\Large\bfseries\color{esumerNavy} #2}\par
+  \vspace{-2pt}{\color{esumerOrange}\rule{\textwidth}{1pt}}\par
+  \vspace{2pt}
+  {\color{esumerNavyDark}\textbf{Objetivo:}} \textit{#3}\par
+  \vspace{2pt}
+}
+\newcommand{\subtitulo}[1]{\par\needspace{3\baselineskip}\vspace{4pt}{\large\bfseries\color{esumerNavyDark} #1}\par}
+
+% ---------------- Lista de chequeo ----------------
+\newlist{checklist}{itemize}{1}
+\setlist[checklist]{label=$\square$, itemsep=1pt, topsep=2pt, leftmargin=1.4em}
+
+% ---------------- Estilos TikZ comunes ----------------
+\tikzset{
+  every node/.append style={execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000\relax}},
+  flecha/.style={-{Stealth[length=2.4mm]}, line width=0.9pt, color=esumerNavy},
+  caja/.style={draw=esumerNavy, line width=0.7pt, rounded corners=3pt,
+               fill=white, align=center, inner sep=4pt},
+  num/.style={circle, fill=esumerOrange, text=white, font=\bfseries\small,
+              minimum size=0.6cm, inner sep=0pt},
+}
+
+% ============================================================
+\begin{document}
+
+% ---------------- Encabezado ----------------
+\begin{minipage}[c]{0.18\textwidth}
+  \includegraphics[height=1.15cm,width=\linewidth,keepaspectratio]{esumer-logo.png}
+\end{minipage}%
+\begin{minipage}[c]{0.80\textwidth}
+  \raggedleft
+  {\Large\bfseries\color{esumerNavy} Guía de aplicación: un tablero para la gerencia}\\[3pt]
+  {\small\color{esumerNavyDark} Semana 8 \textperiodcentered\ Clase 16 (MasterClass del Módulo 3) \textperiodcentered\ Análisis y Visualización de Datos para la Toma de Decisiones}
+\end{minipage}
+
+\vspace{4pt}
+{\color{esumerOrange}\rule{\textwidth}{2pt}}
+\vspace{6pt}
+
+\textbf{Para qué es esta guía.} En las Clases 13, 14 y 15 comenzamos a construir, paso a
+paso y con instrucciones detalladas, un tablero del gimnasio. Hoy haces lo
+mismo \textbf{por tu cuenta}, con datos que no conoces: los de una cadena de
+cafeterías. La guía te dice qué construir y cómo comprobar que vas bien,
+pero ya no te da cada clic: cuando dudes, las pistas entre corchetes,
+como \vez{Clase 13, paso 5}, te dicen en qué clase y en qué paso lo viste.
+
+\begin{recuerda}[El caso: Cafés Altavista S.A.S.]
+\small Cafés Altavista es una cadena de \textbf{seis cafeterías} en Medellín,
+Bogotá, Cali y Pereira. Vende bebidas calientes, bebidas frías, panadería y
+café en grano para llevar a casa. Su gerencia te contrató para responder,
+con un tablero de Power BI, las preguntas que llevará al comité de octubre
+de 2026. Tienes un año de ventas, de octubre de 2025 a septiembre de 2026.
+
+\vspace{2pt}
+\footnotesize\itshape La empresa es ficticia y los datos son simulados con
+fines académicos, pero tienen los problemas de un archivo real: errores de
+digitación, duplicados, celdas vacías y alguna sorpresa.
+\end{recuerda}
+
+\textbf{Al terminar la sesión deberías tener:}
+\begin{enumerate}[itemsep=1pt, topsep=2pt]
+  \item Un archivo \texttt{cafes\_altavista.pbix} con los datos limpios en
+    Power Query y un modelo estrella con relaciones correctas.
+  \item Las medidas DAX de la etapa 3, con las cifras de control comprobadas.
+  \item Una página exploratoria y una \textbf{página para la gerencia} con
+    KPI, segmentadores, una jerarquía y un mapa.
+  \item Una \textbf{ficha de 3 a 5 insights} y una presentación de cinco
+    minutos para el comité (etapa 6).
+\end{enumerate}
+
+\textbf{Agenda sugerida para las 3 horas}
+
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.4cm}>{\raggedright\arraybackslash}p{6.9cm}>{\raggedright\arraybackslash}p{7.6cm}@{}}
+\toprule
+\textbf{Hora} & \textbf{Etapas} & \textbf{Producto al final de la hora}\\
+\midrule
+Hora 1 & 1. Cargar y limpiar \textperiodcentered\ 2. Modelo & Cuatro tablas limpias, \texttt{Calendario} y cuatro relaciones.\\
+Hora 2 & 3. Columnas y medidas \textperiodcentered\ 4. Explorar & Medidas con cifras de control y respuestas a las preguntas.\\
+Hora 3 & 5. Página para la gerencia \textperiodcentered\ 6. Comunicar & Página final, ficha de insights y presentación para el comité.\\
+\bottomrule
+\end{tabular}
+
+\vspace{6pt}
+\textbf{Antes de empezar:} descarga el archivo
+\href{\urldatos}{\color{esumerOrange}\texttt{cafes\_altavista.xlsx}} (unos 4 MB)
+y abre Power BI Desktop
+(\href{\urlstore}{\color{esumerOrange}descarga en Microsoft Store} si no lo
+tienes). Guarda tu archivo \texttt{.pbix} al terminar cada etapa.
+
+% ============================================================
+\clearpage
+\section*{\color{esumerNavy}La carta de la gerencia}
+
+Esto es lo que te escribió la gerente general. Léelo completo: cada
+pregunta te dice qué columnas, qué medidas y qué gráfico vas a necesitar.
+
+\begin{tcolorbox}[colback=white, colframe=esumerNavy, boxrule=0.8pt, arc=1mm,
+  left=10pt, right=10pt, top=6pt, bottom=6pt]
+\small
+\textit{Hola. Para el comité de octubre necesito respuestas claras, con cifras,
+a estas preguntas:}
+
+\begin{enumerate}[label=\textbf{P\arabic*.}, leftmargin=2.2em, itemsep=3pt, topsep=4pt]
+  \item \textit{En septiembre vendimos más que nunca. Pero el contador dice
+    que el margen se ve peor. ¿Qué pasó?}
+  \item \textit{¿Qué tiendas cumplen su meta mensual de ventas? Tengo la
+    impresión de que Chapinero no va bien: ¿es cierto?, ¿cuándo le va peor?}
+  \item \textit{Lanzamos la app el 1 de marzo de 2026. ¿Está funcionando? ¿Quienes
+    piden por la app compran más o menos que en el mostrador?}
+  \item \textit{¿A qué horas debemos reforzar el personal, y qué productos
+    hay que tener listos en cada momento del día?}
+  \item \textit{Usaquén abrió el 1 de abril de 2026. ¿Va por buen camino?}
+  \item \textit{¿Vale la pena el programa de socios? ¿Los socios compran más
+    que los clientes ocasionales?}
+\end{enumerate}
+
+\textit{Una cosa más: el reporte de julio de Granada, en Cali, me pareció
+raro. Revísalo antes de presentarlo.}
+
+\vspace{4pt}
+\textit{Gracias.}\\
+\textbf{Gerencia General, Cafés Altavista}
+\end{tcolorbox}
+
+\subtitulo{Lo que la gerencia ya sabe, y tú también}
+
+\begin{itemize}[itemsep=2pt, topsep=2pt]
+  \item \textbf{Metas de ventas.} Cada tienda tiene una meta \emph{mensual}
+    de ventas netas. Está en la hoja \texttt{Tiendas}, en la columna
+    \texttt{meta\_ventas\_mensual\_cop}.
+  \item \textbf{Meta de margen.} La empresa espera un margen bruto de al
+    menos el \textbf{60\%} de las ventas netas. Es una decisión de la
+    gerencia, no sale de los datos (Clase 15, paso 4).
+  \item \textbf{Campaña de septiembre.} En septiembre de 2026 se hizo la campaña
+    ``Mes del grano'': 25\% de descuento en café en grano.
+  \item \textbf{Socios.} Los clientes inscritos en el programa de socios
+    tienen un \texttt{id\_cliente}. Si la venta no tiene \texttt{id\_cliente},
+    fue a un cliente ocasional. Los socios reciben descuentos en algunas
+    compras.
+  \item \textbf{Horario.} Todas las tiendas abren de 6:30 a.\,m. a 8:00 p.\,m.
+\end{itemize}
+
+\subtitulo{Cómo trabajar}
+
+\begin{itemize}[itemsep=2pt, topsep=2pt]
+  \item \textbf{En parejas}, si el grupo lo permite: uno construye y el otro
+    revisa las cifras de control. Cambien de rol en cada etapa.
+  \item \textbf{No avances si una cifra de control no cuadra.} Casi siempre
+    el error está en la etapa anterior: un duplicado que no quitaste, una
+    relación que falta o un tipo de dato equivocado. La última página tiene
+    una tabla con los errores más comunes.
+  \item \textbf{Cada pregunta de la gerencia termina en una frase}, no en un
+    gráfico: una cifra, lo que significa y qué recomiendas hacer.
+\end{itemize}
+
+% ============================================================
+\clearpage
+\section*{\color{esumerNavy}Los datos: \texttt{cafes\_altavista.xlsx}}
+
+Un libro de Excel con cuatro hojas, tal como las exporta el sistema de caja.
+\textbf{No las corrijas en Excel}: toda la limpieza se hace en Power Query,
+para que quede registrada en los pasos aplicados (Clase 13).
+
+\vspace{2pt}
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.4cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Columna} & \textbf{Qué contiene}\\
+\midrule
+\multicolumn{2}{@{}l}{\color{esumerOrange}\textbf{Ventas}: una fila por cada producto de cada compra (77.860 filas en el Excel)}\\
+\texttt{id\_linea} & Identificador de la fila. No debería repetirse.\\
+\texttt{id\_ticket} & Identificador de la compra. Un ticket puede tener varias líneas (un capuchino y un croissant).\\
+\texttt{fecha}, \texttt{hora} & Día y hora de la compra.\\
+\texttt{id\_tienda}, \texttt{id\_producto} & Tienda donde se vendió y producto vendido.\\
+\texttt{id\_cliente} & Socio que compró. Vacío si fue un cliente ocasional.\\
+\texttt{canal} & \texttt{Mostrador}, \texttt{Domicilio} o \texttt{App}.\\
+\texttt{cantidad}, \texttt{precio\_unitario\_cop} & Unidades y precio de cada una, en pesos.\\
+\texttt{descuento\_cop} & Descuento de la línea, en pesos. Vacío si no hubo descuento.\\
+\texttt{medio\_pago} & Efectivo, tarjeta, Nequi\ldots\\
+\midrule
+\multicolumn{2}{@{}l}{\color{esumerOrange}\textbf{Productos}: una fila por producto (18 productos)}\\
+\texttt{id\_producto}, \texttt{producto} & Código y nombre.\\
+\texttt{categoria}, \texttt{subcategoria} & Cuatro categorías, cada una con sus subcategorías (por ejemplo, Bebidas calientes $>$ Café con leche).\\
+\texttt{precio\_lista\_cop} & Precio de venta normal, por unidad.\\
+\texttt{costo\_unitario\_cop} & Lo que le cuesta a la empresa cada unidad (insumos y empaque).\\
+\midrule
+\multicolumn{2}{@{}l}{\color{esumerOrange}\textbf{Tiendas}: una fila por tienda (6 tiendas)}\\
+\texttt{id\_tienda}, \texttt{tienda} & Código y nombre.\\
+\texttt{ciudad}, \texttt{departamento}, \texttt{pais} & Ubicación por nombre.\\
+\texttt{latitud}, \texttt{longitud} & Ubicación por coordenadas.\\
+\texttt{fecha\_apertura}, \texttt{area\_m2} & Desde cuándo funciona y su tamaño.\\
+\texttt{meta\_ventas\_mensual\_cop} & Meta de ventas netas de \emph{un mes}, en pesos.\\
+\midrule
+\multicolumn{2}{@{}l}{\color{esumerOrange}\textbf{Clientes}: una fila por socio del programa (905 filas en el Excel)}\\
+\texttt{id\_cliente}, \texttt{nombre} & Código y nombre del socio.\\
+\texttt{fecha\_registro}, \texttt{fecha\_nacimiento} & Cuándo se inscribió y cuándo nació.\\
+\texttt{ciudad}, \texttt{correo} & Ciudad y correo que dio al inscribirse.\\
+\texttt{acepta\_promociones} & Si autorizó recibir promociones.\\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\vspace{4pt}
+\textbf{Dos definiciones que vas a usar todo el tiempo:}
+
+\begin{center}
+\begin{tikzpicture}[
+  term/.style={caja, minimum height=1.1cm, font=\small},
+  op/.style={font=\large\bfseries, text=esumerNavy},
+]
+  \node[term, fill=esumerTeal!15, text width=2.6cm] (vn) at (1.5,0) {\textbf{Venta neta}\\de una línea};
+  \node[op] at (3.25,0) {=};
+  \node[term, text width=1.6cm] at (4.6,0) {cantidad};
+  \node[op] at (5.75,0) {$\times$};
+  \node[term, text width=2.7cm] at (7.6,0) {precio unitario};
+  \node[op] at (9.5,0) {$-$};
+  \node[term, text width=2.2cm] at (11.1,0) {descuento};
+  \node[term, fill=esumerTeal!15, text width=2.6cm] (mg) at (1.5,-1.5) {\textbf{Margen}};
+  \node[op] at (3.25,-1.5) {=};
+  \node[term, text width=2.5cm] at (5.0,-1.5) {venta neta};
+  \node[op] at (6.75,-1.5) {$-$};
+  \node[term, text width=3.9cm] at (9.3,-1.5) {cantidad $\times$ costo unitario};
+  \node[font=\footnotesize, text width=3.3cm, align=left] at (14.8,-0.75)
+    {El \textbf{margen \%} es el margen dividido por la venta neta: de cada
+     peso vendido, cuánto queda después de pagar el producto.};
+\end{tikzpicture}
+\end{center}
+
+% ============================================================
+\clearpage
+\section*{\color{esumerNavy}El recorrido completo}
+
+Seis etapas, las mismas del Módulo 3. Las cuatro primeras construyen; las
+dos últimas comunican. La etiqueta de cada caja te dice en qué clase lo
+viste.
+
+\vspace{4pt}
+\begin{center}
+\begin{tikzpicture}[
+  et/.style={draw=esumerNavy, line width=0.8pt, rounded corners=3pt,
+             fill=white, minimum width=5.0cm, minimum height=3.1cm,
+             text width=4.7cm, align=center, inner sep=3pt, font=\scriptsize},
+  clase/.style={fill=esumerTeal, text=white, font=\scriptsize\bfseries,
+                rounded corners=2pt, inner sep=2.5pt},
+]
+  \node[et] (e1) at (2.85,0)
+    {{\bfseries\small Cargar y limpiar}\\[3pt]
+     {Power Query: tipos, duplicados, vacíos, texto con
+      variantes\\[2pt]\itshape ¿Mis datos dicen lo que creo que dicen?}};
+  \node[et] (e2) at (8.5,0)
+    {{\bfseries\small Modelo de datos}\\[3pt]
+     {Hechos y dimensiones, \texttt{Calendario}, relaciones
+      muchos a uno\\[2pt]\itshape ¿Cada filtro llega a donde debe?}};
+  \node[et] (e3) at (14.15,0)
+    {{\bfseries\small Columnas y medidas}\\[3pt]
+     {DAX: venta neta, costo, margen, ticket, meta,
+      variación\\[2pt]\itshape ¿Mis cifras cuadran con las de control?}};
+  \node[et] (e4) at (14.15,-4.0)
+    {{\bfseries\small Explorar}\\[3pt]
+     {Barras, líneas, columnas, mapa, anomalías\\[2pt]
+      \itshape ¿Qué responde cada pregunta de la gerencia?}};
+  \node[et] (e5) at (8.5,-4.0)
+    {{\bfseries\small Página para la gerencia}\\[3pt]
+     {KPI frente a la meta, segmentadores, jerarquía,
+      interacciones\\[2pt]\itshape ¿Otro la entiende sin que yo la explique?}};
+  \node[et] (e6) at (2.85,-4.0)
+    {{\bfseries\small Comunicar}\\[3pt]
+     {Ficha de insights y presentación de cinco
+      minutos\\[2pt]\itshape ¿Qué decisión se toma con esto?}};
+  \foreach \i in {1,...,6} {\node[num] at (e\i.north west) {\i};}
+  \node[clase, anchor=south east] at ($(e1.north east)+(-0.15,-0.02)$) {Clase 13};
+  \node[clase, anchor=south east] at ($(e2.north east)+(-0.15,-0.02)$) {Clase 13};
+  \node[clase, anchor=south east] at ($(e3.north east)+(-0.15,-0.02)$) {Clases 13 a 15};
+  \node[clase, anchor=south east] at ($(e4.north east)+(-0.15,-0.02)$) {Clase 14};
+  \node[clase, anchor=south east] at ($(e5.north east)+(-0.15,-0.02)$) {Clase 15};
+  \node[clase, anchor=south east] at ($(e6.north east)+(-0.15,-0.02)$) {Clases 11 y 14};
+  \draw[flecha] (e1) -- (e2);
+  \draw[flecha] (e2) -- (e3);
+  \draw[flecha] (e3) -- (e4);
+  \draw[flecha] (e4) -- (e5);
+  \draw[flecha] (e5) -- (e6);
+  \node[draw=esumerGreen!80!black, dashed, line width=0.8pt, rounded corners=3pt,
+        fill=esumerBg, text width=16.1cm, align=left, inner sep=5pt]
+    at (8.5,-6.75)
+    {\small\textbf{\color{esumerNavy}Cifras de control.} Al final de cada
+     etapa hay una caja verde con números que tu archivo debe mostrar. Si
+     coinciden, sigue. Si no, busca la causa antes de avanzar: un error en
+     la etapa 1 se arrastra hasta la presentación.};
+\end{tikzpicture}
+\end{center}
+
+\vspace{6pt}
+Tres reglas para todo el recorrido:
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item \textbf{Nunca edites el Excel.} Si te equivocas en Power Query,
+    borra el paso con la \textbf{X} en \menu{Pasos aplicados}{Applied steps}
+    y vuelve a hacerlo. El archivo original queda intacto.
+  \item \textbf{Una medida, no una columna, para lo que se suma o se
+    divide.} El margen \% de un mes no es el promedio de los márgenes de cada
+    fila: es el margen del mes dividido por las ventas del mes. Eso lo hace
+    bien una medida (Clase 13, paso 18).
+  \item \textbf{Antes de concluir, valida.} Una cifra rara puede ser un
+    hallazgo o un error de datos. Pregunta: ¿pasa en todas las tiendas?, ¿en
+    qué días exactos?, ¿cuadra con otra fuente? (Clase 14).
+\end{enumerate}
+
+% ============================================================
+\etapa{1}{Cargar y limpiar en Power Query}{dejar las cuatro tablas limpias, con los tipos correctos y sin duplicados ni variantes de texto.}
+
+\textbf{Cargar.} \menu{Obtener datos}{Get data} $>$ \menu{Libro de
+Excel}{Excel workbook}, elige el archivo y marca las \textbf{cuatro hojas} en
+el Navegador. Pulsa \menu{Transformar datos}{Transform data}, no
+\menu{Cargar}{Load}: primero se limpia. \vez{Clase 13, pasos 1 a 3}
+
+\textbf{Diagnosticar.} En la pestaña \menu{Vista}{View} activa
+\menu{Calidad de columnas}{Column quality}, \menu{Distribución de
+columnas}{Column distribution} y \menu{Perfil de columna}{Column profile}.
+Abajo a la izquierda, cambia a \textbf{basado en todo el conjunto de datos}:
+si no, solo ves las primeras 1000 filas. \vez{Clase 13, paso 4}
+
+\subtitulo{Lo que tienes que hacer en cada hoja}
+
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.1cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{3.5cm}@{}}
+\toprule
+\textbf{Hoja} & \textbf{Tarea} & \textbf{Pista}\\
+\midrule
+\texttt{Ventas} & Quitar las filas repetidas: selecciona \texttt{id\_linea} $>$ \menu{Quitar filas}{Remove rows} $>$ \menu{Quitar duplicados}{Remove duplicates}. & \vez{Clase 13, paso 5}\\
+& Tipos: \texttt{fecha} como \textbf{Fecha} (no Fecha y hora), \texttt{hora} como \textbf{Hora}, los \texttt{id\_} y los valores en pesos como \textbf{Número entero}. & \vez{Clase 13, paso 6}\\
+& En \texttt{descuento\_cop}, reemplazar \texttt{null} por \texttt{0}: un vacío aquí significa ``sin descuento''. & \vez{Clase 13, paso 9}\\
+\midrule
+\texttt{Productos} & Unificar \texttt{categoria}: tiene 11 formas de escribir 4 categorías (ver el diagrama). & \vez{Clase 13, pasos 7 a 9}\\
+\midrule
+\texttt{Clientes} & Quitar los socios repetidos (por \texttt{id\_cliente}). & \vez{Clase 13, paso 5}\\
+& Unificar \texttt{ciudad}: \texttt{Bogota}, \texttt{Bogotá D.C.} y \texttt{BOGOTÁ} son la misma ciudad; \texttt{Santiago de Cali} es Cali. & \vez{Clase 13, pasos 7 a 9}\\
+& Unificar \texttt{acepta\_promociones}: hay \texttt{Sí}, \texttt{si}, \texttt{SI}, \texttt{1}, \texttt{No}, \texttt{no}, \texttt{NO}, \texttt{0}. Cámbiala primero a tipo \textbf{Texto}. & \vez{Clase 13, pasos 6 a 9}\\
+& \texttt{correo} y \texttt{fecha\_nacimiento} tienen vacíos: \textbf{déjalos}. No hay un valor razonable para inventar un correo, y no los usarás en el tablero. & \vez{Clase 8}\\
+\midrule
+\texttt{Tiendas} & Revisar tipos: \texttt{fecha\_apertura} como Fecha; \texttt{latitud} y \texttt{longitud} como \textbf{Número decimal}. & \vez{Clase 13, paso 6}\\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\subtitulo{Cómo unificar un texto con variantes: el mismo método de \texttt{sexo}}
+
+\begin{center}
+\begin{tikzpicture}[
+  col/.style={draw=esumerNavy!50, fill=white, rounded corners=2pt, text width=3.4cm,
+              align=center, font=\scriptsize\ttfamily, inner sep=4pt},
+  tit/.style={font=\bfseries\scriptsize, text=esumerNavy, align=center, text width=3.8cm},
+  fl/.style={-{Stealth[length=2.2mm]}, line width=0.9pt, color=esumerOrange},
+]
+  \node[col] (a) at (1.95,0) {"Bebidas calientes"\\"Bebidas Calientes "\\"bebidas calientes"\\[2pt]
+                             "Bebidas frías" "Bebidas frias"\\"BEBIDAS FRÍAS"\\[2pt]
+                             "Café en grano"\\"Cafe en grano"\\[2pt]
+                             "Panadería" "Panaderia"\\" panadería"};
+  \node[col] (b) at (6.35,0) {"BEBIDAS CALIENTES"\\[2pt]
+                             "BEBIDAS FRÍAS"\\"BEBIDAS FRIAS"\\[2pt]
+                             "CAFÉ EN GRANO"\\"CAFE EN GRANO"\\[2pt]
+                             "PANADERÍA"\\"PANADERIA"};
+  \node[col] (c) at (10.75,0) {"BEBIDAS CALIENTES"\\[2pt]"BEBIDAS FRÍAS"\\[2pt]
+                              "CAFÉ EN GRANO"\\[2pt]"PANADERÍA"};
+  \node[col] (d) at (15.05,0) {"Bebidas Calientes"\\[2pt]"Bebidas Frías"\\[2pt]
+                              "Café En Grano"\\[2pt]"Panadería"};
+  \node[tit, above=0.15cm of a] {En el Excel (11 variantes)};
+  \node[tit, above=0.15cm of b] {Tras Recortar y MAYÚSCULAS};
+  \node[tit, above=0.15cm of c] {Tras Reemplazar valores};
+  \node[tit, text width=3.0cm, above=0.15cm of d] {Tras Poner En Mayúsculas Cada Palabra};
+  \draw[fl] (a) -- (b);
+  \draw[fl] (b) -- (c);
+  \draw[fl] (c) -- (d);
+\end{tikzpicture}
+\end{center}
+
+\small Los tres reemplazos: \texttt{BEBIDAS FRIAS} por \texttt{BEBIDAS FRÍAS},
+\texttt{PANADERIA} por \texttt{PANADERÍA} y \texttt{CAFE EN GRANO} por
+\texttt{CAFÉ EN GRANO}. Haz lo mismo con \texttt{ciudad}
+(\texttt{BOGOTA}, \texttt{BOGOTÁ D.C.}, \texttt{MEDELLIN} y
+\texttt{SANTIAGO DE CALI}) y con \texttt{acepta\_promociones}
+(\texttt{SI}, \texttt{1} y \texttt{0}).
+\normalsize
+
+\begin{cuidado}[Marca ``Coincidir con todo el contenido de la celda'']
+\small En \menu{Opciones avanzadas}{Advanced options} de Reemplazar valores.
+Sin esa casilla, Power Query cambia el texto aunque esté dentro de otro:
+al reemplazar \texttt{1} por \texttt{SÍ}, un \texttt{10} quedaría
+\texttt{SÍ0}. \vez{Clase 13, paso 9}
+\end{cuidado}
+
+\subtitulo{Cerrar y comprobar}
+
+Cuando las cuatro tablas estén listas: \menu{Inicio}{Home} $>$
+\menu{Cerrar y aplicar}{Close \& apply}. La carga de \texttt{Ventas} tarda
+unos segundos. Después, en la vista \textbf{Tabla} (la segunda de la barra
+izquierda), elige cada tabla en el panel \menu{Datos}{Data}: abajo a la
+izquierda aparece cuántas filas tiene. \vez{Clase 13, paso 13}
+
+\begin{control}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{3.1cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Tabla} & \textbf{Filas} & \textbf{Qué cambió}\\
+\midrule
+\texttt{Ventas} & \textbf{77.840} & Se quitaron 20 filas repetidas (las tenía el Excel: 77.860).\\
+\texttt{Productos} & \textbf{18} & \texttt{categoria}: 6 Bebidas Calientes, 4 Bebidas Frías, 3 Café En Grano y 5 Panadería.\\
+\texttt{Tiendas} & \textbf{6} & Sin cambios en las filas.\\
+\texttt{Clientes} & \textbf{900} & Se quitaron 5 socios repetidos. \texttt{ciudad}: Medellín 356, Bogotá 326, Cali 125 y Pereira 93. \texttt{acepta\_promociones}: Sí 536 y No 364.\\
+\bottomrule
+\end{tabularx}
+\end{control}
+
+\vspace{2pt}
+Para ver los conteos de una columna, en Power Query activa el
+\menu{Perfil de columna}{Column profile} y selecciónala: la
+\menu{Distribución de valores}{Value distribution} muestra cuántas filas
+tiene cada valor.
+
+\begin{recuerda}[¿De dónde salieron las 20 filas repetidas?]
+\small No borres sin preguntar: identifica qué filas eran. En el Excel crudo,
+filtra \texttt{id\_linea} por un valor repetido y mira la \texttt{fecha} y
+la tienda. Si todas las repetidas son del mismo día y de la misma tienda, lo
+más probable es que ese día se exportó dos veces. Anótalo: es un hallazgo
+sobre la \emph{calidad} de los datos y va en tu ficha (etapa 6).
+\end{recuerda}
+
+\begin{checklist}
+  \item Las cuatro tablas tienen las filas de la caja verde.
+  \item En \texttt{Ventas}, \texttt{fecha} tiene un ícono de calendario y
+    \texttt{hora} un ícono de reloj.
+  \item En \texttt{descuento\_cop} ya no hay \texttt{null}.
+  \item \texttt{categoria}, \texttt{ciudad} y \texttt{acepta\_promociones}
+    tienen 4, 4 y 2 valores distintos.
+  \item Guardé el archivo como \texttt{cafes\_altavista.pbix}.
+\end{checklist}
+
+% ============================================================
+\etapa{2}{El modelo de datos}{armar un modelo estrella para que cada filtro (tienda, producto, socio o fecha) llegue a la tabla de ventas.}
+
+\texttt{Ventas} es la tabla de \textbf{hechos}: cada fila es algo que pasó.
+\texttt{Productos}, \texttt{Tiendas} y \texttt{Clientes} son
+\textbf{dimensiones}: describen el quién, el qué y el dónde. Falta el
+\textbf{cuándo}: una tabla \texttt{Calendario} que creas con DAX.
+\vez{Clase 13, ``Hechos y dimensiones''}
+
+\begin{center}
+\begin{tikzpicture}[
+  dim/.style={rectangle split, rectangle split parts=2, draw=esumerNavy, line width=0.7pt,
+              rounded corners=2pt, rectangle split part fill={esumerNavy,white},
+              text width=3.7cm, align=left, font=\scriptsize\ttfamily, inner sep=3pt},
+  hecho/.style={rectangle split, rectangle split parts=2, draw=esumerOrange, line width=0.9pt,
+              rounded corners=2pt, rectangle split part fill={esumerOrange,white},
+              text width=3.9cm, align=left, font=\scriptsize\ttfamily, inner sep=3pt},
+  card/.style={font=\scriptsize\bfseries, text=esumerOrange},
+]
+  \node[hecho] (v) at (8.5,0) {\textcolor{white}{\bfseries\small\sffamily Ventas (hechos)}
+    \nodepart{two}id\_linea, id\_ticket\\fecha, hora\\id\_tienda\\id\_producto\\id\_cliente\\canal, cantidad\\precio\_unitario\_cop\\descuento\_cop, medio\_pago};
+  \node[dim] (p) at (2.3,1.4) {\textcolor{white}{\bfseries\small\sffamily Productos}
+    \nodepart{two}id\_producto\\producto\\categoria, subcategoria\\costo\_unitario\_cop};
+  \node[dim] (t) at (14.7,1.4) {\textcolor{white}{\bfseries\small\sffamily Tiendas}
+    \nodepart{two}id\_tienda\\tienda, ciudad\\latitud, longitud\\meta\_ventas\_mensual\_cop};
+  \node[dim] (c) at (2.3,-1.9) {\textcolor{white}{\bfseries\small\sffamily Clientes}
+    \nodepart{two}id\_cliente\\nombre, ciudad\\acepta\_promociones};
+  \node[dim, rectangle split part fill={esumerTeal,white}, draw=esumerTeal] (k) at (14.7,-1.9)
+    {\textcolor{white}{\bfseries\small\sffamily Calendario (DAX)}
+    \nodepart{two}Date\\Año, Mes, Año-Mes\\Inicio de mes, Día semana};
+  \draw[flecha] (p.east) -- node[pos=0.12, above, card]{1} node[pos=0.88, above, card]{*} ($(v.north west)!0.45!(v.west)$);
+  \draw[flecha] (t.west) -- node[pos=0.12, above, card]{1} node[pos=0.88, above, card]{*} ($(v.north east)!0.45!(v.east)$);
+  \draw[flecha] (c.east) -- node[pos=0.12, above, card]{1} node[pos=0.88, above, card]{*} ($(v.south west)!0.45!(v.west)$);
+  \draw[flecha] (k.west) -- node[pos=0.12, above, card]{1} node[pos=0.88, above, card]{*} ($(v.south east)!0.45!(v.east)$);
+\end{tikzpicture}
+
+{\footnotesize\itshape Las flechas muestran la dirección del filtro: de la
+dimensión (lado 1) a los hechos (lado *).}
+\end{center}
+
+\subtitulo{Paso a paso}
+
+\begin{enumerate}[itemsep=3pt, topsep=2pt]
+  \item \textbf{Calendario.} Vista Tabla $>$ \menu{Nueva tabla}{New table}:
+\begin{dax}
+Calendario = CALENDAR(DATE(2025, 10, 1), DATE(2026, 9, 30))
+\end{dax}
+    Márcala como tabla de fechas, con la columna \texttt{Date}. Luego agrégale
+    cinco columnas (\menu{Nueva columna}{New column}):
+\begin{dax}
+Año = YEAR(Calendario[Date])\\
+Mes = MONTH(Calendario[Date])\\
+Año-Mes = FORMAT(Calendario[Date], "yyyy-mm")\\
+Inicio de mes = DATE(YEAR(Calendario[Date]), MONTH(Calendario[Date]), 1)\\
+Día semana = WEEKDAY(Calendario[Date], 2)
+\end{dax}
+    \footnotesize \texttt{WEEKDAY} con un \texttt{2} numera los días de
+    \texttt{1} (lunes) a \texttt{7} (domingo). Es la única función nueva de
+    hoy.\par\normalsize\hfill\vez{Clase 13, paso 16; Clase 14, paso 1}
+  \item \textbf{Relaciones.} En la vista \textbf{Modelo}, es probable que Power BI
+    ya haya creado tres (detecta los nombres \texttt{id\_} repetidos). Revisa que sean
+    \textbf{muchos a uno (*:1)} con dirección de filtro \textbf{única}, y
+    crea la cuarta: arrastra \texttt{Ventas[fecha]} sobre
+    \texttt{Calendario[Date]}. \hfill \vez{Clase 13, pasos 14 y 15}
+\end{enumerate}
+
+\begin{cuidado}[Si la relación con \texttt{Calendario} no filtra]
+\small Si \texttt{Ventas[fecha]} quedó como \textbf{Fecha y hora}, la
+relación se crea pero puede no encontrar coincidencias. Vuelve a Power Query
+y cámbiala a \textbf{Fecha}.
+\end{cuidado}
+
+\begin{control}
+\small Inserta un objeto visual \menu{Tabla}{Table} con
+\texttt{Tiendas[tienda]} y \texttt{Ventas[id\_linea]} (en el pozo de
+valores, elige \menu{Recuento}{Count}). Las seis tiendas deben sumar
+\textbf{77.840}, y \textbf{Altavista Usaquén} debe tener 4.987 líneas. Si
+ves una sola cifra repetida en todas las filas, falta la relación
+\texttt{Tiendas}--\texttt{Ventas}. \vez{Clase 13, paso 19}
+\end{control}
+
+% ============================================================
+\etapa{3}{Columnas calculadas y medidas}{calcular, una sola vez y bien, todas las cifras que necesitan las preguntas de la gerencia.}
+
+\textbf{¿Columna o medida?} Una \textbf{columna calculada} da un valor por
+fila y se puede usar en un eje o en un segmentador. Una \textbf{medida} da un
+solo número que se recalcula con los filtros de cada objeto visual.
+\vez{Clase 13, ``Tres formas de calcular''}
+
+\subtitulo{Columnas calculadas, en \texttt{Ventas}}
+
+\begin{dax}
+venta\_neta = Ventas[cantidad] * Ventas[precio\_unitario\_cop] - Ventas[descuento\_cop]\\
+costo = Ventas[cantidad] * RELATED(Productos[costo\_unitario\_cop])\\
+hora\_num = HOUR(Ventas[hora])\\
+tipo\_cliente = IF(ISBLANK(Ventas[id\_cliente]), "Ocasional", "Socio")
+\end{dax}
+
+{\small \texttt{RELATED} trae a cada venta el costo de su producto: funciona
+porque existe la relación \texttt{Productos}--\texttt{Ventas}. \texttt{IF}
+con \texttt{ISBLANK} pregunta si la celda está vacía. \vez{Clase 13, paso 17;
+Clase 14, paso 1}}
+
+\subtitulo{Medidas, en \texttt{Ventas}}
+
+Clic derecho en \texttt{Ventas} $>$ \menu{Nueva medida}{New measure}, una por
+una. Da formato de porcentaje a las que terminan en \texttt{\%} y a
+\texttt{Variación mensual} y \texttt{Cumplimiento}.
+
+\begin{dax}
+Ventas netas = SUM(Ventas[venta\_neta])\\
+Costo total = SUM(Ventas[costo])\\
+Margen = [Ventas netas] - [Costo total]\\
+Margen \% = DIVIDE([Margen], [Ventas netas])\\
+Unidades = SUM(Ventas[cantidad])\\
+Tickets = DISTINCTCOUNT(Ventas[id\_ticket])\\
+Ticket promedio = DIVIDE([Ventas netas], [Tickets])\\[4pt]
+Ventas mes anterior = CALCULATE([Ventas netas], PREVIOUSMONTH(Calendario[Date]))\\
+Variación mensual = IF(HASONEVALUE(Calendario[Año-Mes]),\\
+\hspace*{2em}DIVIDE([Ventas netas] - [Ventas mes anterior], [Ventas mes anterior]))\\[4pt]
+Meta de ventas = SUM(Tiendas[meta\_ventas\_mensual\_cop])\\
+Cumplimiento = IF(HASONEVALUE(Calendario[Año-Mes]), DIVIDE([Ventas netas], [Meta de ventas]))\\
+Meta de margen = 0.6\\
+Ventas (con ceros) = COALESCE([Ventas netas], 0)
+\end{dax}
+
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{3.1cm}@{}}
+\toprule
+\textbf{Medida} & \textbf{Por qué se escribe así} & \textbf{Pista}\\
+\midrule
+\texttt{Tickets} & \texttt{DISTINCTCOUNT} cuenta compras, no líneas: un ticket con tres productos es una sola compra. & \vez{Clase 13, paso 18}\\
+\texttt{Ticket promedio} & Cuánto deja, en promedio, cada compra. Responde a P3 y P6. & \\
+\texttt{Variación mensual} & Solo tiene sentido con un único mes elegido; si no, queda en blanco. & \vez{Clase 15, paso 2}\\
+\texttt{Meta de ventas} & La meta es \emph{mensual}: suma las metas de las tiendas visibles. Por eso \texttt{Cumplimiento} exige un único mes, igual que la variación. & \vez{Clase 15, paso 4}\\
+\texttt{Ventas (con ceros)} & Un día sin ventas da vacío, y una línea de tiempo salta los vacíos sin avisar. Con ceros, el hueco se ve. & \vez{Clase 14, paso 11}\\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\clearpage
+\begin{control}
+\small Pon cada medida en una \menu{Tarjeta}{Card}, o todas en un objeto
+visual \menu{Tabla}{Table}. \textbf{Sin ningún filtro} debes ver:
+
+\vspace{2pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedleft\arraybackslash}p{3.3cm} @{\hspace{1.2cm}} >{\raggedright\arraybackslash}X >{\raggedleft\arraybackslash}p{2.6cm}@{}}
+\toprule
+\textbf{Medida} & \textbf{Valor} & \textbf{Medida} & \textbf{Valor}\\
+\midrule
+Ventas netas & 766.082.130 & Unidades & 94.038\\
+Costo total & 286.783.100 & Tickets & 41.489\\
+Margen & 479.299.030 & Ticket promedio & 18.465\\
+Margen \% & 62,6\% & Meta de ventas & 72.600.000\\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+
+\vspace{4pt}
+Con un objeto visual \menu{Tabla}{Table} que tenga \texttt{Calendario[Año-Mes]}
+y las medidas, la fila de \textbf{2026-08} debe mostrar ventas netas de
+\textbf{73.976.450} y margen de \textbf{63,3\%}; la de \textbf{2026-09},
+\textbf{89.161.940} y \textbf{56,6\%}, con una variación mensual de
+\textbf{20,5\%}.
+\end{control}
+
+\begin{cuidado}[Si tus ventas netas dan 766.255.930]
+\small Te faltó quitar las 20 filas repetidas de \texttt{Ventas} (etapa 1):
+esa diferencia, 173.800 pesos, son las ventas de un día que se cargó dos
+veces.
+\end{cuidado}
+
+\begin{recuerda}[Puedes comparar con las medidas rápidas]
+\small Si una fórmula no te sale, \menu{Nueva medida rápida}{New quick
+measure} escribe una equivalente. Úsala para aprender, y luego compara su
+DAX con el tuyo. \vez{Clase 15, paso 3}
+\end{recuerda}
+
+\begin{checklist}
+  \item Las cuatro columnas calculadas están en \texttt{Ventas}.
+  \item Las 13 medidas tienen el formato correcto (pesos sin decimales,
+    porcentajes con uno).
+  \item Las cifras de la caja verde coinciden con las mías.
+  \item \texttt{Variación mensual} y \texttt{Cumplimiento} quedan en blanco
+    cuando no hay un único mes elegido. Eso es lo correcto.
+\end{checklist}
+
+% ============================================================
+\etapa{4}{Explorar: una página por cada pregunta}{encontrar, con evidencia, la respuesta a cada pregunta de la gerencia. Aquí todavía no importa que la página sea bonita.}
+
+Crea una página llamada \textbf{Exploración}. Para cada pregunta, la tabla
+te sugiere un objeto visual y los campos; \textbf{la respuesta la encuentras
+tú}. Anota cada hallazgo en la ficha de la etapa 6 apenas lo veas.
+\vez{Clase 14, pasos 4 a 16}
+
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.8cm} >{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+& \textbf{Objeto visual y campos} & \textbf{Qué mirar}\\
+\midrule
+\textbf{P1} & Dos \textbf{líneas} separadas, por \texttt{Calendario[Inicio de mes]}: una con \texttt{Ventas netas}, otra con \texttt{Margen \%}. & ¿En qué mes se separan las dos curvas? Luego, una \textbf{matriz} con \texttt{Productos[categoria]} en filas, \texttt{Calendario[Año-Mes]} en columnas y \texttt{Margen \%} y \texttt{Unidades} en valores: compara agosto con septiembre. ¿Qué categoría cambió, y cuánto? ¿Y si quitas esa categoría con un filtro, cuánto crecieron las ventas?\\
+\textbf{P2} & \textbf{Barras} de \texttt{Cumplimiento} por \texttt{Tiendas[tienda]}, con un \textbf{segmentador} de \texttt{Calendario[Año-Mes]}. & Recorre los meses de abril a septiembre. ¿Qué tiendas quedan por debajo del 100\% una y otra vez? Para Chapinero, unas \textbf{columnas} de \texttt{Ventas netas} por \texttt{Calendario[Día semana]}, filtradas a esa tienda, y compáralas con otra tienda.\\
+\textbf{P3} & \textbf{Columnas apiladas al 100\%} de \texttt{Ventas netas} por \texttt{Calendario[Inicio de mes]} con \texttt{Ventas[canal]} en la leyenda. & ¿Cómo cambia la parte de la app desde marzo? Luego una \textbf{tabla} con \texttt{canal}, \texttt{Tickets} y \texttt{Ticket promedio}: ¿quién compra más por visita?\\
+\textbf{P4} & \textbf{Columnas agrupadas} de \texttt{Unidades} por \texttt{Ventas[hora\_num]}, con \texttt{Productos[categoria]} en la leyenda. & ¿Cuáles son las horas de más movimiento? ¿Qué categoría manda en la mañana y cuál en la tarde?\\
+\textbf{P5} & \textbf{Línea} de \texttt{Ventas netas} por \texttt{Calendario[Inicio de mes]}, filtrada a Usaquén, y la \texttt{Meta de ventas} como segunda línea. & ¿Desde qué mes supera su meta? Ojo: una tienda nueva no se compara, sin más, con una que lleva años abierta.\\
+\textbf{P6} & \textbf{Tabla} con \texttt{Ventas[tipo\_cliente]}, \texttt{Tickets}, \texttt{Ticket promedio} y \texttt{Ventas netas}. & ¿Cuánto más deja un ticket de socio? ¿Qué parte de las ventas viene de socios? Y en \texttt{Clientes}: ¿cuántos socios aceptan promociones?\\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\subtitulo{El encargo extra: ¿qué pasó en Granada en julio?}
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item Una \textbf{línea} con \texttt{Calendario[Date]} en el eje X y
+    \texttt{Ventas (con ceros)} en el eje Y.
+  \item Filtro de objeto visual: \texttt{Tiendas[tienda]} = Altavista
+    Granada, y \texttt{Calendario[Año-Mes]} = 2026-07.
+  \item Panel \menu{Análisis}{Analytics} $>$ \menu{Buscar
+    anomalías}{Find anomalies}. \vez{Clase 14, paso 11}
+\end{enumerate}
+
+Cuando encuentres el problema, \textbf{valídalo antes de concluir}, como con
+Envigado en la Clase 14: ¿pasa en las otras tiendas esos mismos días? ¿Hay
+alguna venta, aunque sea una? ¿Cuántos días son? Con lo que muestran los
+datos, ¿puedes saber si la tienda cerró o si la caja dejó de registrar? Si
+no, tu insight es una \textbf{pregunta para la operación}, y así debes
+presentarlo.
+
+\begin{recuerda}[{{Un mapa, para la página final}}]
+\small Antes de pasar a la etapa 5, prepara la ubicación. En la vista Tabla,
+selecciona \texttt{Tiendas[latitud]} y en \menu{Herramientas de
+columnas}{Column tools} $>$ \menu{Categoría de datos}{Data category} elige
+\textbf{Latitud}; igual con \texttt{longitud} (\textbf{Longitud}) y
+\texttt{ciudad} (\textbf{Ciudad}). Prueba un objeto visual \textbf{Azure
+Maps} con \texttt{latitud}, \texttt{longitud} y \texttt{Ventas netas} como
+tamaño de la burbuja. \vez{Clase 14, pasos 2 y 13}
+\end{recuerda}
+
+% ============================================================
+\etapa{5}{La página para la gerencia}{construir una sola página que responda las preguntas sin que tengas que explicarla, y que la gerencia pueda filtrar por su cuenta.}
+
+Crea una página nueva llamada \textbf{Comité de octubre}. Este es el boceto;
+la ubicación exacta la decides tú, pero respeta el orden: arriba lo que
+filtra y los indicadores, abajo el detalle. \vez{Clase 15, pasos 1 y 14}
+
+\begin{center}
+\begin{tikzpicture}[
+  zona/.style={draw=esumerNavy!60, line width=0.6pt, rounded corners=2pt,
+               fill=white, align=center, font=\scriptsize, inner sep=2pt},
+  seg/.style={zona, fill=esumerTeal!12},
+  ind/.style={zona, fill=esumerOrange!10},
+]
+  \draw[esumerNavy, line width=1pt, rounded corners=3pt, fill=esumerBg] (0,0) rectangle (16.8,9.2);
+  \node[anchor=west, font=\footnotesize\bfseries, text=esumerNavy] at (0.3,8.75)
+    {¿Cumplimos la meta de ventas, y con qué margen?};
+  \node[seg, minimum width=2.9cm, minimum height=0.6cm] at (10.25,8.75) {Segmentador: Año-Mes};
+  \node[seg, minimum width=2.3cm, minimum height=0.6cm] at (13.1,8.75) {Segm.: ciudad};
+  \node[seg, minimum width=2.2cm, minimum height=0.6cm] at (15.5,8.75) {Segm.: canal};
+  \node[ind, minimum width=3.9cm, minimum height=1.75cm] at (2.25,7.2) {\textbf{KPI}\\Ventas netas\\frente a Meta de ventas};
+  \node[ind, minimum width=3.9cm, minimum height=1.75cm] at (6.35,7.2) {\textbf{KPI}\\Margen \%\\frente a Meta de margen};
+  \node[ind, minimum width=3.9cm, minimum height=1.75cm] at (10.45,7.2) {\textbf{Tarjeta}\\Variación mensual};
+  \node[ind, minimum width=3.9cm, minimum height=1.75cm] at (14.55,7.2) {\textbf{Tarjeta}\\Ticket promedio};
+  \node[zona, minimum width=8.0cm, minimum height=2.9cm] at (4.3,4.55)
+    {\textbf{Barras}: Cumplimiento por tienda\\(con una línea de referencia en 100\%)};
+  \node[zona, minimum width=7.95cm, minimum height=2.9cm] at (12.5,4.55)
+    {\textbf{Líneas}: Ventas netas por Inicio de mes\\(una línea por canal)};
+  \node[zona, minimum width=8.0cm, minimum height=2.75cm] at (4.3,1.6)
+    {\textbf{Azure Maps}: tiendas por coordenadas,\\burbuja = Ventas netas};
+  \node[zona, minimum width=7.95cm, minimum height=2.75cm] at (12.5,1.6)
+    {\textbf{Barras con jerarquía}: Margen \% por\\categoría $>$ subcategoría $>$ producto};
+\end{tikzpicture}
+\end{center}
+
+\subtitulo{Lo que tienes que lograr}
+
+\begin{enumerate}[itemsep=3pt, topsep=2pt]
+  \item \textbf{Dos KPI.} \menu{Valor}{Value}, \menu{Eje de
+    tendencia}{Trend axis} = \texttt{Calendario[Inicio de mes]} y
+    \menu{Destino}{Target}. Los dos con dirección \menu{Alto es bueno}{High
+    is good}. \hfill \vez{Clase 15, paso 5}
+  \item \textbf{Tres segmentadores}: \texttt{Calendario[Año-Mes]} (lista
+    desplegable, selección única), \texttt{Tiendas[ciudad]} y
+    \texttt{Ventas[canal]}. \hfill \vez{Clase 15, pasos 7 y 8}
+  \item \textbf{Una jerarquía} en \texttt{Productos}: \texttt{categoria}
+    $>$ \texttt{subcategoria} $>$ \texttt{producto}, y explórala con las
+    flechas del objeto visual. \hfill \vez{Clase 15, pasos 11 y 12}
+  \item \textbf{Un filtro de objeto visual}: en las barras con
+    jerarquía, usa \menu{N superior}{Top N}: los 5 valores de
+    \texttt{Productos[producto]} con más
+    \texttt{Ventas netas}, para que al bajar al nivel de producto no se
+    llene la barra. \hfill \vez{Clase 15, paso 10}
+  \item \textbf{Interacciones}, pensando qué compara cada objeto visual
+    (\menu{Formato}{Format} $>$ \menu{Editar interacciones}{Edit
+    interactions}). \vez{Clase 15, paso 13}
+    \begin{itemize}[itemsep=1pt, topsep=1pt]
+      \item \textbf{Mes}: deja \textbf{Filtrar} en los KPI (muestran el
+        mes elegido) y pon \textbf{Ninguno} en la línea de ventas, para que
+        siga mostrando todo el año.
+      \item \textbf{Ciudad}: deja \textbf{Filtrar} en todo.
+        \texttt{Meta de ventas} suma las metas de las tiendas visibles, así
+        que la meta también se ajusta a la ciudad.
+      \item \textbf{Canal}: la meta es de la tienda completa, no de un
+        canal. Si filtras el KPI de ventas por canal, compararías solo la app
+        con la meta de toda la tienda. Pon ahí \textbf{Ninguno}.
+    \end{itemize}
+\end{enumerate}
+
+\begin{control}
+\small Sin segmentadores, el \textbf{KPI de ventas} muestra el último mes,
+septiembre: \textbf{89.161.940} frente a la meta de \textbf{72.600.000}. El
+\textbf{KPI de margen} muestra \textbf{56,6\%} frente a \textbf{60\%}.
+Con el segmentador en \textbf{2026-09}, la tarjeta de variación mensual
+dice \textbf{20,5\%} y las barras de cumplimiento van de \textbf{103,3\%}
+(Chapinero) a \textbf{163,2\%} (Usaquén).
+\end{control}
+
+\begin{cuidado}[{{Ventas en verde, margen en rojo: no es un error}}]
+\small Los dos KPI de septiembre no se contradicen: responden preguntas
+distintas. Si uno está verde y el otro rojo, ahí empieza tu respuesta a P1.
+Antes de presentar, prueba la página como alguien que no la conoce: elige
+un mes, una ciudad y un canal, y comprueba que cada objeto visual cambia
+como esperas. \vez{Clase 15, paso 15}
+\end{cuidado}
+
+\subtitulo{La página está lista cuando\ldots}
+
+\begin{checklist}
+  \item El título dice qué pregunta responde la página, y cada objeto
+    visual tiene un título que se entiende sin ti.
+  \item Los dos KPI tienen meta y dirección \textbf{Alto es bueno} y, sin
+    un mes elegido, muestran la tendencia de los meses.
+  \item Al elegir \textbf{Bogotá} en el segmentador de ciudad, la meta del KPI
+    de ventas baja a \textbf{24.000.000} (Chapinero más Usaquén).
+  \item Al elegir \textbf{App} en el segmentador de canal, el KPI de ventas
+    no cambia, y los demás objetos visuales sí.
+  \item La jerarquía baja de categoría a subcategoría y a producto, y vuelve
+    a subir.
+  \item El mapa muestra seis burbujas en cuatro ciudades.
+  \item Los colores significan lo mismo en toda la página: si \texttt{App}
+    es naranja en la línea, lo es en todas partes (Clase 14).
+  \item Cada objeto visual responde a una de las preguntas de la gerencia.
+    Si alguno no responde a ninguna, sobra o va en la página de exploración.
+\end{checklist}
+
+% ============================================================
+\etapa{6}{Comunicar: ficha de insights y presentación}{convertir lo que encontraste en decisiones, y contarlo en cinco minutos al comité.}
+
+\textbf{Un insight no es una cifra.} Es una frase con evidencia, que alguien
+puede usar para decidir. Antes de escribirlo, pásalo por las cinco preguntas
+de validación de la Clase 14: ¿los totales cuadran?, ¿el periodo está
+completo?, ¿la comparación es justa?, ¿hay suficientes datos?, ¿es causa o
+solo relación? \vez{Clase 14, Hora 3}
+
+\begin{center}
+\begin{tikzpicture}[
+  pieza/.style={caja, minimum width=3.8cm, text width=3.5cm, minimum height=2.0cm},
+  tit/.style={font=\bfseries\small, text=white, fill=esumerTeal, rounded corners=2pt,
+              minimum width=3.8cm, inner sep=3pt, text height=1.6ex, text depth=0.4ex},
+]
+  \foreach \x/\tit in {2.2/Pregunta, 6.5/Evidencia, 10.8/Insight, 15.1/Recomendación}
+    {\node[tit] at (\x,1.4) {\tit};}
+  \node[pieza] (a) at (2.2,0) {\small ¿A qué horas reforzamos el personal?};
+  \node[pieza] (b) at (6.5,0) {\small Columnas de unidades por hora y categoría};
+  \node[pieza] (c) at (10.8,0) {\small La frase con tu cifra: qué pasa, cuánto y cuándo};
+  \node[pieza] (d) at (15.1,0) {\small Qué hacer, quién lo hace y cómo saber si funcionó};
+  \draw[flecha] (a) -- (b);
+  \draw[flecha] (b) -- (c);
+  \draw[flecha] (c) -- (d);
+\end{tikzpicture}
+\end{center}
+
+\subtitulo{Ficha de insights}
+
+\renewcommand{\arraystretch}{3.0}
+\begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}p{0.7cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{1.5cm}@{}}
+\toprule
+\textbf{P} & \textbf{Evidencia (cifra y objeto visual)} & \textbf{Insight} & \textbf{Recomendación} & \textbf{Validado}\\
+\midrule
+& & & & \\ \hline
+& & & & \\ \hline
+& & & & \\ \hline
+& & & & \\ \hline
+& & & & \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+
+{\footnotesize\itshape En la columna P, escribe el número de la pregunta de
+la gerencia, o \textbf{D} si es un hallazgo sobre la calidad de los datos
+(las filas repetidas, Granada).}
+
+\subtitulo{La presentación: cinco minutos para el comité}
+
+\begin{center}
+\begin{tikzpicture}[
+  bloque/.style={draw=none, rounded corners=3pt, text=white, align=center,
+                 minimum height=1.6cm, inner sep=3pt, font=\small},
+]
+  \node[bloque, fill=esumerNavy, minimum width=2.6cm, text width=2.4cm] (b1) at (1.3,0)
+    {\textbf{30 s}\\[1pt]{\scriptsize El contexto y las preguntas}};
+  \node[bloque, fill=esumerSky, minimum width=7.6cm, text width=7.3cm] (b2) at (6.55,0)
+    {\textbf{3 min}\\[1pt]{\scriptsize Tres insights, cada uno con su evidencia en la
+     página de Power BI. Empieza por el que lleva a la decisión más importante}};
+  \node[bloque, fill=esumerOrange, minimum width=3.4cm, text width=3.2cm] (b3) at (12.15,0)
+    {\textbf{1 min}\\[1pt]{\scriptsize Recomendaciones: qué hacer el próximo mes}};
+  \node[bloque, fill=esumerMagenta, minimum width=2.8cm, text width=2.6cm] (b4) at (15.4,0)
+    {\textbf{30 s}\\[1pt]{\scriptsize Lo que los datos no dicen y qué falta saber}};
+\end{tikzpicture}
+\end{center}
+
+\small
+\begin{itemize}[itemsep=1pt, topsep=2pt]
+  \item Presenta \textbf{desde la página de Power BI}, filtrando en vivo,
+    no con capturas de pantalla.
+  \item El \textbf{título} de la página dice qué pregunta responde; la
+    \textbf{conclusión} la dices tú, con cifras (Clase 15, paso 1).
+  \item Un compañero hace de gerente: puede interrumpirte con una pregunta
+    que no estaba en la carta. Respóndela filtrando, o di qué dato te falta.
+\end{itemize}
+\normalsize
+
+% ============================================================
+\clearpage
+\section*{\color{esumerNavy}Autoevaluación: ¿tu tablero está listo?}
+
+Antes de entregar, revisa cada criterio con honestidad y marca en la
+última columna dónde estás.
+
+\vspace{2pt}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{0.9cm}@{}}
+\toprule
+\textbf{Criterio} & \textbf{En proceso} & \textbf{Logrado} & \textbf{Yo}\\
+\midrule
+\textbf{Datos} & Hay pasos de limpieza, pero quedan variantes, duplicados o tipos equivocados. & Las cuatro tablas coinciden con las cifras de control de la etapa 1. & \\
+\textbf{Modelo} & Faltan relaciones o alguna es muchos a muchos; no hay \texttt{Calendario}. & Modelo estrella con cuatro relaciones *:1 de dirección única, \texttt{Calendario} marcada. & \\
+\textbf{Medidas} & Las cifras se calculan con columnas o resúmenes automáticos, o no cuadran. & Las 13 medidas existen, tienen formato y coinciden con la etapa 3. & \\
+\textbf{Exploración} & Hay gráficos, pero no responden a una pregunta concreta. & Cada pregunta de la gerencia tiene un objeto visual que la responde. & \\
+\textbf{Página final} & Los filtros no funcionan como se espera, o la página está saturada. & KPI con meta, segmentadores, jerarquía, mapa e interacciones revisadas. & \\
+\textbf{Insights} & Describen gráficos (``las ventas suben en diciembre''). & Cada uno tiene cifra, comparación, explicación y recomendación, y fue validado. & \\
+\textbf{Calidad} & Las filas repetidas y Granada no se mencionan. & Se identifican, se explica qué se hizo y qué queda por preguntar. & \\
+\textbf{Presentación} & Más de cinco minutos, o se lee la pantalla. & Cinco minutos, desde Power BI, terminando en decisiones. & \\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\subtitulo{Si algo no cuadra}
+
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{5.6cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Lo que ves} & \textbf{Causa más probable}\\
+\midrule
+La misma cifra en todas las filas de una tabla o en todas las barras. & Falta la relación entre esa dimensión y \texttt{Ventas}, o va en la dirección contraria (etapa 2).\\
+\texttt{categoria} sigue con más de 4 valores. & Faltó \menu{Recortar}{Trim}, o el reemplazo se hizo sin pasar antes a MAYÚSCULAS.\\
+Ventas netas de 766.255.930. & No quitaste los duplicados de \texttt{Ventas}.\\
+\texttt{Cumplimiento} o \texttt{Variación mensual} en blanco. & No hay un único mes elegido. Es lo esperado: usa el segmentador de mes.\\
+Al elegir un canal, el KPI de ventas queda muy lejos de la meta. & La meta es de toda la tienda, no de un canal: pon en \textbf{Ninguno} la interacción del segmentador de canal sobre ese KPI.\\
+\texttt{costo} da error. & Falta la relación \texttt{Productos}--\texttt{Ventas}: \texttt{RELATED} la necesita.\\
+\texttt{hora\_num} da error. & \texttt{hora} quedó como texto. Cámbiala a tipo \textbf{Hora} en Power Query.\\
+El mapa no muestra nada. & Falta la categoría de datos de \texttt{latitud} y \texttt{longitud}, o el equipo no tiene internet o tiene Azure Maps deshabilitado.\\
+\bottomrule
+\end{tabularx}
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\subtitulo{Documentación oficial}
+
+\small
+\begin{itemize}[itemsep=1pt, topsep=2pt]
+  \item Etapa 1: \href{\urlconsultas}{\color{esumerOrange}Información general de consultas en Power BI Desktop}.
+  \item Etapa 2: \href{\urlestrella}{\color{esumerOrange}Comprender el esquema de estrella} y
+    \href{\urlrelaciones}{\color{esumerOrange}Crear y administrar relaciones}.
+  \item Etapa 3: \href{\urlcolumnas}{\color{esumerOrange}Columnas calculadas} y
+    \href{\urlmedidas}{\color{esumerOrange}Medidas en Power BI Desktop}.
+  \item Etapas 4 y 5: \href{\urlkpi}{\color{esumerOrange}Objeto visual KPI},
+    \href{\urlsegmentadores}{\color{esumerOrange}Segmentadores},
+    \href{\urlfiltros}{\color{esumerOrange}Filtros},
+    \href{\urlinteracciones}{\color{esumerOrange}Interacciones},
+    \href{\urlexplorar}{\color{esumerOrange}Explorar en profundidad} y
+    \href{\urlazuremaps}{\color{esumerOrange}Azure Maps}.
+  \item Diseño de la página: \href{\urltrucos}{\color{esumerOrange}Sugerencias y trucos para crear informes}.
+\end{itemize}
+\normalsize
+
+\end{document}
