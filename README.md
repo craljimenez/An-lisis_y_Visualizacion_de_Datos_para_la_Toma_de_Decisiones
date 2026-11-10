@@ -61,6 +61,7 @@ cada commit para confirmar que no se cuele ninguno.
 | 7 | 14 | Dashboard e identificación de insights | ✅ listo (diapositivas en formato guía, mismos datos de la Clase 13) |
 | 8 | 15 | Identificación de insights (cont.): KPI, segmentadores y filtros | ✅ listo (diapositivas en formato guía, mismos datos de la Clase 13) |
 | 8 | 16 | MasterClass: recapitulación del Módulo 3 | ✅ listo (guía de aplicación en PDF, caso Cafés Altavista con datos simulados en `datos/cafes_altavista.xlsx`) |
+| 10 | 19 | De la analítica descriptiva a la predictiva | ✅ listo (diapositivas; selección y extracción de características y herramientas: Orange, KNIME, RapidMiner, Weka y Python; datos para pruebas en `datos/socios_caracteristicas.csv`) |
 
 (Se va actualizando a medida que se preparan las demás clases;
 ver el detalle completo en `cronograma.md`.)
