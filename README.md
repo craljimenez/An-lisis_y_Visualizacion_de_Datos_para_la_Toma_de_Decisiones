@@ -62,6 +62,7 @@ cada commit para confirmar que no se cuele ninguno.
 | 8 | 15 | Identificación de insights (cont.): KPI, segmentadores y filtros | ✅ listo (diapositivas en formato guía, mismos datos de la Clase 13) |
 | 8 | 16 | MasterClass: recapitulación del Módulo 3 | ✅ listo (guía de aplicación en PDF, caso Cafés Altavista con datos simulados en `datos/cafes_altavista.xlsx`) |
 | 10 | 19 | De la analítica descriptiva a la predictiva | ✅ listo (diapositivas; selección y extracción de características y herramientas: Orange, KNIME, RapidMiner, Weka y Python; datos para pruebas en `datos/socios_caracteristicas.csv`) |
+| 10 | 20 | Regresión lineal con Python | ✅ listo (diapositivas del tema y práctica en dos rutas con las mismas cifras: notebook de Python en `notebooks/lab-regresion-lineal.ipynb` y guía de Orange en PDF con el flujo resuelto `bicicletas-regresion.ows`; datos reales de bicicletas en `datos/bicicletas_diarias.csv`) |
 
 (Se va actualizando a medida que se preparan las demás clases;
 ver el detalle completo en `cronograma.md`.)

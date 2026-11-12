@@ -1,0 +1,655 @@
+% ============================================================
+%  Práctica en Orange: regresión lineal
+%  Semana 10 · Clase 20: Regresión lineal (ruta Orange)
+%  Curso: Análisis y Visualización de Datos para la Toma de Decisiones
+%  Datos: datos/bicicletas_diarias.csv (Bike Sharing Dataset, UCI, CC BY 4.0)
+%  La ruta Python es notebooks/lab-regresion-lineal.ipynb: mismos datos,
+%  mismo reparto (semilla 42) y mismas cifras de control.
+%  Compilar con: xelatex guia-orange-regresion-lineal.tex (dos veces)
+% ============================================================
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\tcbuselibrary{skins,breakable}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,babel}
+
+% ---------------- Tipografía (misma lógica que la plantilla de slides) ----------------
+\IfFontExistsTF{Aptos}{\setmainfont{Aptos}}{\setmainfont{Lato}}
+\setmonofont{DejaVu Sans Mono}[Scale=0.82]
+
+% ---------------- Paleta Esumer ----------------
+\definecolor{esumerNavy}{HTML}{262E66}
+\definecolor{esumerNavyDark}{HTML}{1E4093}
+\definecolor{esumerTeal}{HTML}{0CB3B6}
+\definecolor{esumerSky}{HTML}{26A1DB}
+\definecolor{esumerOrange}{HTML}{EF7C2C}
+\definecolor{esumerGreen}{HTML}{94C122}
+\definecolor{esumerMagenta}{HTML}{AF348B}
+\definecolor{esumerGray}{HTML}{E8E8E8}
+\definecolor{esumerBg}{HTML}{F7F8FA}
+
+\hypersetup{colorlinks=true, linkcolor=esumerNavyDark, urlcolor=esumerNavyDark}
+\graphicspath{{../../../plantilla/assets/}}
+
+% ---------------- Enlaces ----------------
+\newcommand{\urldatos}{https://github.com/craljimenez/An-lisis_y_Visualizacion_de_Datos_para_la_Toma_de_Decisiones/raw/main/clases/semana10-clase20-regresion-lineal-python/datos/bicicletas_diarias.csv}
+\newcommand{\urlorange}{https://orangedatamining.com/download/}
+\newcommand{\urluci}{https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset}
+\newcommand{\urlarticulo}{https://doi.org/10.1007/s13748-013-0040-3}
+\newcommand{\urlwfile}{https://orangedatamining.com/widget-catalog/data/file/}
+\newcommand{\urlwscatter}{https://orangedatamining.com/widget-catalog/visualize/scatterplot/}
+\newcommand{\urlwcolumns}{https://orangedatamining.com/widget-catalog/transform/selectcolumns/}
+\newcommand{\urlwsampler}{https://orangedatamining.com/widget-catalog/transform/datasampler/}
+\newcommand{\urlwconstant}{https://orangedatamining.com/widget-catalog/model/constant/}
+\newcommand{\urlwlinear}{https://orangedatamining.com/widget-catalog/model/linearregression/}
+\newcommand{\urlwtest}{https://orangedatamining.com/widget-catalog/evaluate/testandscore/}
+\newcommand{\urlwpred}{https://orangedatamining.com/widget-catalog/evaluate/predictions/}
+\newcommand{\urlwcreate}{https://orangedatamining.com/widget-catalog/transform/createinstance/}
+
+% ---------------- Encabezado / pie de página ----------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\small\color{esumerNavyDark} Práctica en Orange: regresión lineal \textperiodcentered\ Clase 20}
+\fancyfoot[R]{\small\color{esumerNavyDark} Cristian A. Jiménez C. \quad\textperiodcentered\quad \thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{1.5em}
+
+% ---------------- Cajas reutilizables ----------------
+\newtcolorbox{recuerda}[1][Lo viste en clase]{
+  colback=esumerBg, colframe=esumerTeal, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerTeal,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+\newtcolorbox{cuidado}[1][Cuidado]{
+  colback=white, colframe=esumerOrange, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerOrange,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+\newtcolorbox{control}[1][Debes ver]{
+  colback=white, colframe=esumerGreen!80!black, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerGreen!80!black,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+
+% Opción de Orange: nombre en español (nombre en inglés)
+\newcommand{\menu}[2]{\textbf{#1} {\color{black!55}(#2)}}
+% Widget de Orange (su nombre no se traduce)
+\newcommand{\widget}[1]{\leavevmode{\color{esumerNavyDark}\textbf{#1}}}
+% Equivalente en Python
+\newcommand{\py}[1]{\leavevmode{\color{esumerTeal}\textbf{[Python: #1]}}}
+
+% ---------------- Encabezado de cada paso ----------------
+\newcommand{\paso}[3]{%
+  \par\needspace{9\baselineskip}\vspace{8pt}\noindent
+  \begin{tikzpicture}[baseline=(n.base)]
+    \node[circle, fill=esumerOrange, text=white, font=\bfseries\large,
+          minimum size=0.85cm, inner sep=0pt] (n) {#1};
+  \end{tikzpicture}\hspace{8pt}%
+  {\Large\bfseries\color{esumerNavy} #2}\par
+  \vspace{-2pt}{\color{esumerOrange}\rule{\textwidth}{1pt}}\par
+  \vspace{2pt}
+  {\color{esumerNavyDark}\textbf{Pregunta:}} \textit{#3}\par
+  \vspace{2pt}
+}
+\newcommand{\subtitulo}[1]{\par\needspace{3\baselineskip}\vspace{4pt}{\large\bfseries\color{esumerNavyDark} #1}\par}
+
+% ---------------- Estilos TikZ comunes ----------------
+\tikzset{
+  every node/.append style={execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000\relax}},
+  flecha/.style={-{Stealth[length=2.4mm]}, line width=0.9pt, color=esumerNavy},
+  caja/.style={draw=esumerNavy, line width=0.7pt, rounded corners=3pt,
+               fill=white, align=center, inner sep=4pt},
+  w/.style={circle, draw=esumerNavy, line width=0.8pt, fill=white, minimum size=1.15cm,
+            inner sep=0pt, font=\scriptsize\bfseries, text=esumerNavy, align=center},
+  wlab/.style={font=\scriptsize\bfseries, text=esumerNavyDark, align=center},
+  enl/.style={-{Stealth[length=2mm]}, line width=0.8pt, color=esumerNavy!70},
+  senal/.style={font=\tiny, text=black!70, fill=white, inner sep=1pt, align=center},
+}
+
+% ============================================================
+\begin{document}
+
+% ---------------- Encabezado ----------------
+\begin{minipage}[c]{0.18\textwidth}
+  \includegraphics[height=1.15cm,width=\linewidth,keepaspectratio]{esumer-logo.png}
+\end{minipage}%
+\begin{minipage}[c]{0.80\textwidth}
+  \raggedleft
+  {\Large\bfseries\color{esumerNavy} Práctica en Orange: regresión lineal}\\[3pt]
+  {\small\color{esumerNavyDark} Semana 10 \textperiodcentered\ Clase 20 \textperiodcentered\ Análisis y Visualización de Datos para la Toma de Decisiones}
+\end{minipage}
+
+\vspace{4pt}
+{\color{esumerOrange}\rule{\textwidth}{2pt}}
+\vspace{6pt}
+
+\textbf{Para qué es esta guía.} En la Clase 19 viste la idea: una
+\textbf{variable objetivo}, unas \textbf{variables explicativas}, un reparto
+entre \textbf{entrenamiento y prueba} y una \textbf{línea base}. Hoy lo
+haces de verdad, con el modelo más sencillo y más usado: la
+\textbf{regresión lineal}. Esta guía lo hace en Orange, sin escribir código.
+
+\begin{recuerda}[El caso: ¿cuántas bicicletas preparar?]
+\small Capital Bikeshare alquila bicicletas en Washington D.\,C. Cada noche
+decide cuántas bicicletas y cuánto personal tener listos para el día
+siguiente. Tienes dos años de datos \textbf{reales}, día por día (2011 y
+2012), con el clima de cada día. La pregunta:
+\textbf{¿cuántas bicicletas se alquilarán en un día, según el clima y el
+tipo de día?} El objetivo es un número: es un problema de
+\textbf{regresión}.
+\end{recuerda}
+
+\begin{tcolorbox}[colback=esumerBg, colframe=esumerNavy, boxrule=0.6pt, arc=1mm,
+  left=6pt, right=6pt, top=4pt, bottom=4pt]
+\small\textbf{\color{esumerNavy}Dos rutas, los mismos números.} Esta práctica
+tiene dos rutas: esta, en Orange, y otra en Python, con el notebook
+\texttt{lab-regresion-lineal.ipynb}. Las dos usan el mismo archivo y
+reparten los días entre entrenamiento y prueba con la misma semilla, así que
+eligen los mismos días y \textbf{las cifras de las cajas verdes son
+idénticas en las dos}. Al final de cada caja verde, la
+etiqueta \py{\ldots} dice qué hace la otra ruta: si trabajas con alguien
+de Python, comparen resultados.
+\end{tcolorbox}
+
+\textbf{Al terminar deberías tener:}
+\begin{enumerate}[itemsep=1pt, topsep=2pt]
+  \item Un flujo de trabajo de Orange guardado (\texttt{bicicletas.ows}) con
+    los nueve pasos.
+  \item Tres modelos comparados con días que no vieron: la línea base, una
+    regresión simple y una múltiple.
+  \item La \textbf{ficha de la última página}: tu modelo explicado en
+    lenguaje de negocio.
+\end{enumerate}
+
+\textbf{Antes de empezar}
+\begin{itemize}[itemsep=1pt, topsep=2pt]
+  \item Instala Orange desde
+    \href{\urlorange}{\color{esumerOrange}orangedatamining.com/download} (es
+    gratuito, para Windows, macOS y Linux).
+  \item Descarga el archivo
+    \href{\urldatos}{\color{esumerOrange}\texttt{bicicletas\_diarias.csv}}.
+  \item Si tu Orange está en español, los nombres de los \textbf{widgets}
+    siguen en inglés (\widget{File}, \widget{Linear Regression}\ldots); las
+    opciones sí aparecen traducidas. En la guía va el nombre en español y,
+    entre paréntesis, el inglés.
+  \item Cómo se arma un flujo: arrastra un widget desde el panel izquierdo
+    al lienzo, y para conectarlo arrastra desde el borde derecho de un
+    widget hasta el borde izquierdo de otro. Doble clic abre un widget.
+\end{itemize}
+
+% ============================================================
+\clearpage
+\section*{\color{esumerNavy}Los datos y el flujo completo}
+
+\textbf{\texttt{bicicletas\_diarias.csv}}: una fila por día, del 1 de enero
+de 2011 al 31 de diciembre de 2012 (731 días).
+
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Columna} & \textbf{Qué contiene}\\
+\midrule
+\texttt{fecha}, \texttt{anio}, \texttt{mes}, \texttt{dia\_semana} & Cuándo.\\
+\texttt{dia\_laboral} & 1 si es día laboral; 0 si es fin de semana o festivo.\\
+\texttt{clima} & Despejado, Nublado o con niebla, Lluvia o nieve.\\
+\texttt{temperatura\_c}, \texttt{sensacion\_termica\_c} & Temperatura y sensación térmica, en grados Celsius.\\
+\texttt{humedad} & Humedad relativa, de 0 a 100.\\
+\texttt{viento} & Velocidad del viento, en la escala del archivo original.\\
+\texttt{es\_2012} & 1 si el día es de 2012; 0 si es de 2011.\\
+\texttt{lluvia} & 1 si hubo lluvia o nieve; 0 si no.\\
+\texttt{alquileres} & \textbf{Objetivo}: bicicletas alquiladas ese día.\\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\vspace{2pt}
+{\footnotesize\itshape Fuente: \href{\urluci}{Bike Sharing Dataset}
+(Capital Bikeshare), UCI Machine Learning Repository, licencia CC BY 4.0.
+Fanaee-T, H. y Gama, J. (2013),
+\href{\urlarticulo}{Event labeling combining ensemble detectors and
+background knowledge}, Progress in Artificial Intelligence. Se tradujeron
+las columnas y se devolvieron la temperatura, la humedad y el viento a su
+escala original.}
+
+\subtitulo{El flujo que vas a construir}
+
+Así se verá tu lienzo al final. Los números son los pasos de la guía.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm, y=1cm,
+  ww/.style={draw=esumerNavy, line width=0.8pt, rounded corners=4pt, fill=white,
+             minimum width=2.5cm, minimum height=0.9cm, font=\scriptsize\bfseries,
+             text=esumerNavy, align=center, inner sep=2pt},
+  badge/.style={circle, fill=esumerOrange, text=white, font=\tiny\bfseries,
+                inner sep=0pt, minimum size=0.4cm},
+  e/.style={-{Stealth[length=2mm]}, line width=0.8pt, color=esumerNavy!70, rounded corners=3pt},
+]
+  \node[ww] (file) at (0.9,0) {File};
+  \node[ww] (cols) at (4.1,0) {Select Columns};
+  \node[ww] (rows) at (7.3,0) {Data Sampler};
+  \node[ww] (lin) at (11.2,0) {Linear Regression};
+  \node[ww] (tab) at (15.0,0) {Data Table};
+  \node[ww] (scat) at (0.9,-2.0) {Scatter Plot};
+  \node[ww] (const) at (11.2,2.0) {Constant};
+  \node[ww] (test) at (15.0,2.0) {Test and Score};
+  \node[ww] (pred) at (11.2,-2.0) {Predictions};
+  \node[ww] (inst) at (7.3,-3.8) {Create Instance};
+  \node[ww] (pred2) at (11.2,-3.8) {Predictions};
+  \foreach \n/\k in {file/1, scat/2, cols/3, rows/3, const/4, test/4, lin/5, tab/5, pred/6, inst/8, pred2/8}
+    {\node[badge] at (\n.north east) {\k};}
+  \draw[e] (file) -- (cols);
+  \draw[e] (cols) -- (rows);
+  \draw[e] (file) -- (scat);
+  \draw[e] (rows) -- node[senal, above=1pt] {restantes} (lin);
+  \draw[e] (lin) -- node[senal, above=1pt] {coeficientes} (tab);
+  \draw[e] (const) -- node[senal, above=1pt] {aprendiz} (test);
+  \draw[e] (lin.north east) -- node[senal, pos=0.55, right=2pt] {aprendiz} (test.south west);
+  \draw[e] (rows.north) -- ++(0,3.3) -| node[senal, pos=0.25, above=1pt] {restantes y muestra (dos enlaces)} (test.north);
+  \draw[e] (lin) -- node[senal, right=2pt] {modelo} (pred);
+  \draw[e] ([xshift=0.35cm]rows.south) |- node[senal, pos=0.75, above=1pt] {muestra} (pred.west);
+  \draw[e] ([xshift=-0.35cm]rows.south) -- node[senal, pos=0.5, left=2pt] {restantes} ([xshift=-0.35cm]inst.north);
+  \draw[e] (inst) -- (pred2);
+  \draw[e] (lin.south east) -- ++(1.0,-0.6) |- node[senal, pos=0.25, right=2pt] {modelo} (pred2.east);
+\end{tikzpicture}
+\end{center}
+
+{\footnotesize\itshape Las etiquetas de las flechas son las señales que
+eliges al conectar: ``restantes'' (el 80\%, entrenamiento) y ``muestra''
+(el 20\%, prueba) son las dos salidas de \widget{Data Sampler}. El paso 7 no agrega widgets: cambia las
+columnas en \widget{Select Columns}, y el 9 cambia valores en
+\widget{Create Instance}.}
+
+% ============================================================
+\clearpage
+\paso{1}{Cargar y revisar los datos}{¿Qué tengo, y hay algo raro?}
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item Arrastra un \widget{File} al lienzo, ábrelo y elige
+    \texttt{bicicletas\_diarias.csv} con el botón de la carpeta.
+  \item Abajo, en \menu{Columnas (dé doble clic para editar)}{Columns
+    (Double click to edit)}, mira la columna \menu{Tipo}{Type}. Orange
+    supone que \texttt{es\_2012}, \texttt{dia\_laboral} y \texttt{lluvia}
+    son \menu{categórico}{categorical}, porque solo tienen 0 y 1. Haz doble
+    clic en el tipo de cada una y cámbialo a \menu{numérico}{numeric}.
+    Pulsa \menu{Aplicar}{Apply}.
+  \item Conecta un \widget{Data Table} al \widget{File} y ábrelo. Haz clic
+    en el encabezado \texttt{humedad} para ordenar de menor a mayor.
+\end{enumerate}
+
+\begin{cuidado}[Por qué cambiar el tipo de las columnas de 0 y 1]
+\small Si las dejas como categóricas, Orange da dos coeficientes por
+columna (\texttt{es\_2012=0} y \texttt{es\_2012=1}, con el mismo valor y
+signo contrario) y no uno solo, como Python. Las predicciones serían
+iguales, pero los coeficientes no se podrían comparar con la otra ruta.
+\end{cuidado}
+
+\begin{control}
+\small \textbf{731} filas. La humedad más baja es \textbf{0}, el 10 de marzo
+de 2011. Una humedad relativa de cero no ocurre en una ciudad: es un
+\textbf{error de registro}. Es un solo día entre 731 y casi no mueve el
+modelo, así que lo dejamos; pero en tu proyecto, cada decisión sobre un
+dato raro va en la bitácora (Clase 12).
+\py{\texttt{dias.describe()} y \texttt{dias[dias["humedad"] == 0]}}
+\end{control}
+
+\paso{2}{Mirar la relación antes de modelar}{¿Los días más cálidos tienen más alquileres? ¿La relación es una recta?}
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item Conecta un \widget{Scatter Plot} al \widget{File}.
+  \item Eje X: \texttt{temperatura\_c}. Eje Y: \texttt{alquileres}.
+  \item Marca \menu{Mostrar línea de regresión}{Show regression line}.
+\end{enumerate}
+
+\begin{control}
+\small Una nube que sube de izquierda a derecha: relación \textbf{positiva}
+y moderada (la correlación es \textbf{0,627}). Fíjate en los extremos: en
+los días más calurosos, a la derecha, muchos puntos quedan \textbf{por
+debajo} de la línea. Guarda esa observación para el paso 6.
+\py{\texttt{dias.plot.scatter(...)} y \texttt{.corr()}}
+\end{control}
+
+\paso{3}{Elegir columnas y separar entrenamiento y prueba}{¿Con qué aprende el modelo, y con qué lo examino?}
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item Conecta un \widget{Select Columns} al \widget{File}. Deja en
+    \menu{Variables}{Features} solo \texttt{temperatura\_c} y pon
+    \texttt{alquileres} en \menu{Objetivo}{Target}. Todo lo demás va a
+    \menu{Ignorado}{Ignored}.
+  \item Conecta un \widget{Data Sampler} al \widget{Select Columns}. En
+    \menu{Tipo de muestreo}{Sampling Type} elige \menu{Proporción fija de
+    datos}{Fixed proportion of data} y mueve la barra a \textbf{20\%}. En
+    \menu{Opciones}{Options}, deja marcado \menu{Muestreo replicable
+    (determinista)}{Replicable (deterministic) sampling}.
+\end{enumerate}
+
+\widget{Data Sampler} aparta al azar el 20\% de los días y tiene dos
+salidas: \menu{Muestra de datos}{Data Sample}, ese 20\%, que será la
+\textbf{prueba}, y \menu{Datos restantes}{Remaining Data}, el otro 80\%, que
+será el \textbf{entrenamiento}. Es el mismo reparto de la Clase 19.
+
+\begin{cuidado}[Por qué ``replicable'']
+\small Con esa casilla, Orange usa siempre la misma semilla (42): el reparto
+sale igual cada vez que abres el flujo, igual para todos tus compañeros e
+igual al de Python con \texttt{random\_state=42}. Sin ella, cada vez
+saldrían otros días y otras cifras.
+\end{cuidado}
+
+\begin{control}
+\small \textbf{584} días de entrenamiento y \textbf{147} de prueba: lo dice
+el propio \widget{Data Sampler}, y también aparece al pasar el cursor sobre
+las flechas que salen de él.
+\py{\texttt{train\_test\_split(dias, test\_size=0.2, random\_state=42)}}
+\end{control}
+
+\paso{4}{La línea base: predecir siempre el promedio}{¿Cuánto se equivoca alguien que no mira ningún dato?}
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item Arrastra un \widget{Constant} (predice siempre el promedio del
+    entrenamiento) y un \widget{Test and Score}.
+  \item Conecta \widget{Constant} con \widget{Test and Score}.
+  \item Conecta \widget{Data Sampler} con \widget{Test and Score} y, en la
+    ventana \menu{Editar enlaces}{Edit Links} (doble clic sobre la flecha),
+    arma dos enlaces: \menu{Datos restantes}{Remaining Data} con
+    \texttt{Data} (el entrenamiento) y \menu{Muestra de datos}{Data
+    Sample} con \menu{Datos de prueba}{Test Data}.
+  \item En \widget{Test and Score} elige \menu{Probar con datos de
+    prueba}{Test on test data}.
+\end{enumerate}
+
+Para medir el error, Orange muestra varias columnas. Usaremos tres:
+
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{MAE} & Error absoluto medio: en promedio, ¿por cuántas bicicletas se equivoca? Está en las mismas unidades del objetivo.\\
+\textbf{RMSE} & Raíz del error cuadrático medio: también en bicicletas, pero castiga más los errores grandes.\\
+\textbf{R2} & Qué parte de la variación de los alquileres explica el modelo. 1 es perfecto; 0 es lo mismo que predecir el promedio.\\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\begin{control}
+\small Fila \widget{Constant}: MAE \textbf{1712,0}, RMSE \textbf{2022,2} y
+R2 \textbf{-0,020}. Sin mirar ningún dato, nos equivocamos en unas 1700
+bicicletas por día: todo modelo tiene que hacerlo mejor. (El R2 sale un
+poco negativo porque el promedio del entrenamiento, 4561,0, no es
+exactamente el de la prueba.) Orange muestra más decimales: redondea.
+\py{\texttt{mean\_absolute\_error(prueba["alquileres"], pred\_base)}}
+\end{control}
+
+\paso{5}{Regresión lineal simple: solo la temperatura}{¿Cuántas bicicletas más por cada grado?}
+
+El modelo busca la recta que mejor sigue a los puntos:
+\[ \text{alquileres} = \text{intercepto} + \text{pendiente} \times \text{temperatura} \]
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item Arrastra un \widget{Linear Regression}. Déjalo en \menu{Sin
+    regularización}{No regularization}, con \menu{Ajustar intercepto}{Fit
+    intercept} marcado.
+  \item Conecta \widget{Data Sampler} con \widget{Linear Regression}, con
+    el enlace \menu{Datos restantes}{Remaining Data} (el entrenamiento), y
+    \widget{Linear Regression} con \widget{Test and Score}.
+  \item Para ver la recta, conecta \widget{Linear Regression} con un
+    \widget{Data Table}. En \menu{Editar enlaces}{Edit Links} elige la
+    salida \menu{Coeficientes}{Coefficients}.
+\end{enumerate}
+
+\begin{control}
+\small \textbf{Coeficientes}: \texttt{intercept} \textbf{1272,76} y
+\texttt{temperatura\_c} \textbf{160,35}. \textbf{Test and Score}, fila
+\widget{Linear Regression}: MAE \textbf{1291,7}, RMSE \textbf{1545,9} y R2
+\textbf{0,404}.
+\py{\texttt{LinearRegression().fit(...)}, \texttt{.intercept\_} y \texttt{.coef\_}}
+\end{control}
+
+\textbf{Cómo se lee, en lenguaje de negocio:} \emph{por cada grado más de
+temperatura, se alquilan en promedio unas 160 bicicletas más al día}. El
+modelo mejora a la línea base (1292 frente a 1712), pero la temperatura sola
+explica cerca del 40\% de la variación. El intercepto sería el valor a 0
+grados, pero ningún día de los datos llegó a 0 (el más frío tuvo 2,4): no lo
+leas como una predicción.
+
+\paso{6}{Los errores: lo que el modelo no explica}{¿En qué días se equivoca, y por qué?}
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item Arrastra un \widget{Predictions}. Conecta \widget{Data Sampler}
+    (\menu{Muestra de datos}{Data Sample}, la prueba) y el modelo
+    de \widget{Linear Regression}.
+  \item En \menu{Error de regresión mostrado}{Shown regression error} deja
+    \menu{Diferencia}{Difference}. Haz clic en el encabezado de esa
+    columna para ordenar.
+  \item Vuelve al \widget{Scatter Plot} del paso 2 y mira dónde quedan los
+    puntos respecto a la línea, en los días fríos, templados y calurosos.
+\end{enumerate}
+
+\begin{cuidado}[El signo de la diferencia]
+\small Orange calcula \textbf{predicho menos real}: una diferencia positiva
+es un día en que el modelo predijo de más. En Python, el \textbf{residuo} es
+al revés, real menos predicho. Es la misma cifra con el signo cambiado.
+\end{cuidado}
+
+\begin{control}
+\small En el \widget{Scatter Plot}, la mayoría de los días fríos (8 de
+cada 10, por debajo de 10 grados) y de los muy calurosos (7 de cada 10, por
+encima de 30) quedan \textbf{por debajo} de la línea; entre 20 y 30 grados
+abundan los puntos altos, \textbf{por encima}. El modelo predice de más en
+los extremos y de menos en el medio: la relación tiene forma de
+\textbf{arco}, y una recta no puede doblarse. Es un \textbf{límite del
+modelo lineal}, no un error tuyo.
+\py{residuos por tramos de temperatura: $-897$, 107, 290 y $-923$}
+\end{control}
+
+\paso{7}{Regresión lineal múltiple: más variables explicativas}{¿Cuánto mejora el modelo con el clima y el calendario?}
+
+Con lo que aprendiste en la Clase 19, agrega variables que se conocen
+\textbf{antes} de que pase el día (el pronóstico del clima, el calendario) y
+que no repiten lo que dice otra. Abre \widget{Select Columns} y pasa a
+\menu{Variables}{Features}: \texttt{humedad}, \texttt{viento},
+\texttt{es\_2012}, \texttt{dia\_laboral} y \texttt{lluvia}. Todos los
+widgets se recalculan solos. No uses \texttt{sensacion\_termica\_c}: su
+correlación con la temperatura es de 0,99, así que dice casi lo mismo.
+
+\begin{control}
+\small \textbf{Test and Score}, fila \widget{Linear Regression}: MAE
+\textbf{733,4}, RMSE \textbf{919,1} y R2 \textbf{0,789}. El error promedio
+bajó de unas 1700 bicicletas (línea base) a unas 730: \textbf{menos de la
+mitad}.
+Los coeficientes, en el \widget{Data Table}:
+
+\vspace{2pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.6cm} >{\raggedleft\arraybackslash}p{1.9cm} @{\hspace{0.5cm}} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Variable} & \textbf{Coeficiente} & \textbf{En lenguaje de negocio}\\
+\midrule
+\texttt{intercept} & 2070,77 & \\
+\texttt{temperatura\_c} & 152,56 & Cada grado más, unas 153 bicicletas más, con lo demás igual.\\
+\texttt{humedad} & $-16{,}75$ & Cada punto más de humedad, unas 17 menos.\\
+\texttt{viento} & $-51{,}17$ & Cada punto más de viento, unas 51 menos.\\
+\texttt{es\_2012} & 1959,94 & Un día de 2012 tiene unas 1960 más que uno parecido de 2011: el uso del sistema creció.\\
+\texttt{dia\_laboral} & 145,40 & Un día laboral tiene unas 145 más: poca diferencia.\\
+\texttt{lluvia} & $-1239{,}71$ & Un día con lluvia o nieve, unas 1240 menos.\\
+\bottomrule
+\end{tabularx}\par
+\py{\texttt{columnas = [...]} y \texttt{LinearRegression().fit(entrenamiento[columnas], ...)}}
+\end{control}
+
+\textbf{``Con lo demás igual''} es la clave de la regresión múltiple: cada
+coeficiente es el efecto de esa columna \textbf{manteniendo fijas las
+otras}. Por eso el de la temperatura bajó de 160 a 153: parte de lo que
+antes se le atribuía era del año o de la lluvia. Y cuidado: un coeficiente
+grande no significa una columna más importante; depende de sus unidades.
+
+\paso{8}{Predecir un día nuevo}{¿Cuántas bicicletas preparar para mañana?}
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item Arrastra un \widget{Create Instance} y conéctale \widget{Data
+    Sampler} (\menu{Datos restantes}{Remaining Data}): muestra una fila con
+    todas las columnas, para que escribas sus valores. Abajo, desmarca
+    \menu{Anexar esta instancia a los datos de entrada}{Append this instance
+    to input data}: así sale solo el día nuevo.
+  \item Escribe: \texttt{temperatura\_c} 25, \texttt{humedad} 60,
+    \texttt{viento} 12, \texttt{es\_2012} 1, \texttt{dia\_laboral} 1 y
+    \texttt{lluvia} 0. Es un día laboral de 2012, templado y sin lluvia.
+  \item Conecta \widget{Create Instance} con un segundo
+    \widget{Predictions}, y conéctale también el modelo de
+    \widget{Linear Regression}.
+  \item Ahora cambia \texttt{lluvia} a 1: el pronóstico anuncia lluvia.
+\end{enumerate}
+
+\begin{control}
+\small Unas \textbf{6371} bicicletas sin lluvia y unas \textbf{5131} con
+lluvia. El modelo se equivoca en promedio en unas 730: la predicción es una
+guía para planear, no una cifra exacta.
+\py{\texttt{multiple.predict(dia\_nuevo)}}
+\end{control}
+
+\paso{9}{Los límites del modelo}{¿Puedo usar el modelo para cualquier día?}
+
+\textbf{Extrapolar} es pedirle una predicción fuera del rango de los datos
+con que aprendió. Los días de entrenamiento van de 2,4 a 35,3 grados.
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item Vuelve al modelo simple: en \widget{Select Columns}, deja solo
+    \texttt{temperatura\_c} en \menu{Variables}{Features}.
+  \item En \widget{Create Instance}, escribe en la casilla numérica de
+    \texttt{temperatura\_c} el valor $-10$ y luego 45. (La barra solo llega
+    hasta los valores de los datos; la casilla acepta cualquiera.)
+  \item Vuelve al modelo múltiple y, en el \widget{Predictions} de la
+    prueba, ordena por la diferencia: ¿en qué días se equivocó más?
+\end{enumerate}
+
+\begin{control}
+\small Unas \textbf{$-331$} bicicletas a $-10$ grados (¡un número negativo
+de alquileres!) y \textbf{8488} a 45 grados, aunque en el paso 6 viste que
+con calor fuerte los alquileres \textbf{bajan}. La recta sigue para siempre;
+la realidad no. \textbf{Nunca uses el modelo lejos de los datos con que
+aprendió.}
+
+El error más grande de la prueba es el \textbf{29 de octubre de 2012}: el
+modelo predijo unas 2980 bicicletas y se alquilaron 22 (diferencia de 2958).
+Ese día llegó el \textbf{huracán Sandy} a la costa este de Estados Unidos:
+ningún dato del clima diario anticipa una ciudad cerrada. Entre los
+siguiente es el 29 de junio de 2012, a 34,2 grados: el modelo predijo unas
+8006 y se alquilaron 5463. Otra vez, el calor fuerte.
+\py{\texttt{prueba.sort\_values("error")}}
+\end{control}
+
+Guarda el flujo: \menu{Archivo}{File} $>$ \menu{Guardar}{Save}, como
+\texttt{bicicletas.ows}.
+
+\begin{recuerda}[{{El flujo resuelto, para comparar}}]
+\small En la carpeta de la clase está \texttt{bicicletas-regresion.ows}, con
+los nueve pasos armados y el modelo múltiple del paso 7. Ábrelo con
+\menu{Archivo}{File} $>$ \menu{Abrir}{Open}. \textbf{Luego carga el
+archivo de datos}: abre el widget \widget{File} y elige
+\texttt{bicicletas\_diarias.csv} con el botón de la carpeta. Al cargarlo, el
+resto del flujo se recalcula solo y muestra las cifras de esta guía. Úsalo
+para revisar tu trabajo, no para saltarte los pasos.
+\end{recuerda}
+
+% ============================================================
+\clearpage
+\section*{\color{esumerNavy}Entrega: tu modelo en lenguaje de negocio}
+
+Es la misma ficha de la ruta Python. Escríbela para alguien de la gerencia,
+que no sabe qué es un coeficiente.
+
+\renewcommand{\arraystretch}{3.0}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{6.2cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Pregunta} & \textbf{Tu respuesta}\\
+\midrule
+¿Qué decisión apoya el modelo? & \\ \hline
+¿Cuánto mejora a la línea base? (MAE de la base y del modelo) & \\ \hline
+¿Qué dos coeficientes le contarías a la gerencia, y cómo los dirías? & \\ \hline
+¿En qué días se equivoca más, y por qué? & \\ \hline
+¿Qué no debe hacerse con este modelo? & \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+
+\subtitulo{Retos opcionales}
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item Agrega \texttt{sensacion\_termica\_c} a las variables del modelo
+    múltiple. ¿Qué les pasa a los coeficientes de la temperatura y de la
+    sensación térmica? ¿Mejora el MAE? Relaciónalo con la pregunta 3 de la
+    selección de características de la Clase 19.
+  \item Quita \texttt{es\_2012}. ¿Cuánto empeora el modelo? ¿Qué significa
+    para la empresa que el año pese tanto?
+\end{enumerate}
+
+\subtitulo{Equivalencias entre las dos rutas}
+
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.4cm} >{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Tarea} & \textbf{Orange} & \textbf{Python}\\
+\midrule
+Cargar los datos & \widget{File} & \texttt{pd.read\_csv} \\
+Separar entrenamiento y prueba & \widget{Data Sampler} (20\%, replicable) & \texttt{train\_test\_split(..., test\_size=0.2, random\_state=42)} \\
+Elegir objetivo y variables & \widget{Select Columns} & \texttt{X = ...[columnas]}, \texttt{y = ...["alquileres"]} \\
+Línea base & \widget{Constant} & el promedio de \texttt{y\_train} \\
+Ajustar el modelo & \widget{Linear Regression} & \texttt{LinearRegression().fit(X, y)} \\
+Ver los coeficientes & salida \menu{Coeficientes}{Coefficients} & \texttt{.intercept\_} y \texttt{.coef\_} \\
+Medir con la prueba & \widget{Test and Score} & \texttt{mean\_absolute\_error}, \texttt{r2\_score} \\
+Predecir un día nuevo & \widget{Create Instance} y \widget{Predictions} & \texttt{.predict(dia\_nuevo)} \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\subtitulo{Si algo no cuadra}
+
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{6.2cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Lo que ves} & \textbf{Causa más probable}\\
+\midrule
+Coeficientes \texttt{es\_2012=0} y \texttt{es\_2012=1}, con signos contrarios. & No cambiaste el tipo a numérico en \widget{File} (paso 1).\\
+\widget{Test and Score} pide datos de prueba o da otras cifras. & Falta la conexión \menu{Muestra de datos}{Data Sample} $\rightarrow$ \menu{Datos de prueba}{Test Data}, o no elegiste \menu{Probar con datos de prueba}{Test on test data}.\\
+Todas las cifras son distintas de las de la guía. & En \widget{Data Sampler}: no está en 20\%, falta \menu{Muestreo replicable}{Replicable sampling}, o los enlaces están cruzados (el entrenamiento es \menu{Datos restantes}{Remaining Data}).\\
+El MAE no es el de la guía. & Sobra o falta una variable en \menu{Variables}{Features}: compara con el paso 5 o el 7.\\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\vspace{4pt}
+{\footnotesize Documentación oficial de los widgets:
+\href{\urlwfile}{\color{esumerOrange}File},
+\href{\urlwscatter}{\color{esumerOrange}Scatter Plot},
+\href{\urlwcolumns}{\color{esumerOrange}Select Columns},
+\href{\urlwsampler}{\color{esumerOrange}Data Sampler},
+\href{\urlwconstant}{\color{esumerOrange}Constant},
+\href{\urlwlinear}{\color{esumerOrange}Linear Regression},
+\href{\urlwtest}{\color{esumerOrange}Test and Score},
+\href{\urlwpred}{\color{esumerOrange}Predictions} y
+\href{\urlwcreate}{\color{esumerOrange}Create Instance}.}
+
+\end{document}
