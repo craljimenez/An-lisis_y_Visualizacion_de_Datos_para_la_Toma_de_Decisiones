@@ -26,6 +26,7 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{array}
+\usepackage[normalem]{ulem}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \usetikzlibrary{arrows.meta,positioning,calc}
 \tikzset{every node/.append style={execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000\relax}}}
@@ -61,13 +62,13 @@
   \begin{columns}[T,onlytextwidth]
     \column{0.32\textwidth}
     \begin{block}{Hora 1}
-      \small Audiencia, mensaje en una frase y estructura: contexto,
-      tensión, evidencia y recomendación.
+      \small Por qué contar historias. Audiencia y acción, mensaje en una
+      frase, estructura y arco narrativo, y el guion en papel.
     \end{block}
     \column{0.32\textwidth}
     \begin{block}{Hora 2}
-      \small Diapositivas que se entienden: jerarquía visual, carga
-      cognitiva y uso responsable de los datos.
+      \small Cómo mira la gente: atributos preatentivos, Gestalt y color.
+      Del ruido al mensaje, texto, recomendación y uso responsable.
     \end{block}
     \column{0.32\textwidth}
     \begin{block}{Hora 3}
@@ -110,6 +111,46 @@
   quiere saber \textbf{qué hacer}.
 \end{frame}
 
+\begin{frame}[t]{¿Por qué contar historias con datos?}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}[
+      v/.style={circle, draw=none, text=white, font=\footnotesize\bfseries,
+                minimum size=1.55cm, align=center},
+      l/.style={font=\scriptsize, text=esumerNavy, align=center},
+    ]
+      \node[v, fill=esumerNavy] (d) at (2.8,3.7) {Datos};
+      \node[v, fill=esumerSky] (n) at (0.9,0.8) {Narrativa};
+      \node[v, fill=esumerTeal] (vi) at (4.7,0.8) {Visual};
+      \draw[line width=1pt, esumerNavy!50] (d) -- (n) -- (vi) -- (d);
+      \node[l, anchor=east] at (1.6,2.45) {explicar};
+      \node[l, anchor=west] at (4.0,2.45) {iluminar};
+      \node[l] at (2.8,0.45) {atrapar};
+      \node[font=\footnotesize\bfseries, text=esumerOrange] at (2.8,1.75) {cambio};
+    \end{tikzpicture}
+
+    {\scriptsize\color{black!60}Adaptado de Brent Dykes,
+    \emph{Effective Data Storytelling} (Wiley, 2019).}
+    \column{0.46\textwidth}
+    \footnotesize
+    \begin{itemize}
+      \footnotesize
+      \item \textbf{Datos y narrativa} explican qué pasó y por qué.
+      \item \textbf{Datos y visual} iluminan lo que una tabla esconde.
+      \item \textbf{Narrativa y visual} atrapan la atención.
+      \item Solo con los tres juntos alguien \textbf{cambia lo que iba a
+        hacer}.
+    \end{itemize}
+    \vspace{0.1cm}
+    \begin{block}{Explorar y explicar}
+      \footnotesize Para encontrar un hallazgo revisaste decenas de
+      gráficos. Para contarlo, muestras solo los dos o tres que lo
+      demuestran: la gerencia no necesita ver todo lo que buscaste.
+    \end{block}
+  \end{columns}
+\end{frame}
+
 % ============================================================
 \section{Hora 1: Audiencia, mensaje y estructura}
 % ============================================================
@@ -134,6 +175,55 @@
     \footnotesize Habla en el idioma de quien decide: pesos, metas y
     clientes. No ``la medida DAX'', ``el coeficiente'' ni ``el $R^2$''.
   \end{alertblock}
+\end{frame}
+
+\begin{frame}[t]{Audiencias distintas, historias distintas}
+  \small El mismo hallazgo se cuenta distinto según quién escucha:
+  \vspace{0.1cm}
+
+  \footnotesize
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}L{2.3cm}L{3.7cm}L{3.5cm}L{3.1cm}@{}}
+    \toprule
+    \textbf{Audiencia} & \textbf{Qué pregunta} & \textbf{Cuánto detalle} & \textbf{Formato} \\
+    \midrule
+    Directiva (gerencia, comité) & ¿Qué decido y cuánto vale? & Poco: la conclusión y dos o tres cifras & 5 a 7 diapositivas \\
+    Técnica (analistas, TI) & ¿Cómo lo calculaste? ¿Es confiable? & Mucho: datos, método, supuestos & Notebook, anexo, flujo de Orange \\
+    Operativa (jefes de tienda) & ¿Qué cambio en mi trabajo mañana? & Lo justo para actuar & Una hoja o un tablero filtrado por tienda \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.2cm}
+  \begin{alertblock}{Error común}
+    \footnotesize Contarle a la gerencia cómo limpiaste los datos. Ese
+    trabajo es valioso, pero va en el anexo, por si alguien pregunta.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[t]{¿Qué quieres que hagan?}
+  \small Una historia para directivos termina en una \textbf{acción}. Si no
+  pide nada, es un informe.
+  \vspace{0.15cm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Verbos de una buena recomendación}
+      \footnotesize Aprobar, invertir, detener, cambiar, probar, contratar,
+      priorizar, pedir un dato que falta.
+    \end{block}
+    \begin{alertblock}{Verbos que no deciden nada}
+      \footnotesize ``Tener en cuenta'', ``revisar'', ``analizar más'',
+      ``considerar''.
+    \end{alertblock}
+    \column{0.48\textwidth}
+    \begin{exampleblock}{Con Cafés Altavista}
+      \footnotesize \textbf{Débil:} ``Hay que tener en cuenta el margen en
+      las campañas.''\\[4pt]
+      \textbf{Fuerte:} ``Pedimos aprobar hoy que la próxima campaña de café
+      en grano tenga un descuento menor, y que se mida con el margen \% y
+      no solo con las ventas.''
+    \end{exampleblock}
+    \footnotesize Pregúntate: al salir de la reunión, ¿qué hará distinto
+    quien te escuchó?
+  \end{columns}
 \end{frame}
 
 \begin{frame}[t]{El mensaje, en una frase}
@@ -162,6 +252,34 @@
   propuesta para la clase; la decide la empresa.
 \end{frame}
 
+\begin{frame}[t]{La historia de tres minutos}
+  \small Antes de hacer diapositivas, cuéntala en voz alta, sin apoyo, en
+  tres minutos. Si no puedes, todavía no tienes historia.
+  \vspace{0.1cm}
+  \begin{exampleblock}{Ejemplo con Cafés Altavista}
+    \footnotesize ``En septiembre vendimos 89 millones, el mejor mes del año.
+    La razón fue la campaña de café en grano: con el 25\% de descuento, sus
+    ventas se triplicaron. El problema es que el margen cayó a 56,6\%, por
+    primera vez por debajo de la meta del 60\%, porque el grano con
+    descuento deja mucho menos por unidad. Aun así, el margen en pesos subió
+    3,6 millones, así que la campaña no fue un error: el descuento fue muy
+    alto. Proponemos repetirla con un descuento menor y medirla también con
+    el margen.''
+  \end{exampleblock}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Para qué sirve}
+      \footnotesize Te obliga a elegir qué es importante, y te prepara para
+      cuando la reunión se acorte o el proyector falle.
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{Cómo practicarla}
+      \footnotesize Cuéntasela a alguien que no conoce el caso. Si te
+      pregunta ``¿y entonces?'', falta la recomendación.
+    \end{block}
+  \end{columns}
+\end{frame}
+
 \begin{frame}[t]{La estructura de la historia}
   \begin{center}
   \begin{tikzpicture}[
@@ -187,6 +305,134 @@
   \footnotesize La \textbf{tensión} es lo que hace que la audiencia
   escuche: sin un problema, no hay nada que decidir.
   \fuentedatos
+\end{frame}
+
+\begin{frame}[t]{El arco narrativo}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.55\textwidth}
+    \centering
+    \begin{tikzpicture}[x=0.88cm, y=0.9cm]
+      \draw[-{Stealth[length=2mm]}, esumerNavy!60] (0,0) -- (7.3,0) node[below left, font=\scriptsize] {tiempo de la presentación};
+      \draw[-{Stealth[length=2mm]}, esumerNavy!60] (0,0) -- (0,3.6) node[above right, font=\scriptsize] {tensión};
+      \draw[line width=2pt, esumerOrange] (0.2,0.6) .. controls (2.5,0.9) and (3.8,3.1) .. (4.6,3.1) .. controls (5.4,3.1) and (6.2,1.4) .. (7.0,1.0);
+      \fill[esumerNavy] (0.4,0.62) circle (2.5pt) node[above, font=\scriptsize, text=esumerNavy, align=center] {contexto};
+      \fill[esumerNavy] (2.9,1.85) circle (2.5pt) node[below right, font=\scriptsize, text=esumerNavy, align=left] {la tensión\\crece};
+      \fill[esumerNavy] (4.6,3.1) circle (2.5pt) node[above, font=\scriptsize, text=esumerNavy] {punto de giro};
+      \fill[esumerNavy] (6.8,1.05) circle (2.5pt) node[below, font=\scriptsize, text=esumerNavy] {resolución};
+    \end{tikzpicture}
+    \column{0.42\textwidth}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{@{}L{1.8cm}L{3.6cm}@{}}
+      \toprule
+      \textbf{Momento} & \textbf{En el caso} \\
+      \midrule
+      Contexto & Septiembre, récord de ventas \\
+      La tensión crece & El margen cae bajo la meta \\
+      Punto de giro & La causa: el 25\% de descuento en grano \\
+      Resolución & Repetir con menos descuento \\
+      \bottomrule
+    \end{tabular}
+  \end{columns}
+  \vspace{0.2cm}
+  \footnotesize El \textbf{punto de giro} es la evidencia que explica la
+  tensión: ahí va tu mejor gráfico. Después, la tensión baja porque la
+  audiencia ya sabe qué hacer.
+\end{frame}
+
+\begin{frame}[t]{¿La conclusión al principio o al final?}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Orden de descubrimiento}
+      \footnotesize Cuentas cómo lo encontraste: ``Revisamos las ventas,
+      luego el margen, luego las categorías, y al final descubrimos
+      que\ldots''
+      \vspace{3pt}
+
+      Sirve para una audiencia técnica o un informe académico.
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{exampleblock}{La respuesta primero}
+      \footnotesize Empiezas por lo que propones y después lo demuestras:
+      ``Proponemos repetir la campaña con menos descuento. Tres razones\ldots''
+      \vspace{3pt}
+
+      Es lo que prefiere una audiencia directiva: si la reunión se corta,
+      ya escucharon lo importante.
+    \end{exampleblock}
+  \end{columns}
+  \vspace{0.2cm}
+  \begin{block}{Cómo combinarlas}
+    \footnotesize Con directivos, anuncia la recomendación en la primera
+    diapositiva (``Hoy les proponemos\ldots'') y después recorre contexto,
+    tensión y evidencia. La tensión no se pierde: la audiencia escucha
+    buscando por qué.
+  \end{block}
+\end{frame}
+
+\begin{frame}[t]{Otro ejemplo: el Gimnasio Vitalis}
+  \small Los datos de las Clases 13 a 15, contados como historia:
+  \vspace{0.1cm}
+  \begin{center}
+  \begin{tikzpicture}[
+    tit/.style={draw=none, rounded corners=3pt, text=white, font=\small\bfseries,
+                minimum width=3.1cm, minimum height=0.7cm},
+    txt/.style={draw=esumerNavy!40, rounded corners=2pt, fill=white, align=left,
+                text width=2.9cm, font=\scriptsize, inner sep=4pt, anchor=north,
+                minimum height=2.5cm},
+    fl/.style={-{Stealth[length=2.2mm]}, line width=0.9pt, color=esumerNavy},
+  ]
+    \node[tit, fill=esumerSky] (a) at (1.6,0) {Contexto};
+    \node[tit, fill=esumerOrange] (b) at (5.2,0) {Tensión};
+    \node[tit, fill=esumerNavy] (c) at (8.8,0) {Evidencia};
+    \node[tit, fill=esumerTeal] (d) at (12.4,0) {Recomendación};
+    \draw[fl] (a) -- (b); \draw[fl] (b) -- (c); \draw[fl] (c) -- (d);
+    \node[txt] at (1.6,-0.5) {De 300 socios, 240 siguen activos: el 80,0\%.};
+    \node[txt] at (5.2,-0.5) {Pero entre los que viven a 6 km o más de su sede, solo sigue activo el 61,5\%. Cerca, el 88,0\%.};
+    \node[txt] at (8.8,-0.5) {35 de los 60 socios inactivos viven a 6 km o más.};
+    \node[txt] at (12.4,-0.5) {Acompañar a los socios que viven lejos en sus primeros meses.};
+  \end{tikzpicture}
+  \end{center}
+  \vspace{-0.1cm}
+  \footnotesize\textbf{El mensaje en una frase:} ``Vivir lejos de la sede se
+  asocia con dejar el gimnasio: proponemos acompañar a esos socios desde el
+  primer mes.'' Ojo con el verbo: \textbf{se asocia}, no \textbf{causa}
+  (Clase 19). La recomendación es un ejemplo para la clase.
+\end{frame}
+
+\begin{frame}[t]{Primero en papel: el storyboard}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.42\textwidth}
+    \centering
+    \begin{tikzpicture}[
+      pi/.style={draw=esumerOrange!70, fill=esumerOrange!15, minimum width=1.65cm,
+                 minimum height=1.25cm, text width=1.5cm, align=center, font=\tiny},
+    ]
+      \node[pi, rotate=-3] at (0,2.8) {Septiembre: récord};
+      \node[pi, rotate=2] at (1.95,2.8) {Margen bajo la meta};
+      \node[pi, rotate=-2] at (3.9,2.8) {Causa: el descuento};
+      \node[pi, rotate=3] at (0,1.2) {Margen en pesos subió};
+      \node[pi, rotate=-3] at (1.95,1.2) {Propuesta};
+      \node[pi, rotate=2, fill=esumerGray, draw=black!30] at (3.9,1.2) {\sout{Cómo limpiamos los datos}};
+    \end{tikzpicture}
+
+    {\scriptsize\color{black!60}Una nota por idea; lo que sobra, al anexo.}
+    \column{0.55\textwidth}
+    \small Antes de abrir Canva o Google Slides:
+    \begin{enumerate}
+      \footnotesize
+      \item Escribe una idea por nota adhesiva (o por línea, si es
+        virtual): el título de una diapositiva.
+      \item Ordénalas con la estructura: contexto, tensión, evidencia y
+        recomendación.
+      \item Quita las que no sirven a la frase del mensaje. Duele, pero
+        se hace.
+      \item Lee solo los títulos, en orden: ¿cuentan la historia?
+      \item Recién ahora, haz las diapositivas.
+    \end{enumerate}
+    \footnotesize En el papel cambiar el orden cuesta segundos; en el
+    software, minutos. Y uno se encariña con lo que ya diseñó.
+  \end{columns}
 \end{frame}
 
 \begin{frame}[t]{Del guion a las diapositivas}
@@ -258,25 +504,156 @@
 % ============================================================
 \section{Hora 2: Diapositivas que se entienden}
 % ============================================================
-\begin{frame}[t]{Jerarquía visual: el mismo dato, dos veces}
+\begin{frame}[t]{Lo que el ojo ve sin pensar}
+  \small ¿Cuántos 3 hay?
+  \vspace{0.1cm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \centering
+    \ttfamily\footnotesize
+    7 5 6 8 3 9 2 0 1 7 5 4 3 8 2 9 1 0 6 3\\
+      8 4 2 3 9 1 7 5 6 2 0 3 9 4 8 1 7 5 3 6\\
+      2 9 8 1 7 3 6 4 0 5 1 9 2 7 3 6 8 4 1 0\\
+      6 1 0 4 9 3 8 2 7 5 6 1 9 3 0 2 8 3 7 4\\
+      9 3 8 5 0 2 7 1 6 4 3 8 1 9 2 0 7 5 6 3
+    \normalfont
+    \column{0.48\textwidth}
+    \centering
+    \ttfamily\footnotesize
+    7 5 6 8 {\color{esumerOrange}\textbf{3}} 9 2 0 1 7 5 4 {\color{esumerOrange}\textbf{3}} 8 2 9 1 0 6 {\color{esumerOrange}\textbf{3}}\\
+      8 4 2 {\color{esumerOrange}\textbf{3}} 9 1 7 5 6 2 0 {\color{esumerOrange}\textbf{3}} 9 4 8 1 7 5 {\color{esumerOrange}\textbf{3}} 6\\
+      2 9 8 1 7 {\color{esumerOrange}\textbf{3}} 6 4 0 5 1 9 2 7 {\color{esumerOrange}\textbf{3}} 6 8 4 1 0\\
+      6 1 0 4 9 {\color{esumerOrange}\textbf{3}} 8 2 7 5 6 1 9 {\color{esumerOrange}\textbf{3}} 0 2 8 {\color{esumerOrange}\textbf{3}} 7 4\\
+      9 {\color{esumerOrange}\textbf{3}} 8 5 0 2 7 1 6 4 {\color{esumerOrange}\textbf{3}} 8 1 9 2 0 7 5 6 {\color{esumerOrange}\textbf{3}}
+    \normalfont
+  \end{columns}
+  \vspace{0.2cm}
+  \footnotesize En la izquierda hay que leer número por número. En la derecha
+  los ves de inmediato: son \textbf{14}. El color es un \textbf{atributo
+  preatentivo}: el cerebro lo procesa antes de que decidas mirar.
+  \vspace{0.1cm}
+  \begin{block}{Atributos preatentivos que puedes usar}
+    \footnotesize \textbf{Color} (un solo color fuerte sobre gris),
+    \textbf{tamaño}, \textbf{posición}, \textbf{negrita} e
+    \textbf{intensidad}. Úsalos para señalar lo que quieres que vean primero,
+    y solo eso: si todo resalta, nada resalta.
+  \end{block}
+\end{frame}
+
+\begin{frame}[t]{Cómo agrupa el ojo: principios de Gestalt}
+  \begin{center}
+  \begin{tikzpicture}[d/.style={circle, fill=esumerNavy, inner sep=0pt, minimum size=5pt},
+                      o/.style={circle, fill=esumerOrange, inner sep=0pt, minimum size=5pt}]
+    % Proximidad
+    \foreach \x in {0,0.35} \foreach \y in {0,0.35,0.7} {\node[d] at (\x,\y) {};}
+    \foreach \x in {1.15,1.5} \foreach \y in {0,0.35,0.7} {\node[d] at (\x,\y) {};}
+    \node[font=\footnotesize\bfseries, text=esumerNavy] at (0.75,1.25) {Proximidad};
+    % Similitud
+    \begin{scope}[xshift=3.5cm]
+      \foreach \x in {0,0.5,1.0,1.5} \foreach \y in {0,0.35,0.7} {\node[d] at (\x,\y) {};}
+      \foreach \y in {0,0.35,0.7} {\node[o] at (0.5,\y) {}; \node[o] at (1.5,\y) {};}
+      \node[font=\footnotesize\bfseries, text=esumerNavy] at (0.75,1.25) {Similitud};
+    \end{scope}
+    % Encierro
+    \begin{scope}[xshift=7cm]
+      \fill[esumerTeal!20, rounded corners=2pt] (0.82,-0.15) rectangle (1.68,0.85);
+      \foreach \x in {0,0.4,1.0,1.5} \foreach \y in {0,0.35,0.7} {\node[d] at (\x,\y) {};}
+      \node[font=\footnotesize\bfseries, text=esumerNavy] at (0.75,1.25) {Encierro};
+    \end{scope}
+    % Conexión
+    \begin{scope}[xshift=10.5cm]
+      \draw[esumerNavy, line width=0.8pt] (0,0) -- (0.5,0.5) -- (1.0,0.2) -- (1.5,0.7);
+      \foreach \p in {(0,0),(0.5,0.5),(1.0,0.2),(1.5,0.7)} {\node[d] at \p {};}
+      \foreach \p in {(0,0.7),(0.5,0),(1.0,0.75),(1.5,0.1)} {\node[d, fill=esumerNavy!40] at \p {};}
+      \node[font=\footnotesize\bfseries, text=esumerNavy] at (0.75,1.25) {Conexión};
+    \end{scope}
+  \end{tikzpicture}
+  \end{center}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}L{2.5cm}L{11.0cm}@{}}
+    \toprule
+    \textbf{Principio} & \textbf{Cómo usarlo en un gráfico} \\
+    \midrule
+    Proximidad & Lo que está cerca se lee como un grupo: pon juntas las barras que quieres comparar. \\
+    Similitud & Lo que tiene el mismo color es lo mismo: el café en grano, naranja en todos los gráficos. \\
+    Encierro & Un fondo sombreado separa un periodo: el mes de la campaña. \\
+    Conexión & Lo que está unido por una línea se lee como una serie: por eso la línea va bien en el tiempo. \\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+\begin{frame}[t]{El color, con intención}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Reglas}
+      \footnotesize
+      \begin{enumerate}
+        \footnotesize
+        \item \textbf{Gris por defecto}; un color fuerte para el mensaje.
+        \item \textbf{Mismo color, mismo significado} en toda la
+          presentación.
+        \item \textbf{No más de dos o tres colores} con significado.
+        \item \textbf{No dependas solo de rojo y verde}: muchas personas no
+          los distinguen. Agrega texto, forma o posición.
+        \item \textbf{Respeta los colores de la marca}, pero úsalos con la
+          misma intención.
+      \end{enumerate}
+    \end{block}
+    \column{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[x=0.42cm, y=0.24cm]
+      \foreach \h [count=\i] in {4,5,6.2,4.6,5.1,7.0} {\fill[esumerGray!90!black] (\i*1.5,0) rectangle ++(1,\h);}
+      \fill[esumerOrange] (9,0) rectangle ++(1,7.0);
+      \node[font=\scriptsize, text=esumerOrange, anchor=south] at (9.5,7.1) {mira aquí};
+      \node[font=\scriptsize\bfseries, text=esumerNavy] at (5.7,-1.4) {Gris y un acento};
+      \begin{scope}[yshift=-3.3cm]
+        \foreach \h/\c [count=\i] in {4/red,5/blue,6.2/green!70!black,4.6/yellow!80!black,5.1/purple,7.0/orange} {\fill[\c] (\i*1.5,0) rectangle ++(1,\h);}
+        \node[font=\scriptsize\bfseries, text=esumerNavy] at (5.7,-1.4) {Un color por barra: ¿dónde mirar?};
+      \end{scope}
+    \end{tikzpicture}
+
+    {\scriptsize\color{black!60}Esquemas: las barras no son datos reales.}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{Del ruido al mensaje en cuatro pasos (1 y 2)}
   \begin{columns}[T,onlytextwidth]
     \column{0.49\textwidth}
     \centering
-    {\small\bfseries\color{esumerOrange} Antes}\\[2pt]
-    \includegraphics[width=\linewidth,height=4.1cm,keepaspectratio]{fig_antes.pdf}\\[2pt]
-    \raggedright\scriptsize Doble eje, un color por mes que no significa
-    nada, rejilla, leyenda y un título que solo describe. ¿Dónde mirar?
+    {\small\bfseries\color{esumerOrange} 1. El gráfico original}\\[2pt]
+    \includegraphics[width=\linewidth,height=4.0cm,keepaspectratio]{fig_antes.pdf}\\[2pt]
+    \raggedright\scriptsize Dos variables con doble eje, un color por mes
+    sin significado, rejilla y leyenda. Hay mucho que leer y nada
+    destaca.
     \column{0.49\textwidth}
     \centering
-    {\small\bfseries\color{esumerTeal} Después}\\[2pt]
-    \includegraphics[width=\linewidth,height=4.1cm,keepaspectratio]{fig_despues.pdf}\\[2pt]
-    \raggedright\scriptsize Una sola pregunta (el margen), gris para el
-    contexto, naranja para el mensaje y la meta como referencia. El ojo va
-    directo a septiembre.
+    {\small\bfseries\color{esumerOrange} 2. Una sola pregunta}\\[2pt]
+    \includegraphics[width=\linewidth,height=4.0cm,keepaspectratio]{fig_paso2.pdf}\\[2pt]
+    \raggedright\scriptsize La pregunta es el margen: se quitan las ventas y
+    el doble eje. Ya se ve la caída, pero el gráfico aún tiene ruido.
   \end{columns}
-  \vspace{0.1cm}
-  \footnotesize\textbf{Título para la diapositiva de la derecha:} ``Por
-  primera vez en el año, el margen quedó bajo la meta del 60\%''.
+  \fuentedatos
+\end{frame}
+
+\begin{frame}[t]{Del ruido al mensaje en cuatro pasos (3 y 4)}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.49\textwidth}
+    \centering
+    {\small\bfseries\color{esumerOrange} 3. Quitar el ruido y dar contexto}\\[2pt]
+    \includegraphics[width=\linewidth,height=4.0cm,keepaspectratio]{fig_paso3.pdf}\\[2pt]
+    \raggedright\scriptsize Sin rejilla ni bordes, meses cortos, todo en
+    gris y la meta como referencia.
+    \column{0.49\textwidth}
+    \centering
+    {\small\bfseries\color{esumerTeal} 4. Señalar el mensaje}\\[2pt]
+    \includegraphics[width=\linewidth,height=4.0cm,keepaspectratio]{fig_despues.pdf}\\[2pt]
+    \raggedright\scriptsize Naranja solo en septiembre, el valor escrito
+    junto al punto y una nota de contexto. El ojo va directo al mensaje.
+  \end{columns}
+  \vspace{0.05cm}
+  \footnotesize\textbf{Título para la diapositiva:} ``Por primera vez en el
+  año, el margen quedó bajo la meta del 60\%''.
   \fuentedatos
 \end{frame}
 
@@ -315,6 +692,58 @@
   \end{block}
 \end{frame}
 
+\begin{frame}[t]{El texto en las diapositivas}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Diapositiva para presentar}
+      \footnotesize Tú hablas; la diapositiva apoya. Título que concluye,
+      un gráfico y, como mucho, una nota corta. Lo demás va en tus
+      \textbf{notas del orador}.
+    \end{block}
+    \begin{block}{Documento para enviar}
+      \footnotesize Si la gerencia la leerá sin ti, necesita más texto:
+      haz una versión aparte, o un anexo, con las explicaciones.
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{alertblock}{La diapositiva-documento}
+      \footnotesize Intentar que una sola versión sirva para las dos cosas
+      termina en diapositivas llenas de texto que la audiencia lee mientras
+      tú hablas, y no escucha ninguna de las dos.
+    \end{alertblock}
+    \begin{exampleblock}{Prueba rápida}
+      \footnotesize Si tienes que leer la diapositiva en voz alta para
+      presentarla, sobra texto.
+    \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{La diapositiva de la recomendación}
+  \small Es la más importante y la que peor se suele hacer. Debe responder
+  cinco preguntas:
+  \vspace{0.1cm}
+  \begin{center}
+  \begin{tikzpicture}
+    \draw[esumerNavy, line width=1pt, rounded corners=3pt, fill=white] (0,0) rectangle (13.4,4.2);
+    \fill[esumerNavy] (0,3.45) rectangle (13.4,4.2);
+    \node[anchor=west, text=white, font=\small\bfseries] at (0.25,3.82) {Proponemos repetir la campaña de café en grano con un descuento menor};
+    \foreach \x/\t/\d in {
+      1.45/Qué/{La próxima campaña, con un descuento menor que el 25\%},
+      4.05/Quién/{Gerencia comercial, con las seis tiendas},
+      6.65/Cuándo/{En la próxima temporada de campaña},
+      9.25/Qué esperamos/{Ventas por encima de la meta con margen de al menos 60\%},
+      11.85/Qué pedimos hoy/{Aprobar la campaña y su indicador de seguimiento}} {
+      \node[draw=esumerTeal, fill=esumerTeal!10, rounded corners=2pt, minimum width=2.4cm,
+            minimum height=2.6cm, text width=2.2cm, align=left, font=\scriptsize, anchor=north]
+        at (\x,3.2) {\textbf{\t}\\[3pt]\d};
+    }
+  \end{tikzpicture}
+  \end{center}
+  \footnotesize Si falta ``qué pedimos hoy'', la reunión termina sin
+  decisión. Si falta ``qué esperamos'', nadie podrá saber después si
+  funcionó (lo verás en la Clase 22). Ejemplo para la clase: la decisión es
+  de la empresa.
+\end{frame}
+
 \begin{frame}[t]{Uso responsable de los datos}
   \small Una historia convincente también puede engañar. Antes de
   presentar, revisa:
@@ -334,6 +763,64 @@
     Exponer personas & Nada de nombres, correos ni datos de socios en las diapositivas (Clase 1). \\
     \bottomrule
   \end{tabular}
+\end{frame}
+
+\begin{frame}[t]{Un gráfico engañoso, con nuestros datos}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.49\textwidth}
+    \centering
+    {\small\bfseries\color{esumerOrange} El eje empieza en 9 millones}\\[2pt]
+    \includegraphics[width=\linewidth,height=3.5cm,keepaspectratio]{fig_eje_truncado.pdf}
+    \column{0.49\textwidth}
+    \centering
+    {\small\bfseries\color{esumerTeal} El eje empieza en cero}\\[2pt]
+    \includegraphics[width=\linewidth,height=3.5cm,keepaspectratio]{fig_eje_completo.pdf}
+  \end{columns}
+  \vspace{0.1cm}
+  \footnotesize Ventas de septiembre por tienda. A la izquierda, El Poblado
+  parece vender casi 20 veces más que Pereira Centro. En realidad vende 2,1
+  veces más: 20,4 frente a 9,6 millones. En barras, la longitud
+  \textbf{es} el dato: el eje empieza en cero (Clase 11).
+  \vspace{0.05cm}
+  \begin{alertblock}{No hace falta mala intención}
+    \scriptsize Muchas herramientas ajustan el eje solas para ``aprovechar el
+    espacio''. Revisa siempre dónde empieza antes de presentar.
+  \end{alertblock}
+  \fuentedatos
+\end{frame}
+
+\begin{frame}[t]{Presentar en una reunión virtual}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Antes}
+      \footnotesize
+      \begin{itemize}
+        \footnotesize
+        \item Ensaya con cronómetro: si tienes cinco minutos, termina en
+          cuatro.
+        \item Ten el anexo listo, con los detalles que alguien puede
+          preguntar.
+        \item Prueba compartir pantalla: comparte solo la presentación, no
+          todo tu escritorio.
+      \end{itemize}
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{Durante}
+      \footnotesize
+      \begin{itemize}
+        \footnotesize
+        \item Empieza por el mensaje: ``Hoy les proponemos\ldots''.
+        \item Di dónde mirar: ``fíjense en el punto naranja''.
+        \item Haz pausas para preguntas después de la tensión y al final.
+        \item Cierra repitiendo qué decisión pides.
+      \end{itemize}
+    \end{block}
+  \end{columns}
+  \vspace{0.2cm}
+  \begin{exampleblock}{En la Clase 23}
+    \footnotesize Presentarás tu historia y recibirás retroalimentación.
+    Lo de hoy es el primer ensayo.
+  \end{exampleblock}
 \end{frame}
 
 % ============================================================
@@ -385,7 +872,8 @@
       \item[$\square$] Cada diapositiva tiene una sola idea.
       \item[$\square$] El color señala el mensaje, no decora.
       \item[$\square$] No hay escalas engañosas ni datos personales.
-      \item[$\square$] La recomendación dice qué, quién y cuándo.
+      \item[$\square$] La recomendación dice qué, quién, cuándo, qué se
+        espera y qué se pide hoy.
       \item[$\square$] Se cuenta en tres minutos.
     \end{itemize}
     \column{0.41\textwidth}
@@ -410,14 +898,16 @@
 \begin{frame}[t]{Cierre y próxima sesión}
   \begin{itemize}
     \small
-    \item Primero la audiencia: quién decide, qué le importa y cuánto tiempo
-      tiene.
-    \item El mensaje en una frase: qué pasó, por qué importa y qué proponer.
-    \item Contexto, tensión, evidencia y recomendación; títulos que
-      concluyen.
-    \item Gris para el contexto, un color para el mensaje, una idea por
-      diapositiva.
-    \item Una buena historia no esconde lo que no conviene.
+    \item Primero la audiencia y la acción que le pides: quién decide, qué le
+      importa y qué hará distinto al salir.
+    \item El mensaje en una frase, y la historia en tres minutos antes de
+      cualquier diapositiva.
+    \item Contexto, tensión, evidencia y recomendación; con directivos, la
+      recomendación se anuncia al principio.
+    \item El ojo ve primero el color, el tamaño y la posición: gris para el
+      contexto, un acento para el mensaje.
+    \item Una buena historia no esconde lo que no conviene ni exagera con la
+      escala.
   \end{itemize}
   \vspace{0.15cm}
   \begin{block}{Próxima sesión: Clase 22}
