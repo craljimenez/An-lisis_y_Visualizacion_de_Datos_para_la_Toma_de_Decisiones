@@ -1,0 +1,474 @@
+% ============================================================
+%  Semana 11 · Clase 22: Diseño del argumento ejecutivo y métricas de impacto
+%  Curso: Análisis y Visualización de Datos para la Toma de Decisiones
+%
+%  Formato de la sesión (3 h):
+%    Hora 1. Métrica y KPI; indicadores de resultado y de proceso
+%    Hora 2. Métricas de impacto y estimación básica del ROI, con sus
+%            supuestos
+%    Hora 3. Hipótesis de negocio, priorización de hallazgos y taller (en
+%            parejas o individual): la matriz indicador, hallazgo,
+%            decisión, impacto
+%
+%  Casos: Cafés Altavista (Clase 16) y Gimnasio Vitalis (Clases 13 a 15).
+%  Todas las cifras salen de esos datos; los supuestos están marcados.
+%
+%  Compilar (dos veces) directamente desde esta carpeta:
+%    xelatex semana11-clase22.tex
+%    xelatex semana11-clase22.tex
+% ============================================================
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usepackage{../../../plantilla/beamerthemeesumer}
+\usetheme{esumer}
+
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\tikzset{every node/.append style={execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000\relax}}}
+
+% ---------------- DATOS DE LA CLASE ----------------
+\title{El argumento ejecutivo y las métricas de impacto}
+\subtitle{¿Funcionó? Depende de lo que midas}
+\author{Docente: Cristian A. Jimenez C., MSc}
+\date{Nov 17 al 22}
+
+\setmodulo{Módulo 4: Innovar (Analítica Predictiva y Storytelling)}
+\setsemana{11}
+\setclase{22}
+\setfechaclase{Nov 17 al 22}
+\setmodalidad{Virtual}
+% -----------------------------------------------------
+
+\newcommand{\fuentecafes}{\par\vspace{1pt}{\fontsize{5.5}{6.5}\selectfont\color{black!55}%
+  Datos simulados de Cafés Altavista S.A.S., empresa ficticia del curso (Clase 16).\par}}
+
+\begin{document}
+
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain,noframenumbering]
+  \titlepage
+\end{frame}
+}
+
+\begin{frame}[t]{Agenda de hoy (3 horas)}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.32\textwidth}
+    \begin{block}{Hora 1}
+      \small Métrica y KPI. Indicadores de resultado y de proceso.
+    \end{block}
+    \column{0.32\textwidth}
+    \begin{block}{Hora 2}
+      \small Impacto: lo que pasó menos lo que habría pasado. Una
+      estimación básica del ROI.
+    \end{block}
+    \column{0.32\textwidth}
+    \begin{block}{Hora 3}
+      \small Hipótesis de negocio, priorización y taller: la matriz de tu
+      proyecto.
+    \end{block}
+  \end{columns}
+  \vspace{0.3cm}
+  \small En la Clase 21 contaste una historia. Hoy la vuelves un
+  \textbf{argumento}: qué indicador mirar, cuánto vale lo que propones y
+  cómo se sabrá si funcionó.
+\end{frame}
+
+% ============================================================
+\section{Hora 1: Medir lo que importa}
+% ============================================================
+\begin{frame}[t]{¿Funcionó la campaña de septiembre?}
+  \small Cafés Altavista dio 25\% de descuento en café en grano durante
+  septiembre. Comparado con agosto:
+  \vspace{0.1cm}
+
+  \footnotesize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}L{4.2cm}R{2.2cm}R{2.2cm}L{3.8cm}@{}}
+    \toprule
+    \textbf{Indicador} & \textbf{Agosto} & \textbf{Septiembre} & \textbf{¿Funcionó?} \\
+    \midrule
+    Ventas & 74,0 M & 89,2 M & \leavevmode{\color{esumerGreen!70!black}\textbf{Sí}}: +20,5\% \\
+    Compras (tickets) & 4039 & 4105 & Casi igual: +1,6\% \\
+    Margen \% (meta: 60\%) & 63,3\% & 56,6\% & \leavevmode{\color{esumerOrange}\textbf{No}}: bajo la meta \\
+    Margen en pesos & 46,8 M & 50,5 M & \leavevmode{\color{esumerGreen!70!black}\textbf{Sí}}: +3,6 M \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.2cm}
+  \begin{alertblock}{La lección}
+    \footnotesize Con los mismos datos, la campaña ``funcionó'' o ``fracasó''
+    según el indicador. El argumento ejecutivo empieza por elegir el
+    indicador que responde \textbf{la pregunta de la gerencia}, y por decir
+    cuál es.
+  \end{alertblock}
+  \fuentecafes
+\end{frame}
+
+\begin{frame}[t]{Métrica y KPI}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Métrica}
+      \small Cualquier cifra que se mide: tickets, unidades por categoría,
+      ticket promedio, visitas por socio\ldots
+    \end{block}
+    \begin{exampleblock}{KPI (indicador clave)}
+      \small La métrica que la empresa eligió para saber si cumple un
+      \textbf{objetivo}. Tiene \textbf{meta}, un \textbf{responsable} y se
+      revisa con una frecuencia fija.
+    \end{exampleblock}
+    \column{0.48\textwidth}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{@{}L{2.8cm}L{3.4cm}@{}}
+      \toprule
+      \textbf{En Cafés Altavista} & \textbf{¿Qué es?} \\
+      \midrule
+      Margen \% mensual & KPI: meta 60\% \\
+      Ventas frente a la meta de cada tienda & KPI: meta mensual por tienda \\
+      Unidades de café en grano & Métrica \\
+      Ticket promedio por canal & Métrica \\
+      \bottomrule
+    \end{tabular}
+    \vspace{0.15cm}
+
+    \footnotesize\textbf{Todo KPI es una métrica; no toda métrica es un
+    KPI.} Una empresa sigue pocos KPI, entre 3 y 5 por área: si todo es
+    clave, nada lo es.
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{Indicadores de resultado y de proceso}
+  \begin{center}
+  \begin{tikzpicture}[
+    bx/.style={draw=none, rounded corners=3pt, text=white, align=center,
+               font=\footnotesize, minimum height=1.3cm, text width=4.4cm, inner sep=4pt},
+    fl/.style={-{Stealth[length=2.6mm]}, line width=1.2pt, color=esumerNavy},
+  ]
+    \node[bx, fill=esumerTeal] (p) at (2.5,0) {\textbf{De proceso}\\lo que haces; se mueve hoy y avisa antes};
+    \node[bx, fill=esumerNavy] (r) at (11.5,0) {\textbf{De resultado}\\lo que logras; llega tarde, a fin de mes};
+    \draw[fl] (p) -- node[above, font=\scriptsize, text=esumerNavy] {si mejora, debería mover al} (r);
+  \end{tikzpicture}
+  \end{center}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}L{2.5cm}L{5.3cm}L{5.3cm}@{}}
+    \toprule
+    & \textbf{De proceso} & \textbf{De resultado} \\
+    \midrule
+    Cafés Altavista & Parte de las ventas con descuento; unidades de grano por semana & Margen \% del mes; ventas frente a la meta \\
+    Gimnasio Vitalis & Visitas por semana de los socios nuevos & Socios que siguen activos (retención) \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.15cm}
+
+  \footnotesize\textbf{Por qué importan los de proceso:} el margen de
+  septiembre se supo a fin de mes; la parte de las ventas con descuento se
+  podía ver desde la primera semana y corregir a tiempo.
+\end{frame}
+
+% ============================================================
+\section{Hora 2: Estimar el impacto}
+% ============================================================
+\begin{frame}[t]{Impacto: lo que pasó menos lo que habría pasado}
+  \begin{center}
+  \begin{tikzpicture}[
+    bx/.style={draw=esumerNavy!60, rounded corners=3pt, fill=white, align=center,
+               font=\footnotesize, minimum height=1.2cm, text width=3.3cm, inner sep=4pt},
+  ]
+    \node[bx, fill=esumerOrange!15] (a) at (2.0,0) {\textbf{Impacto}\\de la acción};
+    \node at (4.15,0) {\Large =};
+    \node[bx] (b) at (6.3,0) {\textbf{Lo que pasó}\\con la acción};
+    \node at (8.45,0) {\Large $-$};
+    \node[bx, fill=esumerGray] (c) at (10.6,0) {\textbf{Lo que habría pasado}\\sin la acción};
+    \node[font=\scriptsize, text=esumerOrange, align=center] at (10.6,-1.0) {no se observa: es un \textbf{supuesto}};
+  \end{tikzpicture}
+  \end{center}
+  \vspace{0.1cm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{La línea base, otra vez}
+      \footnotesize Es la misma idea de la Clase 19: comparar contra
+      ``no hacer nada''. Aquí la línea base es lo que habría pasado en
+      septiembre sin la campaña.
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{El supuesto más simple}
+      \footnotesize ``Sin campaña, septiembre habría sido igual a agosto.''
+      Es fácil de explicar, pero hay que \textbf{decirlo}: si es falso, el
+      impacto cambia.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{El puente del margen: de agosto a septiembre}
+  \small Con el supuesto ``septiembre sin campaña = agosto'':
+  \vspace{0.15cm}
+  \begin{center}
+  \begin{tikzpicture}[
+    tot/.style={draw=none, rounded corners=3pt, fill=esumerNavy, text=white, align=center,
+                font=\footnotesize, minimum height=1.4cm, text width=2.5cm},
+    sube/.style={draw=none, rounded corners=3pt, fill=esumerGreen!75!black, text=white, align=center,
+                 font=\footnotesize, minimum height=1.4cm, text width=2.5cm},
+    baja/.style={draw=none, rounded corners=3pt, fill=esumerOrange, text=white, align=center,
+                 font=\footnotesize, minimum height=1.4cm, text width=2.5cm},
+    fl/.style={-{Stealth[length=2.2mm]}, line width=0.9pt, color=esumerNavy},
+  ]
+    \node[tot] (a) at (1.45,0) {\textbf{46,83 M}\\margen de agosto};
+    \node[sube] (b) at (5.15,0) {\textbf{+4,95 M}\\café en grano};
+    \node[baja] (c) at (8.85,0) {\textbf{$-$1,32 M}\\resto de categorías};
+    \node[tot] (d) at (12.55,0) {\textbf{50,46 M}\\margen de septiembre};
+    \draw[fl] (a) -- (b); \draw[fl] (b) -- (c); \draw[fl] (c) -- (d);
+  \end{tikzpicture}
+  \end{center}
+  \vspace{0.05cm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Lo que costó}
+      \footnotesize \textbf{9,80 millones} en descuentos sobre café en grano:
+      el dinero que la empresa dejó de cobrar.
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{Lo que dejó}
+      \footnotesize El margen total subió \textbf{3,62 millones}, ya
+      descontados esos 9,80. El grano ganó 4,95 M; el resto de categorías
+      perdió 1,32 M.
+    \end{block}
+  \end{columns}
+  \fuentecafes
+\end{frame}
+
+\begin{frame}[t]{Una estimación básica del ROI}
+  \small El \textbf{retorno sobre la inversión} (ROI, por sus siglas en
+  inglés) compara lo que ganaste con lo que pusiste:
+  \[ \text{ROI} = \frac{\text{ganancia adicional}}{\text{inversión}} = \frac{3{,}62 \text{ millones de margen adicional}}{9{,}80 \text{ millones en descuentos}} \approx 37\% \]
+  \footnotesize Como el margen ya tiene restado el descuento, un ROI
+  positivo significa que la campaña se pagó sola y además dejó ganancia.
+  \vspace{0.15cm}
+  \begin{exampleblock}{En lenguaje de negocio}
+    \small ``Por cada 100 pesos que entregamos en descuento, el margen del
+    mes quedó 37 pesos por encima de agosto.''
+  \end{exampleblock}
+  \begin{alertblock}{Pero el KPI quedó en rojo}
+    \footnotesize El ROI es positivo y, aun así, el margen \% (56,6\%) quedó
+    bajo la meta del 60\%. Las dos cosas son ciertas: tu argumento debe
+    mostrar ambas y proponer cómo conciliarlas.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[t]{Los supuestos cambian la cifra}
+  \small Toda estimación de impacto descansa en supuestos. Nómbralos:
+  \vspace{0.1cm}
+
+  \footnotesize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}L{4.6cm}L{8.9cm}@{}}
+    \toprule
+    \textbf{Supuesto} & \textbf{Qué pasa si no se cumple} \\
+    \midrule
+    Sin campaña, septiembre = agosto & Si el negocio hubiera crecido 2\% solo (supuesto), la línea base sube a 47,8 M: el impacto baja a 2,7 M y el ROI a 27\%. \\
+    La caída del resto (1,3 M) no tiene que ver & Si los clientes compraron grano en vez de bebidas, parte de esa caída es un costo de la campaña. \\
+    Lo de septiembre no afecta a octubre & Quien compró grano con descuento quizá no compre en octubre: el efecto total podría ser menor. \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.15cm}
+  \begin{block}{Cómo presentarlo}
+    \footnotesize ``Estimamos un margen adicional de entre 2,7 y 3,6 millones,
+    según cuánto habría crecido el negocio sin la campaña.'' Un rango con
+    supuestos claros convence más que una cifra exacta que nadie puede
+    defender.
+  \end{block}
+  \fuentecafes
+\end{frame}
+
+% ============================================================
+\section{Hora 3: De los hallazgos a las decisiones}
+% ============================================================
+\begin{frame}[t]{La hipótesis de negocio}
+  \small Una recomendación es una apuesta. Escríbela como una hipótesis que
+  se pueda comprobar:
+  \vspace{0.1cm}
+  \begin{block}{Plantilla}
+    \footnotesize Creemos que \textbf{[acción]} para \textbf{[segmento]}
+    mejorará \textbf{[indicador]}, porque \textbf{[evidencia]}. Lo sabremos
+    si \textbf{[indicador]} pasa de \textbf{[hoy]} a \textbf{[meta]} en
+    \textbf{[plazo]}.
+  \end{block}
+  \begin{exampleblock}{Ejemplo con el Gimnasio Vitalis (Clase 14)}
+    \footnotesize Creemos que \textbf{acompañar durante sus tres primeros
+    meses} a los socios que viven \textbf{a 6 km o más} de su sede mejorará
+    su \textbf{retención}, porque hoy sigue activo el 61,5\% de ellos frente
+    al 88,0\% de los que viven cerca. Lo sabremos si su retención pasa de
+    \textbf{61,5\%} a \textbf{70\%} en \textbf{seis meses}.
+  \end{exampleblock}
+  \footnotesize\textbf{Impacto estimado}, con supuestos: son 91 socios; con
+  70\% de retención seguirían activos unos 8 más. Si cada uno paga el plan
+  mensual (90.000 pesos), serían unos 0,7 millones al mes. La meta del 70\%
+  es una propuesta para la clase: la fija la gerencia.
+\end{frame}
+
+\begin{frame}[t]{Priorizar: impacto y esfuerzo}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.58\textwidth}
+    \centering
+    \begin{tikzpicture}[x=1cm, y=1cm,
+      q/.style={draw=white, line width=1.5pt, minimum width=3.6cm, minimum height=2.2cm},
+      it/.style={font=\scriptsize, align=center, text width=3.2cm},
+      tq/.style={font=\scriptsize\bfseries, anchor=north west},
+    ]
+      \node[q, fill=esumerGreen!35] at (1.8,3.3) {};
+      \node[q, fill=esumerSky!30] at (5.4,3.3) {};
+      \node[q, fill=esumerTeal!20] at (1.8,1.1) {};
+      \node[q, fill=esumerGray] at (5.4,1.1) {};
+      \node[tq] at (0.05,4.35) {Hazlo ya};
+      \node[tq] at (3.65,4.35) {Planéalo};
+      \node[tq] at (0.05,2.15) {Victoria rápida};
+      \node[tq] at (3.65,2.15) {Espera o descarta};
+      \node[it] at (1.8,3.1) {Ajustar el descuento del café en grano};
+      \node[it] at (5.4,3.1) {Acompañar a los socios que viven lejos};
+      \node[it] at (1.8,0.9) {Avisar con tiempo los cierres de sede};
+      \node[it] at (5.4,0.9) {Abrir una sede más cerca de los socios lejanos};
+      \draw[-{Stealth[length=2mm]}, esumerNavy] (0,-0.1) -- (7.3,-0.1) node[below left, font=\scriptsize] {más esfuerzo};
+      \draw[-{Stealth[length=2mm]}, esumerNavy] (-0.1,0) -- (-0.1,4.5) node[above right, font=\scriptsize] {más impacto};
+    \end{tikzpicture}
+    \column{0.39\textwidth}
+    \small Ubica cada hallazgo según dos preguntas:
+    \begin{itemize}
+      \footnotesize
+      \item \textbf{Impacto}: ¿cuánto mueve un KPI? Usa tu estimación.
+      \item \textbf{Esfuerzo}: ¿cuánto cuesta, cuánto tarda, a quién
+        involucra?
+    \end{itemize}
+    \footnotesize Lleva al comité primero lo de arriba a la izquierda. Lo
+    de abajo a la derecha casi nunca vale la pena.
+    \vspace{0.1cm}
+
+    \scriptsize\color{black!60} La ubicación es ilustrativa: la discute
+    el equipo con la gerencia.
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{La matriz indicador, hallazgo, decisión, impacto}
+  \small Una fila por hallazgo. Es el resumen de tu argumento ejecutivo:
+  \vspace{0.1cm}
+
+  \footnotesize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}L{2.8cm}L{3.4cm}L{3.2cm}L{3.3cm}@{}}
+    \toprule
+    \textbf{Indicador} & \textbf{Hallazgo} & \textbf{Decisión} & \textbf{Impacto estimado} \\
+    \midrule
+    Margen \% mensual\newline{\scriptsize KPI de resultado, meta 60\%} & Cayó a 56,6\% en septiembre por el 25\% de descuento en grano & Repetir la campaña con menos descuento o solo para socios & Hoy deja entre 2,7 y 3,6 M de margen adicional; el reto es conservarlo con un margen de al menos 60\% \\
+    Retención de socios a 6 km o más\newline{\scriptsize resultado} & 61,5\% frente a 88,0\% de los que viven cerca & Acompañarlos en sus tres primeros meses & Unos 8 socios activos más: unos 0,7 M al mes, si llega a 70\% \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.15cm}
+
+  \footnotesize Cada celda de impacto se defiende con su cálculo y sus
+  supuestos. Si no puedes estimarlo, escribe qué dato te falta para
+  hacerlo.
+\end{frame}
+
+% ============================================================
+\section{Taller}
+% ============================================================
+\begin{frame}[t]{Taller: la matriz de tu proyecto}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.55\textwidth}
+    \small En \textbf{parejas} o \textbf{individual}, con tu proyecto o con
+    uno de los casos del curso:
+    \begin{enumerate}
+      \footnotesize
+      \item Lista de 3 a 5 \textbf{hallazgos} (de tu tablero o de tu
+        historia de la Clase 21).
+      \item Para cada uno, el \textbf{indicador}: ¿es KPI? ¿de resultado o
+        de proceso?
+      \item La \textbf{decisión} que propones.
+      \item El \textbf{impacto estimado}, con su línea base y sus
+        supuestos escritos.
+      \item Ubica los hallazgos en la matriz de \textbf{impacto y
+        esfuerzo}.
+      \item Escribe la \textbf{hipótesis de negocio} del más importante.
+    \end{enumerate}
+    \column{0.41\textwidth}
+    \begin{block}{En parejas}
+      \footnotesize Al terminar, intercambien matrices. Cada uno hace de
+      gerente y, para cada impacto, pregunta: ``¿y cómo lo sabes?''. Si la
+      respuesta no está en los supuestos, falta escribirla.
+    \end{block}
+    \begin{block}{Individual}
+      \footnotesize Revisa cada fila con la lista de la siguiente
+      diapositiva, como si fueras la gerencia.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{Lista de chequeo y producto esperado}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.55\textwidth}
+    \small\textbf{Tu matriz está lista cuando\ldots}
+    \vspace{0.05cm}
+    \begin{itemize}
+      \footnotesize
+      \item[$\square$] Cada indicador dice si es KPI y si es de resultado o
+        de proceso.
+      \item[$\square$] Cada hallazgo tiene una cifra y una comparación.
+      \item[$\square$] Cada decisión dice qué hacer, no ``analizar más''.
+      \item[$\square$] Cada impacto tiene su línea base y sus supuestos.
+      \item[$\square$] Donde no hay cifra, dice qué dato falta.
+      \item[$\square$] La hipótesis dice cómo y cuándo se sabrá si
+        funcionó.
+    \end{itemize}
+    \column{0.41\textwidth}
+    \begin{exampleblock}{Producto}
+      \footnotesize
+      \begin{enumerate}
+        \footnotesize
+        \item La matriz indicador, hallazgo, decisión, impacto (3 a 5
+          filas).
+        \item La matriz de impacto y esfuerzo con tus hallazgos.
+        \item Una hipótesis de negocio.
+      \end{enumerate}
+    \end{exampleblock}
+    \footnotesize Es el insumo de la Clase 23: tu presentación cerrará con
+    la decisión y su impacto.
+  \end{columns}
+\end{frame}
+
+% ============================================================
+\section{Cierre}
+% ============================================================
+\begin{frame}[t]{Cierre y próxima sesión}
+  \begin{itemize}
+    \small
+    \item El indicador que eliges decide la conclusión: dilo y justifícalo.
+    \item Un KPI es una métrica con meta, responsable y frecuencia.
+    \item Los indicadores de proceso avisan antes que los de resultado.
+    \item Impacto = lo que pasó $-$ lo que habría pasado; lo segundo es un
+      supuesto que hay que escribir.
+    \item Mejor un rango con supuestos claros que una cifra exacta que nadie
+      puede defender.
+  \end{itemize}
+  \vspace{0.15cm}
+  \begin{block}{Próxima sesión: Clase 23}
+    \small Clínica de analítica predictiva y storytelling: presentarás tu
+    caso, tu modelo y tu recomendación, y recibirás retroalimentación.
+  \end{block}
+\end{frame}
+
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain,noframenumbering]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[esumerNavy] (current page.south west) rectangle (current page.north east);
+    \node at (current page.center) {\color{white}\Huge\bfseries ¡Gracias!};
+  \end{tikzpicture}
+\end{frame}
+}
+
+\end{document}
