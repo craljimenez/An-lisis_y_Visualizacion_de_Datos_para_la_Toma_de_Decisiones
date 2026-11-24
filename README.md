@@ -65,6 +65,8 @@ cada commit para confirmar que no se cuele ninguno.
 | 10 | 20 | Regresión lineal con Python | ✅ listo (diapositivas del tema y práctica en dos rutas con las mismas cifras: notebook de Python en `notebooks/lab-regresion-lineal.ipynb` y guía de Orange en PDF con el flujo resuelto `bicicletas-regresion.ows`; datos reales de bicicletas en `datos/bicicletas_diarias.csv`) |
 | 11 | 21 | Storytelling con datos: del hallazgo a la decisión | ✅ listo (diapositivas; caso Cafés Altavista de la Clase 16; actividad en parejas o individual) |
 | 11 | 22 | Diseño del argumento ejecutivo y métricas de impacto | ✅ listo (diapositivas; impacto y ROI de la campaña de Cafés Altavista; taller de la matriz en parejas o individual) |
+| 12 | 23 | Clínica de analítica predictiva y storytelling | ✅ listo (diapositivas; pitch de 5 minutos con el modelo de bicicletas de la Clase 20, rúbrica y ficha de retroalimentación para la clínica en grupos; kit para quien no tenga caso propio: `informe-tecnico-kit.pdf` y `datos/ventas_diarias_tiendas.csv`) |
+| 12 | 24 | MasterClass: recapitulación del Módulo 4 | ✅ listo (guía de aplicación en PDF, rutas Python u Orange; caso Colibrí Envíos con datos simulados en `datos/colibri_envios.csv`) |
 
 (Se va actualizando a medida que se preparan las demás clases;
 ver el detalle completo en `cronograma.md`.)

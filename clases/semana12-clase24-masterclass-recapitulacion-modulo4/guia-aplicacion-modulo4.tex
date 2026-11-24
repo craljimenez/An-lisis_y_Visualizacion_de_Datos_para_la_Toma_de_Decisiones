@@ -1,0 +1,753 @@
+% ============================================================
+%  Guía de aplicación: del dato a la recomendación
+%  Semana 12 · Clase 24: MasterClass (Recapitulación del Módulo 4)
+%  Curso: Análisis y Visualización de Datos para la Toma de Decisiones
+%  Datos: datos/colibri_envios.csv (simulados; empresa ficticia), generados
+%  con ../../../scripts/semana12-clase24_datos.py
+%  Las cifras de control se verificaron en Python (scikit-learn) y en
+%  Orange 3.41: coinciden.
+%  Compilar con: xelatex guia-aplicacion-modulo4.tex (dos veces)
+% ============================================================
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\usepackage{needspace}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\tcbuselibrary{skins,breakable}
+\usetikzlibrary{arrows.meta,positioning,calc,babel}
+
+% ---------------- Tipografía ----------------
+\IfFontExistsTF{Aptos}{\setmainfont{Aptos}}{\setmainfont{Lato}}
+\setmonofont{DejaVu Sans Mono}[Scale=0.82]
+
+% ---------------- Paleta Esumer ----------------
+\definecolor{esumerNavy}{HTML}{262E66}
+\definecolor{esumerNavyDark}{HTML}{1E4093}
+\definecolor{esumerTeal}{HTML}{0CB3B6}
+\definecolor{esumerSky}{HTML}{26A1DB}
+\definecolor{esumerOrange}{HTML}{EF7C2C}
+\definecolor{esumerGreen}{HTML}{94C122}
+\definecolor{esumerMagenta}{HTML}{AF348B}
+\definecolor{esumerGray}{HTML}{E8E8E8}
+\definecolor{esumerBg}{HTML}{F7F8FA}
+
+\hypersetup{colorlinks=true, linkcolor=esumerNavyDark, urlcolor=esumerNavyDark}
+\graphicspath{{../../../plantilla/assets/}}
+
+\newcommand{\urldatos}{https://github.com/craljimenez/An-lisis_y_Visualizacion_de_Datos_para_la_Toma_de_Decisiones/raw/main/clases/semana12-clase24-masterclass-recapitulacion-modulo4/datos/colibri_envios.csv}
+\newcommand{\urlorange}{https://orangedatamining.com/download/}
+\newcommand{\urlcolab}{https://colab.research.google.com/}
+\newcommand{\urlformula}{https://orangedatamining.com/widget-catalog/transform/formula/}
+
+% ---------------- Encabezado / pie de página ----------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\small\color{esumerNavyDark} Guía de aplicación del Módulo 4 \textperiodcentered\ Clase 24}
+\fancyfoot[R]{\small\color{esumerNavyDark} Cristian A. Jiménez C. \quad\textperiodcentered\quad \thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{1.5em}
+
+% ---------------- Código ----------------
+\fvset{fontsize=\small}
+\newtcolorbox{codigo}[1][]{
+  colback=esumerBg, colframe=esumerNavy!35, boxrule=0.5pt, arc=1mm,
+  left=6pt, right=6pt, top=2pt, bottom=2pt, fonttitle=\bfseries\small,
+  coltitle=esumerNavy, colbacktitle=esumerGray, #1
+}
+
+% ---------------- Cajas reutilizables ----------------
+\newtcolorbox{recuerda}[1][Lo viste en clase]{
+  colback=esumerBg, colframe=esumerTeal, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerTeal,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+\newtcolorbox{cuidado}[1][Cuidado]{
+  colback=white, colframe=esumerOrange, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerOrange,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+\newtcolorbox{control}[1][Cifras de control: compara antes de seguir]{
+  colback=white, colframe=esumerGreen!80!black, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerGreen!80!black,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+\newtcolorbox{orange}[1][En Orange]{
+  colback=white, colframe=esumerSky, boxrule=0.6pt, arc=1mm,
+  fonttitle=\bfseries\small, coltitle=white, colbacktitle=esumerSky,
+  title=#1, left=6pt, right=6pt, top=3pt, bottom=3pt
+}
+
+% Opción de Orange: nombre en español (nombre en inglés)
+\newcommand{\menu}[2]{\textbf{#1} {\color{black!55}(#2)}}
+\newcommand{\widget}[1]{\leavevmode{\color{esumerNavyDark}\textbf{#1}}}
+\newcommand{\vez}[1]{\leavevmode\mbox{\color{esumerTeal}\textbf{[#1]}}}
+
+% ---------------- Encabezado de cada etapa ----------------
+\newcommand{\etapa}[3]{%
+  \clearpage\noindent
+  \begin{tikzpicture}[baseline=(n.base)]
+    \node[circle, fill=esumerOrange, text=white, font=\bfseries\large,
+          minimum size=0.85cm, inner sep=0pt] (n) {#1};
+  \end{tikzpicture}\hspace{8pt}%
+  {\Large\bfseries\color{esumerNavy} #2}\par
+  \vspace{-2pt}{\color{esumerOrange}\rule{\textwidth}{1pt}}\par
+  \vspace{2pt}
+  {\color{esumerNavyDark}\textbf{Objetivo:}} \textit{#3}\par
+  \vspace{2pt}
+}
+\newcommand{\subtitulo}[1]{\par\needspace{3\baselineskip}\vspace{4pt}{\large\bfseries\color{esumerNavyDark} #1}\par}
+
+\newlist{checklist}{itemize}{1}
+\setlist[checklist]{label=$\square$, itemsep=1pt, topsep=2pt, leftmargin=1.4em}
+
+\tikzset{
+  every node/.append style={execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000\relax}},
+  flecha/.style={-{Stealth[length=2.4mm]}, line width=0.9pt, color=esumerNavy},
+  num/.style={circle, fill=esumerOrange, text=white, font=\bfseries\small,
+              minimum size=0.6cm, inner sep=0pt},
+}
+
+% ============================================================
+\begin{document}
+
+\begin{minipage}[c]{0.18\textwidth}
+  \includegraphics[height=1.15cm,width=\linewidth,keepaspectratio]{esumer-logo.png}
+\end{minipage}%
+\begin{minipage}[c]{0.80\textwidth}
+  \raggedleft
+  {\Large\bfseries\color{esumerNavy} Guía de aplicación: del dato a la recomendación}\\[3pt]
+  {\small\color{esumerNavyDark} Semana 12 \textperiodcentered\ Clase 24 \textperiodcentered\ MasterClass del Módulo 4}
+\end{minipage}
+
+\vspace{4pt}
+{\color{esumerOrange}\rule{\textwidth}{2pt}}
+\vspace{6pt}
+
+\textbf{Para qué es esta guía.} En el Módulo 4 aprendiste a pasar de
+describir a predecir (Clase 19), a construir y evaluar una regresión lineal
+(Clase 20), a contar una historia (Clase 21), a estimar el impacto de una
+decisión (Clase 22) y a presentarla (Clase 23). Hoy haces todo el recorrido,
+de principio a fin, con un caso nuevo. La guía te dice qué hacer y cómo
+comprobar que vas bien; cuando dudes, las pistas como \vez{Clase 20} te
+dicen dónde lo viste.
+
+\begin{recuerda}[El caso: Colibrí Envíos S.A.S.]
+\small Colibrí Envíos es una empresa de mensajería en el Valle de Aburrá:
+recoge pedidos de tiendas y los entrega en moto o en bicicleta. Hoy, la app
+le promete a cada cliente que su pedido llegará en \textbf{45 minutos},
+sin importar la distancia ni la hora. Cuando llega tarde, la empresa le
+regala al cliente un \textbf{bono de 8.000 pesos}. Tienes los 1500 pedidos
+entregados de enero a junio de 2026.
+
+\vspace{2pt}
+\footnotesize\itshape La empresa es ficticia y los datos son simulados con
+fines académicos.
+\end{recuerda}
+
+\textbf{Al terminar la sesión deberías tener:}
+\begin{enumerate}[itemsep=1pt, topsep=2pt]
+  \item La pregunta predictiva escrita con la plantilla de la Clase 19.
+  \item La tabla de características: cuáles entran, cuáles no y por qué.
+  \item Un modelo de regresión lineal evaluado con datos de prueba, en
+    Python o en Orange.
+  \item El impacto estimado de una nueva política de promesa, en pesos y
+    con sus supuestos.
+  \item El guion de una presentación de cinco minutos para la gerencia.
+\end{enumerate}
+
+\textbf{Agenda sugerida para las 3 horas}
+
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{1.4cm}>{\raggedright\arraybackslash}p{6.9cm}>{\raggedright\arraybackslash}p{7.6cm}@{}}
+\toprule
+\textbf{Hora} & \textbf{Etapas} & \textbf{Producto al final de la hora}\\
+\midrule
+Hora 1 & 1. Pregunta \textperiodcentered\ 2. Características & Pregunta predictiva y tabla de características.\\
+Hora 2 & 3. Modelo \textperiodcentered\ 4. Límites & Tres modelos comparados y sus límites.\\
+Hora 3 & 5. Impacto \textperiodcentered\ 6. Comunicar & Impacto en pesos y guion de la presentación.\\
+\bottomrule
+\end{tabular}
+
+\vspace{6pt}
+\textbf{Elige tu ruta.} Las etapas 3 a 5 se pueden hacer en
+\href{\urlcolab}{\color{esumerOrange}Python (Google Colab)} o en
+\href{\urlorange}{\color{esumerOrange}Orange}. Las cifras de control son
+\textbf{las mismas en las dos}. Se puede trabajar en parejas o de forma
+individual. Descarga el archivo
+\href{\urldatos}{\color{esumerOrange}\texttt{colibri\_envios.csv}}.
+
+% ============================================================
+\clearpage
+\section*{\color{esumerNavy}La carta de la gerencia}
+
+\begin{tcolorbox}[colback=white, colframe=esumerNavy, boxrule=0.8pt, arc=1mm,
+  left=10pt, right=10pt, top=6pt, bottom=6pt]
+\small
+\textit{Hola. Cerca del 29\% de nuestros pedidos llega después de los 45
+minutos que prometemos, y cada uno nos cuesta un bono de 8.000 pesos y un
+cliente molesto. Para el comité de diciembre necesito saber:}
+
+\begin{enumerate}[label=\textbf{P\arabic*.}, leftmargin=2.2em, itemsep=3pt, topsep=4pt]
+  \item \textit{¿Podemos estimar, al momento de recibir un pedido, cuántos
+    minutos va a tardar? ¿Con qué error?}
+  \item \textit{¿Qué es lo que más hace tardar un pedido?}
+  \item \textit{Si en vez de prometer 45 minutos a todos, la app prometiera
+    un tiempo según cada pedido, ¿cuántos pedidos llegarían tarde? ¿Cuánto
+    nos ahorraríamos en bonos?}
+  \item \textit{¿Qué riesgos tiene usar un modelo para esto?}
+\end{enumerate}
+
+\vspace{4pt}
+\textit{Gracias.}\\
+\textbf{Gerencia de operaciones, Colibrí Envíos}
+\end{tcolorbox}
+
+\subtitulo{Los datos: \texttt{colibri\_envios.csv}}
+
+Una fila por pedido entregado (1500 filas).
+
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Columna} & \textbf{Qué contiene}\\
+\midrule
+\texttt{id\_pedido} & Número del pedido.\\
+\texttt{fecha}, \texttt{hora} & Día y hora en que se hizo el pedido (la hora, de 8 a 19).\\
+\texttt{zona} & Zona de entrega: Centro, El Poblado, Laureles, Envigado o Bello.\\
+\texttt{distancia\_km} & Distancia de la tienda al cliente, en kilómetros.\\
+\texttt{num\_paquetes}, \texttt{peso\_kg} & Cuántos paquetes lleva el pedido y cuánto pesan en total.\\
+\texttt{vehiculo} & Moto o Bicicleta.\\
+\texttt{lluvia} & 1 si llovía cuando se hizo el pedido; 0 si no.\\
+\texttt{cliente\_nuevo} & 1 si es el primer pedido del cliente; 0 si no.\\
+\texttt{minutos\_entrega} & \textbf{Minutos desde el pedido hasta la entrega.}\\
+\texttt{entrega\_tarde} & 1 si el pedido tardó más de 45 minutos.\\
+\texttt{calificacion} & Calificación que dio el cliente al recibir, de 1 a 5.\\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\subtitulo{El recorrido completo}
+
+\begin{center}
+\begin{tikzpicture}[
+  et/.style={draw=esumerNavy, line width=0.8pt, rounded corners=3pt,
+             fill=white, minimum width=5.0cm, minimum height=2.3cm,
+             text width=4.7cm, align=center, inner sep=3pt, font=\scriptsize},
+  clase/.style={fill=esumerTeal, text=white, font=\scriptsize\bfseries,
+                rounded corners=2pt, inner sep=2.5pt},
+]
+  \node[et] (e1) at (2.85,0) {{\bfseries\small La pregunta predictiva}\\[3pt]Decisión, objetivo, fila, tipo de tarea};
+  \node[et] (e2) at (8.5,0) {{\bfseries\small Características}\\[3pt]Extraer, medir la relación, detectar la fuga};
+  \node[et] (e3) at (14.15,0) {{\bfseries\small El modelo}\\[3pt]Entrenamiento y prueba, línea base, regresión simple y múltiple};
+  \node[et] (e4) at (14.15,-3.1) {{\bfseries\small Los límites}\\[3pt]Errores grandes, extrapolación, una prueba de fuga};
+  \node[et] (e5) at (8.5,-3.1) {{\bfseries\small El impacto}\\[3pt]Una nueva promesa: pedidos tarde y bonos ahorrados};
+  \node[et] (e6) at (2.85,-3.1) {{\bfseries\small Comunicar}\\[3pt]El mensaje, el guion y el pitch de cinco minutos};
+  \foreach \i in {1,...,6} {\node[num] at (e\i.north west) {\i};}
+  \node[clase, anchor=south east] at ($(e1.north east)+(-0.15,-0.02)$) {Clase 19};
+  \node[clase, anchor=south east] at ($(e2.north east)+(-0.15,-0.02)$) {Clase 19};
+  \node[clase, anchor=south east] at ($(e3.north east)+(-0.15,-0.02)$) {Clase 20};
+  \node[clase, anchor=south east] at ($(e4.north east)+(-0.15,-0.02)$) {Clase 20};
+  \node[clase, anchor=south east] at ($(e5.north east)+(-0.15,-0.02)$) {Clase 22};
+  \node[clase, anchor=south east] at ($(e6.north east)+(-0.15,-0.02)$) {Clases 21 y 23};
+  \draw[flecha] (e1) -- (e2);
+  \draw[flecha] (e2) -- (e3);
+  \draw[flecha] (e3) -- (e4);
+  \draw[flecha] (e4) -- (e5);
+  \draw[flecha] (e5) -- (e6);
+\end{tikzpicture}
+\end{center}
+
+% ============================================================
+\etapa{1}{La pregunta predictiva}{convertir la carta de la gerencia en una pregunta que un modelo pueda responder.}
+
+Completa la plantilla de la Clase 19 con el caso de Colibrí Envíos.
+\vez{Clase 19}
+
+\renewcommand{\arraystretch}{2.0}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Para decidir} (qué haremos) & \\ \hline
+\textbf{quiero predecir} (el objetivo) & \\ \hline
+\textbf{de cada} (la fila) & \\ \hline
+\textbf{usando} (lo que sé en ese momento) & \\ \hline
+\textbf{con anticipación de} & \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+
+\vspace{4pt}
+Responde también:
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item ¿Es un problema de clasificación o de regresión? ¿Por qué?
+  \item ¿Cuál sería la línea base: qué hace hoy la empresa, sin modelo?
+  \item ¿En qué momento exacto se usaría la predicción? Esto decide qué
+    columnas puedes usar en la etapa 2.
+\end{enumerate}
+
+\begin{control}[Para comparar con tu respuesta]
+\small \textbf{Para decidir} qué tiempo de entrega prometer en la app,
+\textbf{quiero predecir} los minutos que tardará \textbf{cada pedido},
+\textbf{usando} lo que se sabe al recibirlo (distancia, paquetes,
+vehículo, hora y si llueve), \textbf{con anticipación de} todo el tiempo
+de la entrega: se predice en el momento del pedido.
+
+Es \textbf{regresión}, porque el objetivo (\texttt{minutos\_entrega}) es un
+número. La línea base es la promesa de hoy: 45 minutos para todos o, para
+medir el error del modelo, el promedio de minutos del entrenamiento.
+\end{control}
+
+\begin{cuidado}[El momento de la predicción manda]
+\small Si la app debe mostrar la promesa cuando el cliente hace el pedido,
+solo vale lo que se sabe en ese instante. Esa frase te va a sacar de apuros
+en la etapa 2. \vez{Clase 19, fuga de información}
+\end{cuidado}
+
+% ============================================================
+\etapa{2}{Características: extraer y seleccionar}{decidir con qué columnas aprende el modelo, y crear las que hagan falta.}
+
+\subtitulo{Extraer dos columnas nuevas}
+
+\begin{enumerate}[itemsep=2pt, topsep=2pt]
+  \item \textbf{\texttt{hora\_pico}}: 1 si el pedido se hizo a las 12, 13,
+    18 o 19 horas (almuerzo y salida del trabajo); 0 si no. La hora, tal
+    cual, es un número del 8 al 19, y el tráfico no sube ni baja en línea
+    recta con ella.
+  \item \textbf{\texttt{es\_bicicleta}}: 1 si el vehículo es Bicicleta; 0 si
+    es Moto. El modelo lineal necesita números.
+\end{enumerate}
+
+\begin{codigo}[title=En Python (Colab)]
+\begin{Verbatim}
+import pandas as pd
+
+pedidos = pd.read_csv("colibri_envios.csv")
+pedidos["hora_pico"] = pedidos["hora"].isin([12, 13, 18, 19]).astype(int)
+pedidos["es_bicicleta"] = (pedidos["vehiculo"] == "Bicicleta").astype(int)
+\end{Verbatim}
+\end{codigo}
+
+\begin{orange}
+\small \widget{File} con el CSV. En la lista de columnas, cambia el tipo de
+\texttt{lluvia}, \texttt{cliente\_nuevo} y \texttt{entrega\_tarde} a
+\menu{numérico}{numeric} (Clase 20, paso 1) y pon \texttt{id\_pedido} en
+\menu{omitir}{skip}. Luego un widget \widget{Formula}
+(\href{\urlformula}{\color{esumerOrange}documentación}): \menu{Nuevo}{New}
+$>$ \menu{Numérico}{Numeric}, con el nombre y la expresión:
+
+\vspace{2pt}
+\texttt{hora\_pico}: \texttt{1 if hora in (12, 13, 18, 19) else 0}\\
+\texttt{es\_bicicleta}: \texttt{1 if vehiculo == 'Bicicleta' else 0}
+
+\vspace{2pt}
+Pulsa \menu{Enviar}{Send}.
+\end{orange}
+
+\subtitulo{Medir la relación con el objetivo}
+
+\begin{codigo}[title=En Python]
+\begin{Verbatim}
+columnas = ["distancia_km", "num_paquetes", "peso_kg", "lluvia", "cliente_nuevo",
+            "hora", "hora_pico", "es_bicicleta", "calificacion", "entrega_tarde"]
+pedidos[columnas].corrwith(pedidos["minutos_entrega"]).round(3)
+\end{Verbatim}
+\end{codigo}
+
+\begin{orange}
+\small \widget{Select Columns} con \texttt{minutos\_entrega} en
+\menu{Objetivo}{Target} y las demás columnas numéricas en
+\menu{Variables}{Features}. Luego \widget{Rank}: con un objetivo numérico
+muestra \textbf{Univar. reg.}, que ordena las columnas igual que la
+correlación.
+\end{orange}
+
+\begin{control}
+\small Correlación con \texttt{minutos\_entrega}:
+\vspace{2pt}
+
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedleft\arraybackslash}p{1.6cm} @{\hspace{1.0cm}} >{\raggedright\arraybackslash}X >{\raggedleft\arraybackslash}p{1.6cm}@{}}
+\toprule
+\texttt{entrega\_tarde} & 0,770 & \texttt{num\_paquetes} & 0,194\\
+\texttt{calificacion} & $-0{,}767$ & \texttt{peso\_kg} & 0,177\\
+\texttt{distancia\_km} & 0,652 & \texttt{hora} & 0,141\\
+\texttt{hora\_pico} & 0,347 & \texttt{es\_bicicleta} & 0,132\\
+\texttt{lluvia} & 0,212 & \texttt{cliente\_nuevo} & $-0{,}013$\\
+\bottomrule
+\end{tabularx}\par
+\vspace{2pt}
+\texttt{hora\_pico} se relaciona con el tiempo más del doble que
+\texttt{hora} (0,347 frente a 0,141): extraerla valió la pena.
+\end{control}
+
+\subtitulo{Decidir: la tabla de características}
+
+Pasa cada columna por las cinco preguntas de la Clase 19 y completa la
+tabla. La primera fila es un ejemplo. \vez{Clase 19}
+
+\small
+\renewcommand{\arraystretch}{1.55}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.9cm} >{\centering\arraybackslash}p{1.6cm} >{\centering\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{2.0cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Columna} & \textbf{¿La tendré?} & \textbf{¿Aporta?} & \textbf{Decisión} & \textbf{Por qué}\\
+\midrule
+{\itshape distancia\_km} & {\itshape Sí} & {\itshape Sí} & {\itshape Entra} & {\itshape Se conoce al pedir y es la que más se relaciona.}\\ \hline
+num\_paquetes & & & & \\ \hline
+peso\_kg & & & & \\ \hline
+lluvia & & & & \\ \hline
+cliente\_nuevo & & & & \\ \hline
+hora / hora\_pico & & & & \\ \hline
+es\_bicicleta & & & & \\ \hline
+calificacion & & & & \\ \hline
+entrega\_tarde & & & & \\ \hline
+id\_pedido & & & & \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\begin{control}[Para comparar con tu tabla]
+\small\raggedright
+\textbf{Entran}: distancia, paquetes, lluvia, \texttt{hora\_pico} y
+\texttt{es\_bicicleta}.
+
+\textbf{Fuera}:
+\begin{itemize}[itemsep=0pt, topsep=1pt]
+  \item \texttt{calificacion} y \texttt{entrega\_tarde}: aunque encabezan
+    la tabla, se conocen \textbf{después} de entregar (fuga de información).
+  \item \texttt{peso\_kg}: repite lo que dice el número de paquetes
+    (correlación entre ellas: 0,95).
+  \item \texttt{hora}: ya la reemplaza \texttt{hora\_pico}.
+  \item \texttt{cliente\_nuevo}: no se relaciona con el tiempo.
+  \item \texttt{id\_pedido}: es un identificador.
+\end{itemize}
+\end{control}
+
+% ============================================================
+\etapa{3}{El modelo}{entrenar una regresión lineal y saber cuánto mejora a no hacer nada.}
+
+\subtitulo{Separar, línea base y dos modelos}
+
+\begin{codigo}[title=En Python]
+\begin{Verbatim}
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, r2_score
+
+entrenamiento, prueba = train_test_split(pedidos, test_size=0.2, random_state=42)
+y_train = entrenamiento["minutos_entrega"]
+y_test = prueba["minutos_entrega"]
+
+base = [y_train.mean()] * len(prueba)
+print("Línea base, MAE:", round(mean_absolute_error(y_test, base), 2))
+
+columnas = ["distancia_km", "num_paquetes", "lluvia", "hora_pico", "es_bicicleta"]
+multiple = LinearRegression()
+multiple.fit(entrenamiento[columnas], y_train)
+pred = multiple.predict(prueba[columnas])
+print("Múltiple, MAE:", round(mean_absolute_error(y_test, pred), 2),
+      "R2:", round(r2_score(y_test, pred), 3))
+\end{Verbatim}
+\end{codigo}
+
+\begin{orange}
+\small El mismo flujo de la Clase 20: \widget{Data Sampler} al 20\%, con
+\menu{Muestreo replicable}{Replicable sampling};
+\widget{Constant} y \widget{Linear Regression} conectados a
+\widget{Test and Score}, con \menu{Datos restantes}{Remaining Data} como
+entrenamiento y \menu{Muestra de datos}{Data Sample} como
+\menu{Datos de prueba}{Test Data}, y \menu{Probar con datos de
+prueba}{Test on test data}. Los modelos se cambian en
+\widget{Select Columns}. \vez{Clase 20, pasos 3 a 7}
+\end{orange}
+
+Prueba tres modelos y compáralos con la línea base: solo
+\texttt{distancia\_km}; las cinco columnas, pero con \texttt{hora} en vez de
+\texttt{hora\_pico}; y las cinco columnas elegidas.
+
+\begin{control}
+\small 1200 pedidos de entrenamiento y 300 de prueba. Con los 300 de prueba:
+\vspace{2pt}
+
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedleft\arraybackslash}p{2.0cm} >{\raggedleft\arraybackslash}p{2.0cm} >{\raggedleft\arraybackslash}p{2.0cm}@{}}
+\toprule
+\textbf{Modelo} & \textbf{MAE} & \textbf{RMSE} & \textbf{$R^2$}\\
+\midrule
+Línea base (promedio: 39,9 minutos) & 10,40 & 12,95 & $-0{,}004$\\
+Simple: solo la distancia & 7,56 & 9,90 & 0,413\\
+Cinco columnas, con \texttt{hora} & 6,18 & 8,66 & 0,551\\
+Cinco columnas, con \texttt{hora\_pico} & \textbf{5,02} & \textbf{7,81} & \textbf{0,635}\\
+\bottomrule
+\end{tabularx}\par
+\vspace{2pt}
+Extraer \texttt{hora\_pico} bajó el error de 6,18 a 5,02 minutos. El
+modelo final se equivoca en unos 5 minutos por pedido; la línea base, en
+unos 10.
+\end{control}
+
+\subtitulo{Los coeficientes, en lenguaje de negocio}
+
+\begin{control}[Coeficientes del modelo final]
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.8cm} >{\raggedleft\arraybackslash}p{1.8cm} @{\hspace{0.6cm}} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Variable} & \textbf{Coeficiente} & \textbf{Con lo demás igual\ldots}\\
+\midrule
+intercepto & 13,46 & \\
+\texttt{distancia\_km} & 2,99 & cada kilómetro suma unos 3 minutos.\\
+\texttt{num\_paquetes} & 1,86 & cada paquete más, unos 2 minutos.\\
+\texttt{lluvia} & 6,70 & si llueve, unos 7 minutos más.\\
+\texttt{hora\_pico} & 9,14 & en hora pico, unos 9 minutos más.\\
+\texttt{es\_bicicleta} & 4,38 & en bicicleta, unos 4 minutos más que en moto.\\
+\bottomrule
+\end{tabularx}\par
+\end{control}
+
+Con esto respondes P1 y P2 de la carta. ¿Qué es lo que más pesa? Ojo: un
+coeficiente grande no es más importante por sí solo, depende de las
+unidades. Un pedido típico recorre 4,8 km: la distancia aporta unos 14
+minutos, más que la hora pico. \vez{Clase 20}
+
+% ============================================================
+\etapa{4}{Los límites del modelo}{saber cuándo no usarlo antes de que alguien te lo pregunte.}
+
+\begin{enumerate}[itemsep=3pt, topsep=2pt]
+  \item \textbf{Los errores más grandes.} Ordena los pedidos de prueba por
+    su residuo (real menos predicho). \vez{Clase 20, paso 9}
+\begin{codigo}
+\begin{Verbatim}
+prueba = prueba.copy()
+prueba["prediccion"] = pred.round(0)
+prueba["residuo"] = prueba["minutos_entrega"] - prueba["prediccion"]
+prueba.sort_values("residuo", ascending=False).head(4)
+\end{Verbatim}
+\end{codigo}
+    En Orange: \widget{Predictions} con la muestra de prueba y el modelo,
+    ordenando por la diferencia (recuerda que allí el signo va al revés).
+  \item \textbf{Extrapolar.} ¿Qué predice el modelo para un pedido de 25 km,
+    con un paquete, sin lluvia, fuera de hora pico y en moto? ¿Entre qué
+    distancias aprendió?
+  \item \textbf{La prueba de la fuga.} Agrega \texttt{calificacion} a las
+    columnas del modelo y mira qué pasa con el $R^2$.
+\end{enumerate}
+
+\begin{control}
+\small \textbf{Errores grandes.} El mayor es el pedido 11235: el modelo
+predijo unos 38 minutos y tardó 83 (residuo de 45). Le siguen pedidos de 65
+minutos predichos en 25 y 30. Son pedidos cortos que tardaron mucho más de
+lo normal: algo pasó (una dirección errada, un cliente que no contestaba)
+que no está en ninguna columna. \textbf{El modelo no ve las novedades.}
+
+\textbf{Extrapolar.} Predice unos 90 minutos para 25 km, pero aprendió con
+pedidos de 0,5 a 18 km: fuera de ese rango, no se usa.
+
+\textbf{La fuga.} Con \texttt{calificacion}, el $R^2$ sube de 0,635 a 0,759
+y el MAE baja a 4,48. Parece mejor, pero la calificación se da después de
+entregar: el modelo no se podría usar al recibir el pedido. Un resultado
+demasiado bueno casi siempre es una fuga. \vez{Clase 19}
+\end{control}
+
+\begin{recuerda}[Para la presentación]
+\small Estos tres hallazgos son tu diapositiva de limitaciones (Clase 23):
+``El modelo sirve para pedidos normales de hasta 18 km; no anticipa
+novedades como una dirección errada''. Responde P4.
+\end{recuerda}
+
+% ============================================================
+\etapa{5}{El impacto}{estimar cuánto cambia la decisión con el modelo, en pedidos tarde y en pesos.}
+
+\textbf{La nueva política.} En vez de prometer 45 minutos a todos, la app
+promete \textbf{la predicción del modelo más 10 minutos} de margen (los 10
+minutos cubren el error típico de unos 5, con holgura). ¿Cuántos pedidos de
+prueba habrían llegado tarde con cada política?
+
+\begin{codigo}[title=En Python]
+\begin{Verbatim}
+real = prueba["minutos_entrega"]
+promesa_modelo = pred + 10          # la predicción sin redondear, más 10 minutos
+
+print("Tarde con 45 minutos:", (real > 45).sum())
+print("Tarde con el modelo:", (real > promesa_modelo).sum())
+print("Promesa promedio con el modelo:", round(promesa_modelo.mean(), 1))
+print("Promesas de más de 60 minutos:", (promesa_modelo > 60).sum())
+\end{Verbatim}
+\end{codigo}
+
+\begin{orange}
+\small Conecta un \widget{Formula} a la salida de \widget{Predictions} (la
+de los datos de prueba). Crea dos columnas numéricas:
+\texttt{tarde\_hoy} con \texttt{1 if minutos\_entrega > 45 else 0} y
+\texttt{tarde\_modelo} con
+\texttt{1 if minutos\_entrega > Linear\_Regression + 10 else 0}. En la
+expresión, el espacio de ``Linear Regression'' se escribe con guion bajo.
+Luego el widget \widget{Column Statistics}: el promedio de cada columna es
+la proporción de pedidos tarde.
+\end{orange}
+
+\begin{control}
+\small Con los 300 pedidos de prueba:
+\vspace{2pt}
+
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X >{\raggedleft\arraybackslash}p{2.8cm} >{\raggedleft\arraybackslash}p{2.8cm}@{}}
+\toprule
+& \textbf{Hoy: 45 minutos} & \textbf{Modelo + 10}\\
+\midrule
+Pedidos tarde & 85 (28,3\%) & 14 (4,7\%)\\
+Promesa promedio & 45,0 minutos & 48,9 minutos\\
+Promesas de más de 60 minutos & 0 & 50\\
+\bottomrule
+\end{tabularx}\par
+\end{control}
+
+\subtitulo{De pedidos a pesos}
+
+Colibrí Envíos entrega unos \textbf{250 pedidos al mes} (1500 en seis
+meses). Con los supuestos escritos, estima el ahorro en bonos:
+
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X >{\raggedleft\arraybackslash}p{3.0cm} >{\raggedleft\arraybackslash}p{3.0cm}@{}}
+\toprule
+& \textbf{Hoy} & \textbf{Con el modelo}\\
+\midrule
+Pedidos tarde al mes ($250 \times$ la proporción de la prueba) & & \\
+Bonos al mes ($\times$ 8.000 pesos) & & \\
+\midrule
+\textbf{Ahorro mensual} & \multicolumn{2}{c}{} \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+
+\begin{control}[Para comparar]
+\small Hoy: $250 \times 85/300 \approx 71$ pedidos tarde y unos
+\textbf{567.000} pesos en bonos al mes. Con el modelo: $250 \times
+14/300 \approx 12$ pedidos y unos \textbf{93.000} pesos. Ahorro: unos
+\textbf{470.000 pesos al mes}.
+
+\textbf{Supuestos:} el volumen se mantiene en 250 pedidos; la proporción
+de pedidos tarde de la prueba vale para los meses que vienen; el bono sigue
+en 8.000 pesos. \textbf{Lo que falta saber:} si una promesa más larga (en
+promedio 3,9 minutos más, y 50 de cada 300 por encima de una hora) hace que
+algunos clientes no pidan. Ese costo no está en los datos. \vez{Clase 22}
+\end{control}
+
+\subtitulo{La matriz indicador, hallazgo, decisión, impacto}
+
+Resume las etapas 3 a 5 en la matriz de la Clase 22, con dos o tres filas.
+Por ejemplo: indicador, \emph{porcentaje de pedidos tarde}; hallazgo,
+\emph{28,3\% con la promesa fija}; decisión, \emph{prometer según el modelo
+más 10 minutos}; impacto, \emph{unos 470.000 pesos al mes en bonos}.
+\vez{Clase 22}
+
+% ============================================================
+\etapa{6}{Comunicar}{contarle a la gerencia, en cinco minutos, qué encontraste y qué propones.}
+
+\subtitulo{El mensaje en una frase}
+
+Escríbela con la fórmula de la Clase 21: qué pasó, por qué importa y qué
+propones. \vez{Clase 21}
+
+\renewcommand{\arraystretch}{3.0}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+
+\subtitulo{El guion: cinco diapositivas}
+
+Escribe solo los títulos, que concluyan. Leídos en orden, deben contar la
+historia completa.\par\hfill\vez{Clases 21 y 23}
+
+\renewcommand{\arraystretch}{2.2}
+\begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}p{0.6cm} >{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+& \textbf{Parte del pitch} & \textbf{Título de la diapositiva}\\
+\midrule
+1 & Apertura (30 s) & \\ \hline
+2 & Evidencia y modelo (2 min) & \\ \hline
+3 & Limitaciones & \\ \hline
+4 & Recomendación e impacto (2 min) & \\ \hline
+5 & Cierre: qué pedimos hoy (30 s) & \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+
+\begin{control}[Un ejemplo de títulos]
+\small (1) Hoy, casi 3 de cada 10 pedidos llegan después de la hora
+prometida. (2) Con la distancia, la hora y el clima, estimamos el tiempo
+con un error de unos 5 minutos. (3) El modelo no anticipa novedades ni
+sirve para más de 18 km. (4) Prometer según el modelo bajaría los pedidos
+tarde a menos de 1 de cada 20 y ahorraría unos 470.000 pesos al mes.
+(5) Pedimos aprobar un piloto de un mes en una zona.
+\end{control}
+
+\subtitulo{El ensayo}
+
+En parejas, cuenta el pitch en cinco minutos; tu compañero hace de gerente
+y te pregunta. Si trabajas solo, grábate. Revisa con la rúbrica de la
+Clase 23: apertura, mensaje, modelo sin jerga, incertidumbre,
+recomendación con impacto, tiempo y preguntas. \vez{Clase 23}
+
+% ============================================================
+\clearpage
+\section*{\color{esumerNavy}Autoevaluación: ¿cubriste todo el módulo?}
+
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.7cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{0.9cm}@{}}
+\toprule
+\textbf{Criterio} & \textbf{En proceso} & \textbf{Logrado} & \textbf{Yo}\\
+\midrule
+\textbf{Pregunta} & Falta la decisión o el momento de la predicción. & Decisión, objetivo, fila, datos disponibles y anticipación. & \\
+\textbf{Características} & Usa todas las columnas, o se le coló una fuga. & Extrae \texttt{hora\_pico}, descarta la fuga, lo redundante y el identificador, y explica por qué. & \\
+\textbf{Modelo} & Mide con los datos de entrenamiento o sin línea base. & Mide con la prueba, frente a la línea base, y lee los coeficientes en lenguaje de negocio. & \\
+\textbf{Límites} & No los menciona. & Errores grandes, rango de uso y fuga, explicados. & \\
+\textbf{Impacto} & Sin cifra o sin supuestos. & Pedidos tarde y pesos, con supuestos y con lo que falta saber. & \\
+\textbf{Comunicar} & Describe el proceso, sin recomendación. & Mensaje en una frase, títulos que concluyen y una decisión pedida. & \\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\subtitulo{Si algo no cuadra}
+
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{5.8cm} >{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Lo que ves} & \textbf{Causa más probable}\\
+\midrule
+Todas las cifras del modelo son distintas. & Otro reparto: revisa \texttt{test\_size=0.2} y \texttt{random\_state=42}, o en Orange, 20\% con muestreo replicable.\\
+El $R^2$ es de 0,759 o más. & Se coló \texttt{calificacion} o \texttt{entrega\_tarde} en las columnas.\\
+El MAE es 6,18 y no 5,02. & Usaste \texttt{hora} en vez de \texttt{hora\_pico}.\\
+En Orange, dos coeficientes por columna con signo contrario. & Faltó cambiar \texttt{lluvia} a numérico en \widget{File} (Clase 20).\\
+\texttt{hora\_pico} es siempre 0 en Orange. & La expresión de \widget{Formula}: revisa los paréntesis y las comas de \texttt{(12, 13, 18, 19)}.\\
+La fórmula de \texttt{tarde\_modelo} da error en Orange. & El nombre de la columna de predicción se escribe \texttt{Linear\_Regression}, con guion bajo.\\
+\bottomrule
+\end{tabularx}\par
+\renewcommand{\arraystretch}{1.0}
+\normalsize
+
+\end{document}

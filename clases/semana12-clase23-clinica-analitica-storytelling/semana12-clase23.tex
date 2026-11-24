@@ -1,0 +1,658 @@
+% ============================================================
+%  Semana 12 · Clase 23: Clínica de analítica predictiva y storytelling
+%  Curso: Análisis y Visualización de Datos para la Toma de Decisiones
+%
+%  Formato de la sesión (3 h):
+%    Hora 1. El pitch: estructura, apertura con problema y contexto,
+%            evidencia, el modelo explicado sin jerga, recomendación e
+%            impacto esperado
+%    Hora 2. Incertidumbre y limitaciones; gestión de preguntas;
+%            retroalimentación estructurada
+%    Hora 3. Clínica: presentaciones cortas en grupos, con
+%            retroalimentación estructurada
+%
+%  Ejemplo: el modelo de bicicletas de la Clase 20 (Bike Sharing Dataset,
+%  UCI, CC BY 4.0). Las cifras son las de la práctica de esa clase:
+%  train_test_split(test_size=0.2, random_state=42).
+%
+%  Compilar (dos veces) directamente desde esta carpeta:
+%    xelatex semana12-clase23.tex
+%    xelatex semana12-clase23.tex
+% ============================================================
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usepackage{../../../plantilla/beamerthemeesumer}
+\usetheme{esumer}
+
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\tikzset{every node/.append style={execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000\relax}}}
+
+% ---------------- DATOS DE LA CLASE ----------------
+\title{Clínica de analítica predictiva y storytelling}
+\subtitle{Presentar el caso, el modelo y la recomendación}
+\author{Docente: Cristian A. Jimenez C., MSc}
+\date{Nov 24 al 29}
+
+\setmodulo{Módulo 4: Innovar (Analítica Predictiva y Storytelling)}
+\setsemana{12}
+\setclase{23}
+\setfechaclase{Nov 24 al 29}
+\setmodalidad{Virtual}
+% -----------------------------------------------------
+
+\newcommand{\urlkit}{https://github.com/craljimenez/An-lisis_y_Visualizacion_de_Datos_para_la_Toma_de_Decisiones/blob/main/clases/semana12-clase23-clinica-analitica-storytelling/informe-tecnico-kit.pdf}
+\newcommand{\urlkitdatos}{https://github.com/craljimenez/An-lisis_y_Visualizacion_de_Datos_para_la_Toma_de_Decisiones/raw/main/clases/semana12-clase23-clinica-analitica-storytelling/datos/ventas_diarias_tiendas.csv}
+\newcommand{\fuentebici}{\par\vspace{1pt}{\fontsize{5.5}{6.5}\selectfont\color{black!55}%
+  Cifras del modelo de la Clase 20. Datos: Bike Sharing Dataset (Capital Bikeshare), UCI,
+  CC BY 4.0. Fanaee-T y Gama (2013).\par}}
+
+\begin{document}
+
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain,noframenumbering]
+  \titlepage
+\end{frame}
+}
+
+\begin{frame}[t]{Agenda de hoy (3 horas)}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.32\textwidth}
+    \begin{block}{Hora 1}
+      \small El pitch: estructura, apertura, evidencia, el modelo sin
+      jerga, recomendación e impacto.
+    \end{block}
+    \column{0.32\textwidth}
+    \begin{block}{Hora 2}
+      \small Incertidumbre y limitaciones, preguntas difíciles y cómo dar
+      retroalimentación útil.
+    \end{block}
+    \column{0.32\textwidth}
+    \begin{block}{Hora 3}
+      \small La clínica: presentas tu caso en cinco minutos y recibes
+      retroalimentación estructurada.
+    \end{block}
+  \end{columns}
+  \vspace{0.3cm}
+  \small En las Clases 21 y 22 armaste la historia y el argumento. Hoy los
+  juntas con tu modelo en una presentación corta, la pruebas frente a otros
+  y te llevas una lista concreta de mejoras.
+\end{frame}
+
+\begin{frame}[t]{¿Qué es una clínica?}
+  \begin{center}
+  \begin{tikzpicture}[
+    bx/.style={draw=none, rounded corners=3pt, text=white, align=center,
+               font=\footnotesize, minimum height=1.3cm, text width=2.9cm, inner sep=4pt},
+    fl/.style={-{Stealth[length=2.2mm]}, line width=0.9pt, color=esumerNavy},
+  ]
+    \node[bx, fill=esumerNavy] (a) at (1.65,0) {\textbf{Presentas}\\5 minutos};
+    \node[bx, fill=esumerOrange] (b) at (5.2,0) {\textbf{Te preguntan}\\3 minutos, como la gerencia};
+    \node[bx, fill=esumerTeal] (c) at (8.75,0) {\textbf{Te retroalimentan}\\4 minutos, con la ficha};
+    \node[bx, fill=esumerSky] (d) at (12.3,0) {\textbf{Ajustas}\\tu versión 2};
+    \draw[fl] (a) -- (b); \draw[fl] (b) -- (c); \draw[fl] (c) -- (d);
+  \end{tikzpicture}
+  \end{center}
+  \vspace{0.1cm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Para qué sirve}
+      \footnotesize Una presentación se mejora presentándola. En el papel
+      todo parece claro; frente a alguien que no conoce el caso aparecen
+      los huecos.
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{exampleblock}{Lo que se evalúa}
+      \footnotesize La presentación, no a la persona. Equivocarse hoy es
+      barato: para eso es la clínica.
+    \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+\section{Hora 1: El pitch}
+% ============================================================
+\begin{frame}[t]{El pitch en cinco minutos}
+  \small Cinco partes, con un tiempo para cada una:
+  \vspace{0.15cm}
+  \begin{center}
+  \begin{tikzpicture}[x=1cm, y=1cm]
+    \foreach \x/\w/\c/\t/\s in {
+      0/1.4/esumerSky/Apertura/{30 s},
+      1.4/5.6/esumerNavy/Evidencia y modelo/{2 min},
+      7.0/2.8/esumerTeal/Recomendación/{1 min},
+      9.8/2.8/esumerOrange/Impacto/{1 min},
+      12.6/1.4/esumerMagenta/Cierre/{30 s}} {
+      \fill[\c] (\x,0) rectangle ++(\w,0.9);
+      \node[text=white, font=\scriptsize\bfseries, align=center] at (\x+\w/2,0.45) {\t\\[-1pt]{\mdseries\s}};
+    }
+  \end{tikzpicture}
+  \end{center}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}L{2.8cm}L{10.7cm}@{}}
+    \toprule
+    \textbf{Parte} & \textbf{Qué debe quedar claro} \\
+    \midrule
+    Apertura & El problema, para quién y por qué importa ahora. Con una cifra. \\
+    Evidencia y modelo & El hallazgo principal y qué tan bien predice el modelo, comparado con lo que se hace hoy. \\
+    Recomendación & Qué hacer, quién, cuándo (Clase 21). \\
+    Impacto & Cuánto vale, con su línea base y sus supuestos (Clase 22). \\
+    Cierre & La decisión que pides y una frase que resuma todo. \\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+\begin{frame}[t]{La apertura: el problema primero}
+  \small Los primeros 30 segundos deciden si te escuchan. Empieza por el
+  problema de quien decide, no por ti ni por los datos.
+  \vspace{0.1cm}
+
+  \footnotesize
+  \renewcommand{\arraystretch}{1.35}
+  \begin{tabular}{@{}L{6.2cm}L{7.3cm}@{}}
+    \toprule
+    \textbf{Así no} & \textbf{Así sí} \\
+    \midrule
+    ``Hola, hoy les voy a presentar mi proyecto de regresión lineal.'' & ``Cada noche decidimos cuántas bicicletas preparar para mañana, y hoy lo hacemos con el promedio.'' \\
+    ``Primero, les cuento cómo limpiamos los datos.'' & ``Con el promedio nos equivocamos en unas 1700 bicicletas al día.'' \\
+    ``Usamos 731 días y 13 columnas.'' & ``Con el pronóstico del clima, ese error baja a menos de la mitad.'' \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.15cm}
+  \begin{block}{La fórmula de la apertura}
+    \footnotesize \textbf{Situación} (lo que pasa hoy) + \textbf{problema}
+    (lo que cuesta, con una cifra) + \textbf{promesa} (lo que vas a
+    proponer). Tres frases.
+  \end{block}
+  \fuentebici
+\end{frame}
+
+\begin{frame}[t]{El modelo, sin jerga}
+  \small La gerencia no necesita saber cómo funciona una regresión, sino
+  cuatro cosas:
+  \vspace{0.1cm}
+
+  \footnotesize
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}L{3.3cm}L{4.3cm}L{5.5cm}@{}}
+    \toprule
+    \textbf{La pregunta} & \textbf{En jerga} & \textbf{En lenguaje de negocio} \\
+    \midrule
+    ¿Qué predice? & Regresión lineal múltiple sobre \texttt{alquileres} & Cuántas bicicletas se alquilarán mañana \\
+    ¿Con qué? & Seis variables explicativas & El pronóstico del clima y el tipo de día \\
+    ¿Qué tan bien? & MAE 733,4; $R^2$ 0,789 & Se equivoca en unas 730 bicicletas al día; hoy, con el promedio, en unas 1700 \\
+    ¿Qué aprendió? & Coeficiente de \texttt{lluvia}: $-1239{,}71$ & Un día con lluvia se alquilan unas 1240 bicicletas menos \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.15cm}
+  \begin{alertblock}{Siempre comparado}
+    \footnotesize ``730 bicicletas de error'' no dice si es bueno o malo.
+    ``730, frente a 1700 de hoy'' sí. La línea base (Clase 19) es lo que hace
+    entendible tu modelo.
+  \end{alertblock}
+  \fuentebici
+\end{frame}
+
+\begin{frame}[t]{El modelo en una diapositiva}
+  \small Así se vería la diapositiva de evidencia del caso de las bicicletas:
+  \vspace{0.1cm}
+  \begin{center}
+  \begin{tikzpicture}
+    \draw[esumerNavy, line width=1pt, rounded corners=3pt, fill=white] (0,0) rectangle (13.4,4.6);
+    \fill[esumerNavy] (0,3.85) rectangle (13.4,4.6);
+    \node[anchor=west, text=white, font=\small\bfseries] at (0.25,4.22) {Con el pronóstico del clima, el error diario baja de 1700 a 730 bicicletas};
+    \foreach \y/\h/\c/\t/\v in {2.75/4.6/esumerGray!80!black/{Hoy: el promedio}/{1712}, 1.55/1.97/esumerOrange/{Con el modelo}/{733}} {
+      \node[anchor=east, font=\scriptsize] at (2.6,\y) {\t};
+      \fill[\c] (2.75,\y-0.3) rectangle ++(\h,0.6);
+      \node[anchor=west, font=\scriptsize\bfseries] at (2.85+\h,\y) {\v};
+    }
+    \node[anchor=west, font=\scriptsize, text=black!60, text width=5.6cm, align=left] at (1.2,0.75) {Error promedio por día, en bicicletas (147 días de prueba)};
+    \draw[esumerNavy!40] (8.9,0.4) -- (8.9,3.5);
+    \node[anchor=north west, text width=3.9cm, align=left, font=\scriptsize] at (9.2,3.55)
+      {\textbf{Lo que más mueve la demanda}\\[3pt]
+       Lluvia: unas 1240 menos\\
+       Cada grado más: unas 150 más\\
+       2012 frente a 2011: unas 1960 más\\[5pt]
+       {\color{black!60}Detalle del modelo: en el anexo}};
+  \end{tikzpicture}
+  \end{center}
+  \footnotesize Un solo gráfico, el título dice la conclusión y lo técnico
+  queda en el anexo. Las barras empiezan en cero (Clase 21).
+  \fuentebici
+\end{frame}
+
+\begin{frame}[t]{Recomendación e impacto esperado}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Recomendación (Clase 21)}
+      \footnotesize
+      \textbf{Qué:} planear cada día con la predicción del modelo, no con
+      el promedio.\\[2pt]
+      \textbf{Quién:} el equipo de operaciones.\\[2pt]
+      \textbf{Cuándo:} un piloto de un mes.\\[2pt]
+      \textbf{Qué pedimos hoy:} aprobar el piloto.
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{exampleblock}{Impacto esperado (Clase 22)}
+      \footnotesize
+      \textbf{Línea base:} planear con el promedio, con un error de unas
+      1700 bicicletas al día.\\[2pt]
+      \textbf{Con el modelo:} unas 730 al día en los días de prueba.\\[2pt]
+      \textbf{Cómo lo sabremos:} comparar cada día del piloto lo
+      planeado con lo alquilado.
+    \end{exampleblock}
+  \end{columns}
+  \vspace{0.15cm}
+  \begin{alertblock}{Cuando no hay pesos}
+    \footnotesize No siempre puedes poner el impacto en dinero: aquí no
+    sabemos cuánto cuesta una bicicleta de más o de menos. Dilo, y muestra
+    el impacto en la unidad que tienes (bicicletas de error), con el dato
+    que faltaría para pasarlo a pesos.
+  \end{alertblock}
+  \fuentebici
+\end{frame}
+
+\begin{frame}[t]{Un pitch completo, en cinco minutos}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}L{2.3cm}L{11.2cm}@{}}
+    \toprule
+    \textbf{Parte} & \textbf{Lo que dirías} \\
+    \midrule
+    Apertura & ``Cada noche decidimos cuántas bicicletas preparar. Hoy usamos el promedio y nos equivocamos en unas 1700 al día. Les proponemos una forma de bajar ese error a menos de la mitad.'' \\
+    Evidencia y modelo & ``Con dos años de datos, el modelo aprendió cómo cambia la demanda con el clima y el tipo de día. Probado con días que no vio, se equivoca en unas 730 bicicletas. Lo que más pesa: la lluvia resta unas 1240 y cada grado suma unas 150.'' \\
+    Recomendación & ``Proponemos un piloto de un mes: operaciones planea cada día con la predicción.'' \\
+    Impacto & ``Esperamos pasar de unas 1700 a unas 730 bicicletas de error por día. Para traducirlo a pesos necesitamos saber cuánto cuesta cada bicicleta de más o de menos.'' \\
+    Cierre & ``Pedimos aprobar hoy el piloto. Sabremos si funciona comparando, cada día, lo planeado con lo alquilado.'' \\
+    \bottomrule
+  \end{tabular}
+  \fuentebici
+\end{frame}
+
+% ============================================================
+\section{Hora 2: Incertidumbre, limitaciones y preguntas}
+% ============================================================
+\begin{frame}[t]{Comunicar la incertidumbre}
+  \small Una predicción sin su error parece más segura de lo que es.
+  \vspace{0.1cm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.5\textwidth}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabular}{@{}L{2.4cm}L{4.1cm}@{}}
+      \toprule
+      \textbf{Así no} & \textbf{Así sí} \\
+      \midrule
+      ``Mañana se alquilarán 6371 bicicletas.'' & ``Esperamos unas 6400; normalmente nos equivocamos en unas 730, así que planeamos entre 5600 y 7100.'' \\
+      ``El modelo tiene un $R^2$ de 0,789.'' & ``El modelo explica la mayor parte de la variación, pero no toda.'' \\
+      \bottomrule
+    \end{tabular}
+    \column{0.46\textwidth}
+    \begin{block}{Tres reglas}
+      \footnotesize
+      \begin{enumerate}
+        \footnotesize
+        \item \textbf{Redondea}: 6400, no 6371,4. Los decimales dan una
+          precisión que el modelo no tiene.
+        \item \textbf{Da un rango} con palabras simples: ``entre\ldots
+          y\ldots''.
+        \item \textbf{Di de dónde sale}: ``en los días de prueba, el error
+          típico fue de 730''.
+      \end{enumerate}
+    \end{block}
+    \scriptsize\color{black!60} El rango de $\pm$730 es una regla
+    práctica, no un intervalo estadístico formal.
+  \end{columns}
+  \fuentebici
+\end{frame}
+
+\begin{frame}[t]{Decir las limitaciones}
+  \small Si no las dices tú, alguien las encontrará y dudará de todo lo
+  demás.
+  \vspace{0.1cm}
+
+  \footnotesize
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}L{2.7cm}L{10.8cm}@{}}
+    \toprule
+    \textbf{Limitación} & \textbf{En el caso de las bicicletas} \\
+    \midrule
+    De los datos & Dos años de una sola ciudad. No sabemos si vale para otra. \\
+    Del modelo & Es una recta: con calor fuerte predice de más, porque la demanda baja (Clase 20). \\
+    Del rango & Aprendió con días entre 2,4 y 35,3 grados. Fuera de ahí no se usa. \\
+    Eventos raros & El 29 de octubre de 2012, con el huracán Sandy, predijo unas 2980 y se alquilaron 22. \\
+    De causa & Muestra asociaciones, no causas (Clase 19). \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.15cm}
+  \begin{exampleblock}{Una frase que lo resume}
+    \footnotesize ``El modelo sirve para planear días normales con el
+    pronóstico del clima. No sirve para eventos extraordinarios ni para
+    temperaturas fuera de lo que hemos visto.''
+  \end{exampleblock}
+  \fuentebici
+\end{frame}
+
+\begin{frame}[t]{Ni esconder ni ahogar}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.31\textwidth}
+    \begin{alertblock}{Esconder}
+      \footnotesize Solo las cifras buenas, sin errores ni limitaciones.
+      \vspace{3pt}
+
+      \textbf{Riesgo:} pierdes la confianza cuando aparece el primer error
+      real.
+    \end{alertblock}
+    \column{0.31\textwidth}
+    \begin{alertblock}{Ahogar}
+      \footnotesize Diez minutos de advertencias antes de decir qué
+      proponer.
+      \vspace{3pt}
+
+      \textbf{Riesgo:} nadie se atreve a decidir con un modelo que tú mismo
+      no defiendes.
+    \end{alertblock}
+    \column{0.31\textwidth}
+    \begin{exampleblock}{Equilibrar}
+      \footnotesize El rango del error en la evidencia, una diapositiva de
+      limitaciones y el detalle en el anexo.
+      \vspace{3pt}
+
+      \textbf{Resultado:} confían en el modelo y saben cuándo no usarlo.
+    \end{exampleblock}
+  \end{columns}
+  \vspace{0.2cm}
+  \small La incertidumbre no debilita la recomendación: la hace
+  \textbf{creíble}. Una decisión con un rango claro es mejor que una con
+  una cifra exacta y falsa.
+\end{frame}
+
+\begin{frame}[t]{Responder preguntas}
+  \begin{center}
+  \begin{tikzpicture}[
+    bx/.style={draw=none, rounded corners=3pt, text=white, align=center,
+               font=\footnotesize, minimum height=1.3cm, text width=2.3cm, inner sep=3pt},
+    fl/.style={-{Stealth[length=2.2mm]}, line width=0.9pt, color=esumerNavy},
+  ]
+    \node[bx, fill=esumerNavy] (a) at (1.25,0) {\textbf{Escucha}\\hasta el final};
+    \node[bx, fill=esumerSky] (b) at (4.05,0) {\textbf{Reformula}\\``Si entiendo bien\ldots''};
+    \node[bx, fill=esumerTeal] (c) at (6.85,0) {\textbf{Responde}\\corto, con una cifra};
+    \node[bx, fill=esumerOrange] (d) at (9.65,0) {\textbf{Conecta}\\con tu mensaje};
+    \node[bx, fill=esumerMagenta] (e) at (12.45,0) {\textbf{Verifica}\\``¿Responde a su pregunta?''};
+    \draw[fl] (a) -- (b); \draw[fl] (b) -- (c); \draw[fl] (c) -- (d); \draw[fl] (d) -- (e);
+  \end{tikzpicture}
+  \end{center}
+  \vspace{0.1cm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Si no sabes la respuesta}
+      \footnotesize ``No lo sé; lo reviso y les respondo mañana.'' Es mejor
+      que inventar. Anota la pregunta y cumple.
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{Si la pregunta es un ataque}
+      \footnotesize No te defiendas: busca la preocupación de fondo
+      (``¿le preocupa que el modelo falle en días de lluvia?'') y responde
+      a eso, con datos.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{Las preguntas que siempre llegan}
+  \small Prepáralas antes. La mayoría tiene su respuesta en el anexo:
+  \vspace{0.1cm}
+
+  \footnotesize
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}L{4.0cm}L{9.5cm}@{}}
+    \toprule
+    \textbf{Pregunta} & \textbf{Cómo prepararla} \\
+    \midrule
+    ¿Qué tan seguro estás? & El error típico en días que el modelo no vio, y el rango. \\
+    ¿Por qué confiar en el modelo? & Comparado con lo de hoy (la línea base), y cómo se probó: entrenamiento y prueba. \\
+    ¿Qué pasa si no hacemos nada? & La línea base: el error o el costo de seguir igual. \\
+    ¿Cuánto cuesta y cuánto deja? & El impacto, con sus supuestos; si falta un dato, cuál. \\
+    ¿Y si los datos están mal? & Qué revisaste y qué decidiste (la bitácora de la Clase 12). \\
+    ¿Cuándo no funciona? & Tu diapositiva de limitaciones. \\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+\begin{frame}[t]{El anexo: lo que no presentas, pero tienes listo}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \small Después de la diapositiva de cierre, prepara de 3 a 6
+    diapositivas de respaldo:
+    \begin{itemize}
+      \footnotesize
+      \item Los datos: fuente, periodo, filas y la limpieza que hiciste.
+      \item El modelo: variables, coeficientes y medidas de error.
+      \item La comparación con la línea base, en una tabla.
+      \item Los supuestos del impacto y su sensibilidad.
+      \item Los casos en que más se equivoca.
+    \end{itemize}
+    \column{0.48\textwidth}
+    \begin{exampleblock}{Para qué sirve}
+      \footnotesize Cuando llegue la pregunta técnica, vas al anexo y
+      respondes con una diapositiva preparada, en vez de improvisar.
+    \end{exampleblock}
+    \begin{block}{Y para la audiencia técnica}
+      \footnotesize Si te piden el detalle, el anexo, el notebook o el flujo
+      de Orange son tu respaldo (Clase 21).
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{Dar retroalimentación útil}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Reglas}
+      \footnotesize
+      \begin{enumerate}
+        \footnotesize
+        \item Sobre la presentación, no sobre la persona.
+        \item \textbf{Específica}: ``la diapositiva 3 tiene dos ideas'', no
+          ``estuvo confusa''.
+        \item Con lo que funcionó \textbf{y} lo que cambiarías.
+        \item Una sugerencia concreta por cada problema.
+        \item Pocas cosas importantes, no veinte detalles.
+      \end{enumerate}
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{exampleblock}{Una fórmula}
+      \footnotesize \textbf{Qué funcionó:} ``La apertura con la cifra del
+      error me enganchó.''\\[3pt]
+      \textbf{Qué cambiaría:} ``No entendí qué pides al final: dilo como
+      una decisión.''\\[3pt]
+      \textbf{Una pregunta:} ``¿Qué pasa con el modelo en días de
+      calor?''
+    \end{exampleblock}
+    \footnotesize Y quien la recibe: escucha, anota y agradece. No se
+    defiende: decide después qué cambiar.
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{La rúbrica de la clínica}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.22}
+  \begin{tabular}{@{}L{2.5cm}L{5.2cm}L{5.4cm}@{}}
+    \toprule
+    \textbf{Criterio} & \textbf{En proceso} & \textbf{Logrado} \\
+    \midrule
+    Apertura & Empieza por los datos o por el método. & Problema, cifra y promesa en 30 segundos. \\
+    Mensaje & Hay que adivinar qué propone. & Una frase clara que se repite al cierre. \\
+    Modelo & Jerga, sin comparación. & Qué predice, con qué, qué tan bien frente a la línea base. \\
+    Incertidumbre & Cifras exactas, sin error. & Rango claro y limitaciones dichas. \\
+    Recomendación & ``Hay que analizar más''. & Qué, quién, cuándo y qué se pide hoy. \\
+    Impacto & Sin cifra o sin supuestos. & Estimado, con su línea base y sus supuestos. \\
+    Tiempo & Pasa de cinco minutos. & Termina a tiempo. \\
+    Preguntas & Se defiende o improvisa. & Reformula, responde corto, usa el anexo. \\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+% ============================================================
+\section{Hora 3: La clínica}
+% ============================================================
+\begin{frame}[t]{La dinámica de la clínica}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.55\textwidth}
+    \small En \textbf{grupos de tres} (salas separadas en la reunión
+    virtual). Cada uno presenta su caso o el del kit. Cada ronda tiene tres
+    papeles:
+    \vspace{0.05cm}
+
+    \footnotesize
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{@{}L{1.9cm}L{5.3cm}@{}}
+      \toprule
+      \textbf{Papel} & \textbf{Qué hace} \\
+      \midrule
+      Presentador & Cuenta su caso en 5 minutos. \\
+      Gerente & Escucha como quien decide y hace las preguntas: 3 minutos. \\
+      Observador & Llena la ficha con la rúbrica y la comparte: 4 minutos. \\
+      \bottomrule
+    \end{tabular}
+    \vspace{0.1cm}
+
+    \small Tres rondas: todos pasan por los tres papeles. Unos 40 minutos
+    en total.
+    \column{0.41\textwidth}
+    \begin{block}{Si son dos}
+      \footnotesize El que escucha hace de gerente y de observador a la
+      vez.
+    \end{block}
+    \begin{block}{Si trabajas solo}
+      \footnotesize Grábate cinco minutos, mírate al día siguiente y llena
+      la ficha como observador. Pide a alguien de otro grupo que haga de
+      gerente.
+    \end{block}
+    \begin{exampleblock}{Después}
+      \footnotesize De vuelta a la sala principal, algunos voluntarios
+      presentan su versión mejorada.
+    \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{¿No tienes caso propio? El kit de Cafés Altavista}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.5\textwidth}
+    \small Si no hiciste las actividades de las Clases 20 a 22, o tu proyecto
+    no tiene un modelo, usa el kit. Está en la carpeta de la clase:
+    \vspace{0.05cm}
+    \begin{itemize}
+      \footnotesize
+      \item \href{\urlkit}{\color{esumerOrange}\texttt{informe-tecnico-kit.pdf}}:
+        instrucciones y el \textbf{informe técnico} que el equipo de
+        analítica le entregó a la gerencia.
+      \item \href{\urlkitdatos}{\color{esumerOrange}\texttt{datos/ventas\_diarias\_tiendas.csv}}:
+        los datos del informe, por si quieres explorarlos (opcional).
+    \end{itemize}
+    \vspace{0.05cm}
+    \footnotesize\textbf{El caso:} pronosticar las ventas de cada tienda,
+    cada día, con los datos de Cafés Altavista de la Clase 16: 2005
+    registros de tienda y día.
+    \column{0.46\textwidth}
+    \begin{alertblock}{Está en jerga, a propósito}
+      \footnotesize El informe habla de MAE, $R^2$, coeficientes e
+      interacciones, y \textbf{no dice qué hacer}. Tu trabajo es
+      traducirlo: encontrar el hallazgo, proponer la decisión y contarlo en
+      cinco minutos.
+    \end{alertblock}
+    \begin{block}{Una pista}
+      \footnotesize Mira la figura de la sección 3 del informe: una tienda
+      no se comporta como las demás los fines de semana.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{La ficha de retroalimentación}
+  \footnotesize
+  \textbf{Presentador:} \hrulefill\quad \textbf{Observador:} \hrulefill
+  \vspace{0.1cm}
+
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}L{2.8cm}C{1.3cm}C{1.3cm}L{7.3cm}@{}}
+    \toprule
+    \textbf{Criterio} & \textbf{En proceso} & \textbf{Logrado} & \textbf{Comentario específico} \\
+    \midrule
+    Apertura & $\square$ & $\square$ & \\
+    Mensaje & $\square$ & $\square$ & \\
+    Modelo & $\square$ & $\square$ & \\
+    Incertidumbre & $\square$ & $\square$ & \\
+    Recomendación e impacto & $\square$ & $\square$ & \\
+    Tiempo y preguntas & $\square$ & $\square$ & \\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.1cm}
+
+  \textbf{Qué funcionó:} \hrulefill\par
+  \textbf{Qué cambiaría:} \hrulefill\par
+  \textbf{Una pregunta:} \hrulefill
+\end{frame}
+
+\begin{frame}[t]{Producto esperado}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.55\textwidth}
+    \small Al final de la sesión, cada persona entrega:
+    \begin{enumerate}
+      \footnotesize
+      \item La \textbf{versión 1} de su presentación, la que llevó a la
+        clínica.
+      \item Las \textbf{fichas de retroalimentación} que recibió.
+      \item Una \textbf{lista de cambios}: qué va a ajustar y por qué, a
+        partir de las fichas.
+      \item La \textbf{versión 2}, con los cambios hechos.
+    \end{enumerate}
+    \column{0.41\textwidth}
+    \begin{exampleblock}{Si tu caso es el proyecto}
+      \footnotesize Usa tu historia (Clase 21), tu matriz (Clase 22) y tu
+      modelo (Clase 20, o el que hayas hecho con tus datos).
+    \end{exampleblock}
+    \begin{block}{Si no tienes un modelo propio}
+      \footnotesize Usa el kit de Cafés Altavista: presentas el informe
+      técnico traducido para la gerencia, con tu propia recomendación.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+\section{Cierre}
+% ============================================================
+\begin{frame}[t]{Cierre y próxima sesión}
+  \begin{itemize}
+    \small
+    \item Cinco partes en cinco minutos: apertura, evidencia y modelo,
+      recomendación, impacto y cierre.
+    \item La apertura empieza por el problema de quien decide, con una
+      cifra.
+    \item El modelo se explica sin jerga y siempre frente a la línea base.
+    \item Un rango honesto y las limitaciones dichas hacen creíble la
+      recomendación.
+    \item A las preguntas: escucha, reformula, responde corto y usa el anexo.
+  \end{itemize}
+  \vspace{0.15cm}
+  \begin{block}{Próxima sesión: Clase 24}
+    \small MasterClass presencial: una guía para recorrer todo el Módulo 4
+    con un caso nuevo, de la pregunta predictiva a la recomendación.
+  \end{block}
+\end{frame}
+
+{
+\setbeamertemplate{footline}{}
+\begin{frame}[plain,noframenumbering]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[esumerNavy] (current page.south west) rectangle (current page.north east);
+    \node at (current page.center) {\color{white}\Huge\bfseries ¡Gracias!};
+  \end{tikzpicture}
+\end{frame}
+}
+
+\end{document}
